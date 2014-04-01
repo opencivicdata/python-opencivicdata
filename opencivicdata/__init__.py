@@ -4,7 +4,7 @@ import csv
 import pickle
 
 PWD = os.path.abspath(os.path.dirname(__file__))
-OCD_DIVISION_IDS = '../ocd-division-ids/identifiers/country-{}.csv'
+OCD_DIVISION_IDS = os.path.join(PWD, 'division-ids/identifiers/country-{}.csv')
 
 
 class Division(object):
