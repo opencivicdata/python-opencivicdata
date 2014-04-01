@@ -2,6 +2,7 @@ from .. import Division
 
 us = Division.load('us')
 
+
 def test_children():
     assert len(list(us.children('state'))) == 50
 
