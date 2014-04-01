@@ -8,27 +8,27 @@ OCD_DIVISION_CSV = os.path.join(PWD, 'division-ids/identifiers/country-{}.csv')
 
 
 class Division(object):
-
     _cache = {}
 
     @classmethod
-    def get(self, id):
-        return self._cache[id]
+    def get(self, division, from_csv=None):
+        if division not in self._cache:
+            # figure out the source
+            if not from_csv:
+                country = re.findall(r'country:(\w{2})', division)[0]
+                from_csv = OCD_DIVISION_CSV.format(country)
 
-    @classmethod
-    def load(self, division, from_csv=None):
-        if not from_csv:
-            country = re.findall(r'country:(\w{2})', division)[0]
-            from_csv = OCD_DIVISION_CSV.format(country)
-        for row in csv.DictReader(open(from_csv)):
-            if row['id'].startswith(division):
-                same_as = row.pop('sameAs', None)
-                if same_as:
-                    #divisions[same_as].names.append(row['id'])
-                    continue
-                #same_as_note = row.pop('sameAsNote', None)
-                Division(**row)
-        return Division.get(division)
+            # load division and all children
+            for row in csv.DictReader(open(from_csv)):
+                if row['id'].startswith(division):
+                    same_as = row.pop('sameAs', None)
+                    if same_as:
+                        #divisions[same_as].names.append(row['id'])
+                        continue
+                    #same_as_note = row.pop('sameAsNote', None)
+                    Division(**row)
+
+        return self._cache[division]
 
     def __init__(self, id, name, **kwargs):
         self._cache[id] = self
@@ -43,8 +43,12 @@ class Division(object):
         if parent == 'ocd-division':
             self.parent = None
         else:
-            self.parent = self._cache[parent]
-            self.parent._children.append(self)
+            self.parent = self._cache.get(parent)
+            if self.parent:
+                self.parent._children.append(self)
+            else:
+                # TODO: keep a list of unassigned parents for later reconciliation
+                pass
 
         self._type = own_id.split(':')[0]
 
