@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import os
 import csv
-import pickle
 
 PWD = os.path.abspath(os.path.dirname(__file__))
-OCD_DIVISION_IDS = os.path.join(PWD, 'division-ids/identifiers/country-{}.csv')
+OCD_DIVISION_CSV = os.path.join(PWD, 'division-ids/identifiers/country-{}.csv')
 
 
 class Division(object):
@@ -14,6 +13,17 @@ class Division(object):
     @classmethod
     def get(self, id):
         return self._cache[id]
+
+    @classmethod
+    def load(self, country):
+        for row in csv.DictReader(open(OCD_DIVISION_CSV.format(country))):
+            same_as = row.pop('sameAs', None)
+            if same_as:
+                #divisions[same_as].names.append(row['id'])
+                continue
+            #same_as_note = row.pop('sameAsNote', None)
+            Division(**row)
+        return Division.get('ocd-division/country:' + country)
 
     def __init__(self, id, name, **kwargs):
         self._cache[id] = self
@@ -45,18 +55,3 @@ class Division(object):
 
     def __str__(self):
         return '{} - {}'.format(self.id, self.name)
-
-
-def build(country):
-    for row in csv.DictReader(open(OCD_DIVISION_IDS.format(country))):
-        same_as = row.pop('sameAs', None)
-        if same_as:
-            #divisions[same_as].names.append(row['id'])
-            continue
-        #same_as_note = row.pop('sameAsNote', None)
-        div = Division(**row)
-
-    return Division.get('ocd-division/country:us')
-
-
-us = build('us')
