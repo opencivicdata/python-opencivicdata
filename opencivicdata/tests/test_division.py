@@ -1,6 +1,6 @@
 from .. import Division
 
-us = Division.load('us')
+us = Division.load('ocd-division/country:us')
 
 
 def test_children():

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import re
 import csv
 
 PWD = os.path.abspath(os.path.dirname(__file__))
@@ -15,15 +16,19 @@ class Division(object):
         return self._cache[id]
 
     @classmethod
-    def load(self, country):
-        for row in csv.DictReader(open(OCD_DIVISION_CSV.format(country))):
-            same_as = row.pop('sameAs', None)
-            if same_as:
-                #divisions[same_as].names.append(row['id'])
-                continue
-            #same_as_note = row.pop('sameAsNote', None)
-            Division(**row)
-        return Division.get('ocd-division/country:' + country)
+    def load(self, division, from_csv=None):
+        if not from_csv:
+            country = re.findall(r'country:(\w{2})', division)[0]
+            from_csv = OCD_DIVISION_CSV.format(country)
+        for row in csv.DictReader(open(from_csv)):
+            if row['id'].startswith(division):
+                same_as = row.pop('sameAs', None)
+                if same_as:
+                    #divisions[same_as].names.append(row['id'])
+                    continue
+                #same_as_note = row.pop('sameAsNote', None)
+                Division(**row)
+        return Division.get(division)
 
     def __init__(self, id, name, **kwargs):
         self._cache[id] = self
