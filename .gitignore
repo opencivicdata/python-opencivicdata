@@ -2,3 +2,5 @@
 .tox
 *.pyc
 __pycache__
+htmlcov
+.coverage
