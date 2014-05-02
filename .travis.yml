@@ -4,7 +4,7 @@ python:
     - "3.3"
     - "3.4"
 install: pip install pytest pytest-cov coveralls Django djorm-ext-pgarray --use-mirrors
-script: py.test --cov opencivicdata -
+script: py.test --cov opencivicdata
 after_success:
     - coveralls
 notifications:
