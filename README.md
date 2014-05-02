@@ -1,6 +1,9 @@
 python-opencivicdata
 ====================
 
+[![Build Status](https://travis-ci.org/opencivicdata/python-opencivicdata.svg?branch=master)](https://travis-ci.org/opencivicdata/python-opencivicdata)
+
+
 Python utilities for dealing with Open Civic Data data.
 
 Still fairly experimental, will provide:
