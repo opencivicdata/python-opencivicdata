@@ -3,7 +3,7 @@ python:
     - "2.7"
     - "3.3"
     - "3.4"
-install: pip install pytest pytest-cov pytest-django coveralls Django djorm-ext-pgarray --use-mirrors
+install: pip install pytest pytest-cov pytest-django coveralls psycopg2 Django djorm-ext-pgarray --use-mirrors
 before_script:
     - psql -c "CREATE USER test with PASSWORD 'test';" -U postgres
 script: export PYTHONPATH=.; py.test --cov opencivicdata --ds=opencivicdata.tests.test_settings
