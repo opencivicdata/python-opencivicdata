@@ -1,0 +1,3 @@
+Django
+psycopg2
+djorm-ext-pgarray
