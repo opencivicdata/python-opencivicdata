@@ -1,4 +1,5 @@
 from __future__ import print_function
+import io
 import os
 import csv
 from subprocess import check_call
@@ -18,7 +19,7 @@ def load_divisions(country):
 
     objects = []
     # country csv
-    for row in csv.DictReader(open(filename, encoding='utf8')):
+    for row in csv.DictReader(io.open(filename, encoding='utf8')):
         args, _ = Division.subtypes_from_id(row['id'])
         args['redirect_id'] = row.get('sameAs', None) or None
         objects.append(Division(id=row['id'], display_name=row['name'], **args))
