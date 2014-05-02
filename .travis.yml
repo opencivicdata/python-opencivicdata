@@ -6,6 +6,7 @@ python:
 install: pip install -r requirements-test.txt --use-mirrors
 before_script:
     - psql -c "CREATE USER test with PASSWORD 'test' CREATEDB;" -U postgres
+    - psql -c "CREATE DATABASE test;" -U postgres
 script: export PYTHONPATH=.; py.test --cov opencivicdata --ds=opencivicdata.tests.test_settings
 after_success:
     - coveralls
