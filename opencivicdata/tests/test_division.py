@@ -1,4 +1,4 @@
-from .. import Division
+from ..divisions import Division
 
 
 def test_get():
