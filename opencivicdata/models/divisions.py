@@ -5,22 +5,28 @@ class DivisionManager(models.Manager):
 
     def children_of(self, division_id, subtype=None, depth=1):
         query, n = Division.subtypes_from_id(division_id)
+        q_objects = []
 
         # only get children
         if subtype:
             query['subtype{0}'.format(n)] = subtype
         else:
-            query['subtype{0}__isnull'.format(n)] = False
-        query['subid{0}__isnull'.format(n)] = False
+            q_objects.append(~models.Q(**{'subtype{0}'.format(n): ''}))
+        q_objects.append(~models.Q(**{'subid{0}'.format(n): ''}))
 
         # allow for depth wildcards
         n += depth
 
         # ensure final field is null
-        query['subtype{0}__isnull'.format(n)] = True
-        query['subid{0}__isnull'.format(n)] = True
+        q_objects.append(models.Q(**{'subtype{0}'.format(n): ''}))
+        q_objects.append(models.Q(**{'subid{0}'.format(n): ''}))
 
-        return self.filter(**query)
+        return self.filter(*q_objects, **query)
+
+    def create(self, id, display_name, redirect=None):
+        return super(DivisionManager, self).create(id=id, display_name=display_name,
+                                                   redirect=redirect,
+                                                   **Division.subtypes_from_id(id)[0])
 
 
 class Division(models.Model):
