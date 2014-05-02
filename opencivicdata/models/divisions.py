@@ -57,9 +57,6 @@ class Division(models.Model):
         return '{0} ({1})'.format(self.display_name, self.id)
     __unicode__ = __str__
 
-    def get_absolute_url(self):
-        return reverse('division', args=(self.id,))
-
     @staticmethod
     def subtypes_from_id(division_id):
         pieces = [piece.split(':', 1) for piece in division_id.split('/')]
