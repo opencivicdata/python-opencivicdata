@@ -8,7 +8,7 @@ class Organization(CommonBase):
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True)
     parent = models.ForeignKey('self', related_name='children', null=True)
-    jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations')
+    jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations', null=True)
     classification = models.CharField(max_length=100, blank=True)   # enum
     chamber = models.CharField(max_length=10, blank=True)
     founding_date = models.CharField(max_length=10, blank=True)     # YYYY[-MM[-DD]]
