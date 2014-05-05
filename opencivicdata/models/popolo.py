@@ -88,7 +88,7 @@ class Membership(CommonBase):
     id = models.CharField(max_length=100, primary_key=True)
     organization = models.ForeignKey(Organization, related_name='memberships')
     person = models.ForeignKey(Person, related_name='memberships')
-    post = models.ForeignKey(Post, related_name='posts', null=True)
+    post = models.ForeignKey(Post, related_name='memberships', null=True)
     on_behalf_of = models.ForeignKey(Organization, related_name='memberships_on_behalf_of',
                                      null=True)
     label = models.CharField(max_length=300, blank=True)
