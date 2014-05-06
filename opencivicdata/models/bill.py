@@ -1,7 +1,7 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import CommonBase
+from .base import CommonBase, LinkBase
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 
@@ -68,7 +68,7 @@ class BillVersion(models.Model):
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 
-class BaseLink(models.Model):
+class BillLink(models.Model):
     mimetype = models.CharField(max_length=100)
     url = models.URLField()
 
@@ -76,9 +76,13 @@ class BaseLink(models.Model):
         abstract = True
 
 
-class BillDocumentLink(BaseLink):
+class BillDocumentLink(BillLink):
     document = models.ForeignKey(BillDocument, related_name='links')
 
 
-class BillVersionLink(BaseLink):
+class BillVersionLink(BillLink):
     document = models.ForeignKey(BillVersion, related_name='links')
+
+
+class BillSource(LinkBase):
+    person = models.ForeignKey(Bill, related_name='sources')
