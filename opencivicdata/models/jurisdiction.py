@@ -2,7 +2,7 @@ from django.db import models
 from djorm_pgarray.fields import ArrayField
 
 from .base import CommonBase, LinkBase
-from .divisions import Division
+from .division import Division
 
 
 class Jurisdiction(CommonBase):
