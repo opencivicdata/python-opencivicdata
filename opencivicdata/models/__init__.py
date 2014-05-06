@@ -8,3 +8,5 @@ from .people_orgs import (
     Post, PostContactDetail, PostLinks,
     Membership, MembershipContactDetail, MembershipLink
 )
+from .bill import (Bill, BillSummary, BillTitle, BillName, RelatedBill, BillSponsor,
+                   BillDocument, BillVersion, BillDocumentLink, BillVersionLink)
