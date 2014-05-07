@@ -13,7 +13,7 @@ class Bill(CommonBase):
 
     title = models.TextField()
 
-    organization = models.ForeignKey(Organization, related_name='bills')
+    from_organization = models.ForeignKey(Organization, related_name='bills')
     classification = ArrayField(dbtype="text")
     subjects = ArrayField(dbtype="text")
 
@@ -39,7 +39,7 @@ class BillName(models.Model):
 class RelatedBill(models.Model):
     bill = models.ForeignKey(Bill, related_name='related_bills')
     related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse')
-    relation_type = models.CharField(max_length=100)        # enum?
+    classification = models.CharField(max_length=100)        # enum?
 
 
 class BillSponsor(models.Model):
@@ -49,7 +49,6 @@ class BillSponsor(models.Model):
     classification = models.CharField(max_length=100)   # enumeration?
 
     # optionally tied to an organization or person if it was linkable
-    # TODO: find way to enforce that only one of these is true?
     organization = models.ForeignKey(Organization, related_name='sponsorships', null=True)
     person = models.ForeignKey(Person, related_name='sponsorships', null=True)
 
