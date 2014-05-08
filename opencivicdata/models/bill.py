@@ -13,7 +13,7 @@ class Bill(CommonBase):
 
     title = models.TextField()
 
-    from_organization = models.ForeignKey(Organization, related_name='bills')
+    from_organization = models.ForeignKey(Organization, related_name='bills', null=True)
     classification = ArrayField(dbtype="text")
     subjects = ArrayField(dbtype="text")
 
@@ -56,14 +56,14 @@ class BillSponsor(models.Model):
 class BillDocument(models.Model):
     bill = models.ForeignKey(Bill, related_name='documents')
     name = models.CharField(max_length=300)
-    classification = models.CharField(max_length=100)   # enum?
+    type = models.CharField(max_length=100)   # enum?
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 
 class BillVersion(models.Model):
     bill = models.ForeignKey(Bill, related_name='versions')
     name = models.CharField(max_length=300)
-    classification = models.CharField(max_length=100)   # enum?
+    type = models.CharField(max_length=100)   # enum?
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 
