@@ -42,7 +42,7 @@ class BillName(models.Model):
 class RelatedBill(models.Model):
     bill = models.ForeignKey(Bill, related_name='related_bills')
     related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse')
-    classification = models.CharField(max_length=100)        # enum?
+    relation_type = models.CharField(max_length=100)        # enum?
 
     def __str__(self):
         return 'relationship of {} to {} ({})'.format(self.bill, self.related_bill,
