@@ -17,6 +17,9 @@ class Bill(CommonBase):
     classification = ArrayField(dbtype="text")
     subjects = ArrayField(dbtype="text")
 
+    def __str__(self):
+        return '{} in {}'.format(self.name, self.session)
+
 
 class BillSummary(models.Model):
     bill = models.ForeignKey(Bill, related_name='summaries')
@@ -41,16 +44,24 @@ class RelatedBill(models.Model):
     related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse')
     classification = models.CharField(max_length=100)        # enum?
 
+    def __str__(self):
+        return 'relationship of {} to {} ({})'.format(self.bill, self.related_bill,
+                                                      self.classification)
+
 
 class BillSponsor(models.Model):
     bill = models.ForeignKey(Bill, related_name='sponsors')
     name = models.CharField(max_length=300)
+    entity_type = models.CharField(max_length=20)
     primary = models.BooleanField(default=False)
     classification = models.CharField(max_length=100)   # enumeration?
 
     # optionally tied to an organization or person if it was linkable
     organization = models.ForeignKey(Organization, related_name='sponsorships', null=True)
     person = models.ForeignKey(Person, related_name='sponsorships', null=True)
+
+    def __str__(self):
+        return '{} ({}) sponsorship of {}'.format(self.name, self.entity_type, self.bill)
 
 
 class BillDocument(models.Model):
