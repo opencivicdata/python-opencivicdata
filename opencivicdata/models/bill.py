@@ -15,7 +15,7 @@ class Bill(CommonBase):
 
     from_organization = models.ForeignKey(Organization, related_name='bills', null=True)
     classification = ArrayField(dbtype="text")
-    subjects = ArrayField(dbtype="text")
+    subject = ArrayField(dbtype="text")
 
     def __str__(self):
         return '{} in {}'.format(self.name, self.session)
