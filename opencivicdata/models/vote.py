@@ -36,4 +36,4 @@ class PersonVote(models.Model):
 
 
 class VoteSource(LinkBase):
-    person = models.ForeignKey(Vote, related_name='sources')
+    person = models.ForeignKey(VoteEvent, related_name='sources')
