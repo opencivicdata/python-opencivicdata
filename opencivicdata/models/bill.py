@@ -73,9 +73,13 @@ class BillName(models.Model):
 class BillAction(models.Model):
     bill = models.ForeignKey(Bill, related_name='actions')
     actor = models.CharField(max_length=100)
-    actor = models.CharField(max_length=100)
+    description = models.TextField()
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     classification = ArrayField(dbtype="text")
+    order = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ['order']
 
 
 class BillActionRelatedEntity(RelatedEntityBase):
