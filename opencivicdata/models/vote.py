@@ -4,6 +4,7 @@ from djorm_pgarray.fields import ArrayField
 from .base import CommonBase, LinkBase
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
+from .bill import Bill
 
 
 class VoteEvent(CommonBase):
@@ -17,6 +18,7 @@ class VoteEvent(CommonBase):
     outcome = models.CharField(max_length=50)   # enum?
     organization = models.ForeignKey(Organization, related_name='votes')
     session = models.ForeignKey(JurisdictionSession, related_name='votes')
+    bill = models.ForeignKey(Bill, related_name='votes', null=True)
 
     def __str__(self):
         return '{} in {}'.format(self.motion, self.session)
