@@ -34,7 +34,7 @@ class PersonVote(models.Model):
     vote = models.ForeignKey(VoteEvent, related_name='votes')
     option = models.CharField(max_length=50)        # enum
     voter_name = models.CharField(max_length=300)
-    voter = models.ForeignKey(Person, related_name='votes')
+    voter = models.ForeignKey(Person, related_name='votes', null=True)
 
 
 class VoteSource(LinkBase):
