@@ -6,7 +6,7 @@ class CommonBase(models.Model):
     """ common base fields across all top-level models """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    extras = JSONField()
+    extras = JSONField(default='{}')
 
     class Meta:
         abstract = True
