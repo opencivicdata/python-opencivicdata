@@ -13,7 +13,7 @@ class Jurisdiction(CommonBase):
     division = models.ForeignKey(Division, related_name='jurisdictions')
 
 
-class JurisdictionSession(CommonBase):
+class JurisdictionSession(models.Model):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='sessions')
     name = models.CharField(max_length=300)
     type = models.CharField(max_length=100)     # enum?
