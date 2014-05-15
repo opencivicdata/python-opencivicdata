@@ -88,7 +88,9 @@ class BillActionRelatedEntity(RelatedEntityBase):
 
 class RelatedBill(models.Model):
     bill = models.ForeignKey(Bill, related_name='related_bills')
-    related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse')
+    related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse', null=True)
+    name = models.CharField(max_length=100)
+    session = models.CharField(max_length=100) # should this be a FK?
     relation_type = models.CharField(max_length=100)        # enum?
 
     def __str__(self):
