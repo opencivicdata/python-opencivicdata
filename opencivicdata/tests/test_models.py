@@ -83,6 +83,14 @@ def test_ocdid_default():
 
 
 @pytest.mark.django_db
+def test_ocdid_default_nondup():
+    """ ensure that defaults actually vary """
+    p1 = Person(name='test person 1')
+    p2 = Person(name='test person 2')
+    assert p1.id != p2.id
+
+
+@pytest.mark.django_db
 def test_ocdid_validation_jurisdiction():
     # this fails
     with pytest.raises(ValidationError):

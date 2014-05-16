@@ -10,8 +10,11 @@ class OCDIDField(models.CharField):
     def __init__(self, *args, **kwargs):
         self.ocd_type = kwargs.pop('ocd_type')
         if self.ocd_type != 'jurisdiction':
-            kwargs['default'] = 'ocd-{}/{}'.format(self.ocd_type, uuid.uuid1())
-            kwargs['max_length'] = len(kwargs['default'])
+            kwargs['default'] = lambda: 'ocd-{}/{}'.format(self.ocd_type, uuid.uuid1())
+            # len('ocd-') + len(ocd_type) + len('/') + len(uuid)
+            #       = 4 + len(ocd_type) + 1 + 36
+            #       = len(ocd_type) + 41
+            kwargs['max_length'] = 41 + len(self.ocd_type)
             regex = '^ocd-' + self.ocd_type  + '/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$'
         else:
             kwargs['max_length'] = 300
