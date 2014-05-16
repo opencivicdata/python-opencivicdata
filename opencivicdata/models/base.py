@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.core.validators import RegexValidator
 from jsonfield import JSONField
+from uuidfield import UUIDField
 from .. import common
 
 
@@ -36,7 +37,7 @@ class OCDIDField(models.CharField):
 
 
 
-class CommonBase(models.Model):
+class OCDBase(models.Model):
     """ common base fields across all top-level models """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -46,7 +47,14 @@ class CommonBase(models.Model):
         abstract = True
 
 
-class ContactDetailBase(models.Model):
+class RelatedBase(models.Model):
+    id = UUIDField(auto=True, primary_key=True)
+
+    class Meta:
+        abstract = True
+
+
+class ContactDetailBase(RelatedBase):
     type = models.CharField(max_length=50)
     value = models.CharField(max_length=300, blank=True)
     note = models.CharField(max_length=300, blank=True)
@@ -56,7 +64,7 @@ class ContactDetailBase(models.Model):
         abstract = True
 
 
-class IdentifierBase(models.Model):
+class IdentifierBase(RelatedBase):
     identifier = models.CharField(max_length=300)
     scheme = models.CharField(max_length=300)
 
@@ -64,7 +72,7 @@ class IdentifierBase(models.Model):
         abstract = True
 
 
-class OtherNameBase(models.Model):
+class OtherNameBase(RelatedBase):
     name = models.CharField(max_length=500)
     note = models.CharField(max_length=500, blank=True)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
@@ -74,7 +82,7 @@ class OtherNameBase(models.Model):
         abstract = True
 
 
-class LinkBase(models.Model):
+class LinkBase(RelatedBase):
     note = models.CharField(max_length=300, blank=True)
     url = models.URLField()
 

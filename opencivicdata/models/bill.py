@@ -1,12 +1,12 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import CommonBase, LinkBase, OCDIDField
+from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 
 
-class RelatedEntityBase(models.Model):
+class RelatedEntityBase(RelatedBase):
     name = models.CharField(max_length=300)
     entity_type = models.CharField(max_length=20)
 
@@ -27,7 +27,7 @@ class RelatedEntityBase(models.Model):
         abstract = True
 
 
-class BillLinkBase(models.Model):
+class BillLinkBase(RelatedBase):
     mimetype = models.CharField(max_length=100)
     url = models.URLField()
 
@@ -37,7 +37,7 @@ class BillLinkBase(models.Model):
 
 # the actual models
 
-class Bill(CommonBase):
+class Bill(OCDBase):
     id = OCDIDField(ocd_type='bill')
     session = models.ForeignKey(JurisdictionSession, related_name='bills')
     name = models.CharField(max_length=100)
@@ -52,25 +52,25 @@ class Bill(CommonBase):
         return '{} in {}'.format(self.name, self.session)
 
 
-class BillSummary(models.Model):
+class BillSummary(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='summaries')
     text = models.TextField()
     note = models.TextField(blank=True)
 
 
-class BillTitle(models.Model):
+class BillTitle(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='other_titles')
     text = models.TextField()
     note = models.TextField(blank=True)
 
 
-class BillName(models.Model):
+class BillName(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='other_names')
     name = models.CharField(max_length=100)
     note = models.TextField(blank=True)
 
 
-class BillAction(models.Model):
+class BillAction(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='actions')
     actor = models.CharField(max_length=100)
     description = models.TextField()
@@ -86,7 +86,7 @@ class BillActionRelatedEntity(RelatedEntityBase):
     action = models.ForeignKey(BillAction, related_name='related_entities')
 
 
-class RelatedBill(models.Model):
+class RelatedBill(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='related_bills')
     related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse', null=True)
     name = models.CharField(max_length=100)
@@ -108,14 +108,14 @@ class BillSponsor(RelatedEntityBase):
         return '{} ({}) sponsorship of {}'.format(self.name, self.entity_type, self.bill)
 
 
-class BillDocument(models.Model):
+class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='documents')
     name = models.CharField(max_length=300)
     type = models.CharField(max_length=100)   # enum?
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 
-class BillVersion(models.Model):
+class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='versions')
     name = models.CharField(max_length=300)
     type = models.CharField(max_length=100)   # enum?

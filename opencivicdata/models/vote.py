@@ -1,13 +1,13 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import CommonBase, LinkBase, OCDIDField
+from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 from .bill import Bill
 
 
-class VoteEvent(CommonBase):
+class VoteEvent(OCDBase):
     id = OCDIDField(ocd_type='vote')
     identifier = models.CharField(max_length=300, blank=True)
     motion = models.TextField()
@@ -24,13 +24,13 @@ class VoteEvent(CommonBase):
         return '{} in {}'.format(self.motion, self.session)
 
 
-class VoteCount(models.Model):
+class VoteCount(RelatedBase):
     vote = models.ForeignKey(VoteEvent, related_name='counts')
     option = models.CharField(max_length=50)        # enum
     value = models.PositiveIntegerField()
 
 
-class PersonVote(models.Model):
+class PersonVote(RelatedBase):
     vote = models.ForeignKey(VoteEvent, related_name='votes')
     option = models.CharField(max_length=50)        # enum
     voter_name = models.CharField(max_length=300)

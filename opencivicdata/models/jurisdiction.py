@@ -1,11 +1,11 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import CommonBase, LinkBase, OCDIDField
+from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .division import Division
 
 
-class Jurisdiction(CommonBase):
+class Jurisdiction(OCDBase):
     id = OCDIDField(ocd_type='jurisdiction')
     name = models.CharField(max_length=300)
     url = models.URLField()
@@ -13,7 +13,7 @@ class Jurisdiction(CommonBase):
     division = models.ForeignKey(Division, related_name='jurisdictions')
 
 
-class JurisdictionSession(models.Model):
+class JurisdictionSession(RelatedBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='sessions')
     name = models.CharField(max_length=300)
     type = models.CharField(max_length=100)     # enum?

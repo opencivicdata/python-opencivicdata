@@ -1,9 +1,9 @@
 from django.db import models
-from .base import CommonBase, ContactDetailBase, LinkBase, IdentifierBase, OtherNameBase, OCDIDField
+from .base import OCDBase, ContactDetailBase, LinkBase, IdentifierBase, OtherNameBase, OCDIDField
 from .jurisdiction import Jurisdiction
 
 
-class Organization(CommonBase):
+class Organization(OCDBase):
     id = OCDIDField(ocd_type='organization')
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True)
@@ -35,7 +35,7 @@ class OrganizationSource(LinkBase):
     organization = models.ForeignKey(Organization, related_name='sources')
 
 
-class Post(CommonBase):
+class Post(OCDBase):
     id = OCDIDField(ocd_type='post')
     label = models.CharField(max_length=300, blank=True)
     role = models.CharField(max_length=300, blank=True)
@@ -52,7 +52,7 @@ class PostLinks(LinkBase):
     post = models.ForeignKey(Post, related_name='links')
 
 
-class Person(CommonBase):
+class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True)
@@ -84,7 +84,7 @@ class PersonSource(LinkBase):
     person = models.ForeignKey(Person, related_name='sources')
 
 
-class Membership(CommonBase):
+class Membership(OCDBase):
     id = OCDIDField(ocd_type='membership')
     organization = models.ForeignKey(Organization, related_name='memberships')
     person = models.ForeignKey(Person, related_name='memberships')
