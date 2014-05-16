@@ -4,6 +4,7 @@ from djorm_pgarray.fields import ArrayField
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
+from .. import common
 
 
 class RelatedEntityBase(RelatedBase):
@@ -45,7 +46,7 @@ class Bill(OCDBase):
     title = models.TextField()
 
     from_organization = models.ForeignKey(Organization, related_name='bills', null=True)
-    classification = ArrayField(dbtype="text")
+    classification = ArrayField(dbtype="text")      # check that array values are in enum?
     subject = ArrayField(dbtype="text")
 
     def __str__(self):
@@ -75,7 +76,7 @@ class BillAction(RelatedBase):
     actor = models.CharField(max_length=100)
     description = models.TextField()
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-    classification = ArrayField(dbtype="text")
+    classification = ArrayField(dbtype="text")      # enum
     order = models.PositiveIntegerField()
 
     class Meta:
@@ -90,8 +91,8 @@ class RelatedBill(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='related_bills')
     related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse', null=True)
     name = models.CharField(max_length=100)
-    session = models.CharField(max_length=100) # should this be a FK?
-    relation_type = models.CharField(max_length=100)        # enum?
+    session = models.CharField(max_length=100)   # should this be a FK?
+    relation_type = models.CharField(max_length=100, choices=common.BILL_RELATION_TYPE_CHOICES)
 
     def __str__(self):
         return 'relationship of {} to {} ({})'.format(self.bill, self.related_bill,
@@ -111,14 +112,14 @@ class BillSponsor(RelatedEntityBase):
 class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='documents')
     name = models.CharField(max_length=300)
-    type = models.CharField(max_length=100)   # enum?
+    type = models.CharField(max_length=100)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 
 class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='versions')
     name = models.CharField(max_length=300)
-    type = models.CharField(max_length=100)   # enum?
+    type = models.CharField(max_length=100)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 

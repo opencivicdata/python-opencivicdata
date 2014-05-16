@@ -1,6 +1,7 @@
 from django.db import models
 from .base import OCDBase, ContactDetailBase, LinkBase, IdentifierBase, OtherNameBase, OCDIDField
 from .jurisdiction import Jurisdiction
+from .. import common
 
 
 class Organization(OCDBase):
@@ -9,7 +10,8 @@ class Organization(OCDBase):
     image = models.URLField(blank=True)
     parent = models.ForeignKey('self', related_name='children', null=True)
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations', null=True)
-    classification = models.CharField(max_length=100, blank=True)   # enum
+    classification = models.CharField(max_length=100, blank=True,
+                                      choices=common.ORGANIZATION_CLASSIFICATION_CHOICES)
     chamber = models.CharField(max_length=10, blank=True)
     founding_date = models.CharField(max_length=10, blank=True)     # YYYY[-MM[-DD]]
     dissolution_date = models.CharField(max_length=10, blank=True)  # YYYY[-MM[-DD]]

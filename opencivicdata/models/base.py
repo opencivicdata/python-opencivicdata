@@ -55,7 +55,7 @@ class RelatedBase(models.Model):
 
 
 class ContactDetailBase(RelatedBase):
-    type = models.CharField(max_length=50)
+    type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
     value = models.CharField(max_length=300, blank=True)
     note = models.CharField(max_length=300, blank=True)
     label = models.CharField(max_length=300, blank=True)

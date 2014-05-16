@@ -5,6 +5,7 @@ from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 from .bill import Bill
+from .. import common
 
 
 class VoteEvent(OCDBase):
@@ -14,8 +15,8 @@ class VoteEvent(OCDBase):
     start_date = models.CharField(max_length=10)    # YYYY-MM-DD
     end_date = models.CharField(max_length=10, blank=True)    # YYYY-MM-DD
 
-    classification = ArrayField(dbtype="text")
-    outcome = models.CharField(max_length=50)   # enum?
+    classification = ArrayField(dbtype="text")      # enum
+    outcome = models.CharField(max_length=50, choices=common.VOTE_OUTCOME_CHOICES)
     organization = models.ForeignKey(Organization, related_name='votes')
     session = models.ForeignKey(JurisdictionSession, related_name='votes')
     bill = models.ForeignKey(Bill, related_name='votes', null=True)
@@ -26,13 +27,13 @@ class VoteEvent(OCDBase):
 
 class VoteCount(RelatedBase):
     vote = models.ForeignKey(VoteEvent, related_name='counts')
-    option = models.CharField(max_length=50)        # enum
+    option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     value = models.PositiveIntegerField()
 
 
 class PersonVote(RelatedBase):
     vote = models.ForeignKey(VoteEvent, related_name='votes')
-    option = models.CharField(max_length=50)        # enum
+    option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     voter_name = models.CharField(max_length=300)
     voter = models.ForeignKey(Person, related_name='votes', null=True)
 
