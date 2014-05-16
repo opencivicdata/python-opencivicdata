@@ -1,12 +1,43 @@
+import uuid
 from django.db import models
+from django.core.validators import RegexValidator
 from jsonfield import JSONField
+from .. import common
+
+
+class OCDIDField(models.CharField):
+
+    def __init__(self, *args, **kwargs):
+        self.ocd_type = kwargs.pop('ocd_type')
+        if self.ocd_type != 'jurisdiction':
+            kwargs['default'] = 'ocd-{}/{}'.format(self.ocd_type, uuid.uuid1())
+            kwargs['max_length'] = len(kwargs['default'])
+            regex = '^ocd-' + self.ocd_type  + '/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$'
+        else:
+            kwargs['max_length'] = 300
+            regex = common.JURISDICTION_ID_REGEX
+
+        kwargs['primary_key'] = True
+        # get pattern property if it exists, otherwise just return the object (hopefully a string)
+        msg = 'ID must match ' + getattr(regex, 'pattern', regex)
+        kwargs['validators'] = [RegexValidator(regex=regex, message=msg)]
+        super(OCDIDField, self).__init__(*args, **kwargs)
+
+    def deconstruct(self):
+        name, path, args, kwargs = super(OCDIDField, self).deconstruct()
+        if self.ocd_type != 'jurisdiction':
+            kwargs.pop('default')
+        kwargs.pop('max_length')
+        kwargs.pop('primary_key')
+        kwargs['ocd_type'] = self.ocd_type
+
 
 
 class CommonBase(models.Model):
     """ common base fields across all top-level models """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    extras = JSONField(default='{}')
+    extras = JSONField(default='{}', blank=True)
 
     class Meta:
         abstract = True

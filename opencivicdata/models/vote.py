@@ -1,14 +1,14 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import CommonBase, LinkBase
+from .base import CommonBase, LinkBase, OCDIDField
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 from .bill import Bill
 
 
 class VoteEvent(CommonBase):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = OCDIDField(ocd_type='vote')
     identifier = models.CharField(max_length=300, blank=True)
     motion = models.TextField()
     start_date = models.CharField(max_length=10)    # YYYY-MM-DD

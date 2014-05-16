@@ -1,12 +1,12 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import CommonBase, LinkBase
+from .base import CommonBase, LinkBase, OCDIDField
 from .division import Division
 
 
 class Jurisdiction(CommonBase):
-    id = models.CharField(max_length=500, primary_key=True)
+    id = OCDIDField(ocd_type='jurisdiction')
     name = models.CharField(max_length=300)
     url = models.URLField()
     feature_flags = ArrayField(dbtype="text")

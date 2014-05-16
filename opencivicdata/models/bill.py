@@ -1,7 +1,7 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import CommonBase, LinkBase
+from .base import CommonBase, LinkBase, OCDIDField
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 
@@ -38,7 +38,7 @@ class BillLinkBase(models.Model):
 # the actual models
 
 class Bill(CommonBase):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = OCDIDField(ocd_type='bill')
     session = models.ForeignKey(JurisdictionSession, related_name='bills')
     name = models.CharField(max_length=100)
 

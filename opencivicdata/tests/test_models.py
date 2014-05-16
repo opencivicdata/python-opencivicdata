@@ -6,6 +6,7 @@ from ..models import (Jurisdiction, JurisdictionSession, Division,
                       PersonSource,
                       Post, PostContactDetail, PostLinks,
                       Membership, MembershipContactDetail, MembershipLink)
+from django.core.exceptions import ValidationError
 
 
 def test_division_subtypes_from_id():
@@ -70,3 +71,40 @@ def test_division_children_of():
 
     # 7 divisions beneath alaska up to 3 levels
     assert Division.objects.children_of('ocd-division/country:us/state:ak', depth=3).count() == 7
+
+
+@pytest.mark.django_db
+def test_ocdid_default():
+    o = Organization.objects.create(name='test org')
+    assert o.id.startswith('ocd-organization/')
+    assert o.pk == o.id
+    p = Person.objects.create(name='test person')
+    assert p.id.startswith('ocd-person/')
+
+
+@pytest.mark.django_db
+def test_ocdid_validation_jurisdiction():
+    # this fails
+    with pytest.raises(ValidationError):
+        j = Jurisdiction(name='test juris', id='ocd-division/country:us/test:something/else',
+                         url='http://example.com')
+        j.full_clean(exclude=['division'])
+
+    # this succeeds
+    j = Jurisdiction(name='test juris', id='ocd-jurisdiction/country:us/test:something/else',
+                     url='http://example.com')
+    j.full_clean(exclude=['division'])
+
+
+@pytest.mark.django_db
+def test_ocdid_validation_other():
+    # this test should handle everything that isn't a jurisdiction
+
+    # this succeeds
+    o = Organization(name='test org')
+    o.full_clean(exclude=['parent', 'jurisdiction'])
+
+    # this raises
+    with pytest.raises(ValidationError):
+        o = Organization(name='this is a test', id='ocd-organization/3')
+        o.full_clean(exclude=['parent', 'jurisdiction'])

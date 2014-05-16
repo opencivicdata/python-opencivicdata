@@ -1,10 +1,10 @@
 from django.db import models
-from .base import CommonBase, ContactDetailBase, LinkBase, IdentifierBase, OtherNameBase
+from .base import CommonBase, ContactDetailBase, LinkBase, IdentifierBase, OtherNameBase, OCDIDField
 from .jurisdiction import Jurisdiction
 
 
 class Organization(CommonBase):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = OCDIDField(ocd_type='organization')
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True)
     parent = models.ForeignKey('self', related_name='children', null=True)
@@ -36,7 +36,7 @@ class OrganizationSource(LinkBase):
 
 
 class Post(CommonBase):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = OCDIDField(ocd_type='post')
     label = models.CharField(max_length=300, blank=True)
     role = models.CharField(max_length=300, blank=True)
     organization = models.ForeignKey(Organization, related_name='posts')
@@ -53,7 +53,7 @@ class PostLinks(LinkBase):
 
 
 class Person(CommonBase):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True)
     gender = models.CharField(max_length=100)
@@ -85,7 +85,7 @@ class PersonSource(LinkBase):
 
 
 class Membership(CommonBase):
-    id = models.CharField(max_length=100, primary_key=True)
+    id = OCDIDField(ocd_type='membership')
     organization = models.ForeignKey(Organization, related_name='memberships')
     person = models.ForeignKey(Person, related_name='memberships')
     post = models.ForeignKey(Post, related_name='memberships', null=True)
