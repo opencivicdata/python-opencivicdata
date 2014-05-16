@@ -10,7 +10,7 @@ class OCDIDField(models.CharField):
     def __init__(self, *args, **kwargs):
         self.ocd_type = kwargs.pop('ocd_type')
         if self.ocd_type != 'jurisdiction':
-            kwargs['default'] = lambda: 'ocd-{}/{}'.format(self.ocd_type, uuid.uuid1())
+            kwargs['default'] = lambda: 'ocd-{}/{}'.format(self.ocd_type, uuid.uuid4())
             # len('ocd-') + len(ocd_type) + len('/') + len(uuid)
             #       = 4 + len(ocd_type) + 1 + 36
             #       = len(ocd_type) + 41
