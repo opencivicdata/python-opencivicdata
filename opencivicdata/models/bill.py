@@ -1,42 +1,11 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
+from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 from .. import common
 
-
-class RelatedEntityBase(RelatedBase):
-    name = models.CharField(max_length=300)
-    entity_type = models.CharField(max_length=20)
-
-    # optionally tied to an organization or person if it was linkable
-    organization = models.ForeignKey(Organization, null=True)
-    person = models.ForeignKey(Person, null=True)
-
-    @property
-    def entity_name(self):
-        if entity_type == 'organization' and self.organization_id:
-            return self.organization.name
-        elif entity_type == 'person' and self.person_id:
-            return self.person.name
-        else:
-            return self.name
-
-    class Meta:
-        abstract = True
-
-
-class BillLinkBase(RelatedBase):
-    mimetype = models.CharField(max_length=100)
-    url = models.URLField()
-
-    class Meta:
-        abstract = True
-
-
-# the actual models
 
 class Bill(OCDBase):
     id = OCDIDField(ocd_type='bill')
@@ -123,13 +92,13 @@ class BillVersion(RelatedBase):
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 
-class BillDocumentLink(BillLinkBase):
+class BillDocumentLink(MimetypeLinkBase):
     document = models.ForeignKey(BillDocument, related_name='links')
 
 
-class BillVersionLink(BillLinkBase):
+class BillVersionLink(MimetypeLinkBase):
     document = models.ForeignKey(BillVersion, related_name='links')
 
 
 class BillSource(LinkBase):
-    person = models.ForeignKey(Bill, related_name='sources')
+    bill = models.ForeignKey(Bill, related_name='sources')

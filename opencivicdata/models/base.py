@@ -88,3 +88,33 @@ class LinkBase(RelatedBase):
 
     class Meta:
         abstract = True
+
+
+class MimetypeLinkBase(RelatedBase):
+    mimetype = models.CharField(max_length=100)
+    url = models.URLField()
+
+    class Meta:
+        abstract = True
+
+
+class RelatedEntityBase(RelatedBase):
+    name = models.CharField(max_length=300)
+    entity_type = models.CharField(max_length=20)
+
+    # optionally tied to an organization or person if it was linkable
+    organization = models.ForeignKey('Organization', null=True)
+    person = models.ForeignKey('Person', null=True)
+
+    @property
+    def entity_name(self):
+        if entity_type == 'organization' and self.organization_id:
+            return self.organization.name
+        elif entity_type == 'person' and self.person_id:
+            return self.person.name
+        else:
+            return self.name
+
+    class Meta:
+        abstract = True
+

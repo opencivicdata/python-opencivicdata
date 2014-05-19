@@ -11,3 +11,6 @@ from .people_orgs import (
 from .bill import (Bill, BillSummary, BillTitle, BillName, RelatedBill, BillSponsor,
                    BillDocument, BillVersion, BillDocumentLink, BillVersionLink, BillSource)
 from .vote import (VoteEvent, VoteCount, PersonVote, VoteSource, PersonVote)
+from .event import (Event, EventLocation, EventMedia, EventMediaLink, EventDocument, EventLink,
+                    EventSource, EventParticipant, EventAgendaItem, EventRelatedEntity,
+                    EventAgendaMedia, EventAgendaMediaLink)
