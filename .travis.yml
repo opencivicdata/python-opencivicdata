@@ -7,7 +7,7 @@ install: pip install -r requirements-test.txt --use-mirrors
 before_script:
     - psql -c "CREATE USER test with PASSWORD 'test' CREATEDB;" -U postgres
     - psql -c "CREATE DATABASE test;" -U postgres
-    - psql test -c "CREATE EXTENSION postgis;" -U postgres
+    - psql -c "CREATE EXTENSION postgis;" -U postgres -d test
 script: ./run-tests.sh
 after_success:
     - coveralls
