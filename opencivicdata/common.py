@@ -12,7 +12,7 @@ JURISDICTION_ID_REGEX = re.compile(r'^ocd-jurisdiction/country:[a-z]{2}(/[^\W\d]
 _keys = lambda allopts: [opt[0] for opt in allopts]
 
 """
-Policy on addition of new types:
+Policy on addition of new types here:
 
 Because these lists are strictly enforced in lots of code for the purposes of data quality
 we have a fairly liberal policy on amendment.
@@ -40,6 +40,21 @@ CONTACT_TYPE_CHOICES = (
 # used to indicate if something is a home, work, cell, etc.
 )
 CONTACT_TYPES = _keys(CONTACT_TYPE_CHOICES)
+
+
+JURISDICTION_CLASSIFICATION_CHOICES = (
+    ('government', 'Government'),
+    ('school board', 'School Board'),
+)
+JURISDICTION_CLASSIFICATIONS = _keys(JURISDICTION_CLASSIFICATION_CHOICES)
+
+
+SESSION_CLASSIFICATION_CHOICES = (
+    ('primary', 'Primary'),
+    ('special', 'Special'),
+)
+SESSION_CLASSIFICATIONS = _keys(SESSION_CLASSIFICATION_CHOICES)
+
 
 ORGANIZATION_CLASSIFICATION_CHOICES = (
     ('legislature', 'Legislature'),
