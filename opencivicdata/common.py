@@ -81,14 +81,14 @@ BILL_RELATION_TYPE_CHOICES = (
 )
 BILL_RELATION_TYPES = _keys(BILL_RELATION_TYPE_CHOICES)
 
-BILL_ACTION_TYPE_CHOICES = (
+BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('introduction', 'Introduced'),
     ('reading:1', 'First Reading'),
     ('reading:2', 'Second Reading'),
     ('reading:3', 'Third Reading'),
     # this list is notably incomplete!
 )
-BILL_ACTION_TYPES = _keys(BILL_ACTION_TYPE_CHOICES)
+BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
 
 VOTE_CLASSIFICATION_CHOICES = (
     ('passage:bill', 'Bill Passage'),
