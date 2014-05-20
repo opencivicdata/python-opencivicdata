@@ -16,7 +16,7 @@ class Jurisdiction(OCDBase):
 class JurisdictionSession(RelatedBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='sessions')
     name = models.CharField(max_length=300)
-    type = models.CharField(max_length=100)     # enum?
+    classification = models.CharField(max_length=100)     # enum?
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
