@@ -30,6 +30,7 @@ CONTACT_TYPE_CHOICES = (
     ('address', 'Postal Address'),
     ('email', 'Email'),
     ('url', 'URL'),
+    ('fax', 'Fax'),
     ('text', 'Text Phone'),
     ('voice', 'Voice Phone'),
     ('video', 'Video Phone'),
