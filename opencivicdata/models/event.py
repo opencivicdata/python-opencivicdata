@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from djorm_pgarray.fields import ArrayField
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, MimetypeLinkBase, RelatedEntityBase
+from .jurisdiction import Jurisdiction
 from .bill import Bill
 from .vote import VoteEvent
 
@@ -15,7 +16,7 @@ EVENT_STATUS_CHOICES = (
 
 class EventMediaBase(RelatedBase):
     name = models.CharField(max_length=300)
-    classification = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
     date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     offset = models.PositiveIntegerField(null=True)
 
@@ -25,9 +26,9 @@ class EventMediaBase(RelatedBase):
 
 class EventLocation(RelatedBase):
     name = models.CharField(max_length=100)
-    note = models.TextField(blank=True)
     url = models.URLField(blank=True)
     coordinates = models.PointField(null=True)
+    jurisdiction = models.ForeignKey(Jurisdiction, related_name='event_locations')
 
     objects = models.GeoManager()
 
@@ -35,6 +36,7 @@ class EventLocation(RelatedBase):
 class Event(OCDBase):
     id = OCDIDField(ocd_type='event')
     name = models.CharField(max_length=300)
+    jurisdiction = models.ForeignKey(Jurisdiction, related_name='events')
     description = models.TextField()
     classification = models.CharField(max_length=100)
     start_time = models.DateTimeField()
@@ -67,6 +69,7 @@ class EventSource(LinkBase):
 
 class EventParticipant(RelatedEntityBase):
     event = models.ForeignKey(Event, related_name='participants')
+    note = models.TextField()
 
 
 class EventAgendaItem(RelatedBase):
