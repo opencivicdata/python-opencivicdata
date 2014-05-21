@@ -1,8 +1,39 @@
 from django.db import models
-from .base import OCDBase, ContactDetailBase, LinkBase, IdentifierBase, OtherNameBase, OCDIDField
+from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .jurisdiction import Jurisdiction
 from .. import common
 
+# abstract models
+
+class ContactDetailBase(RelatedBase):
+    type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
+    value = models.CharField(max_length=300)
+    note = models.CharField(max_length=300, blank=True)
+    label = models.CharField(max_length=300, blank=True)
+
+    class Meta:
+        abstract = True
+
+
+class IdentifierBase(RelatedBase):
+    identifier = models.CharField(max_length=300)
+    scheme = models.CharField(max_length=300)
+
+    class Meta:
+        abstract = True
+
+
+class OtherNameBase(RelatedBase):
+    name = models.CharField(max_length=500)
+    note = models.CharField(max_length=500, blank=True)
+    start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+    end_date = models.CharField(max_length=10)      # YYYY[-MM[-DD]]
+
+    class Meta:
+        abstract = True
+
+
+# the actual models
 
 class Organization(OCDBase):
     id = OCDIDField(ocd_type='organization')
@@ -39,7 +70,7 @@ class OrganizationSource(LinkBase):
 
 class Post(OCDBase):
     id = OCDIDField(ocd_type='post')
-    label = models.CharField(max_length=300, blank=True)
+    label = models.CharField(max_length=300)
     role = models.CharField(max_length=300, blank=True)
     organization = models.ForeignKey(Organization, related_name='posts')
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
@@ -50,7 +81,7 @@ class PostContactDetail(ContactDetailBase):
     post = models.ForeignKey(Post, related_name='contact_details')
 
 
-class PostLinks(LinkBase):
+class PostLink(LinkBase):
     post = models.ForeignKey(Post, related_name='links')
 
 

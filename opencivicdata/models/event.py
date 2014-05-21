@@ -74,10 +74,10 @@ class EventAgendaItem(RelatedBase):
     order = models.CharField(max_length=100, blank=True)
     subjects = ArrayField(dbtype='text')
     notes = models.TextField(blank=True)
-    # TODO: related_entities
 
 
 class EventRelatedEntity(RelatedEntityBase):
+    agenda_item = models.ForeignKey(EventAgendaItem, related_name='related_entities')
     bill = models.ForeignKey(Bill, null=True)
     vote = models.ForeignKey(VoteEvent, null=True)
     note = models.TextField()

@@ -4,7 +4,7 @@ from ..models import (Jurisdiction, JurisdictionSession, Division,
                       OrganizationContactDetail, OrganizationSource,
                       Person, PersonIdentifier, PersonName, PersonContactDetail, PersonLink,
                       PersonSource,
-                      Post, PostContactDetail, PostLinks,
+                      Post, PostContactDetail, PostLink,
                       Membership, MembershipContactDetail, MembershipLink)
 from django.core.exceptions import ValidationError
 

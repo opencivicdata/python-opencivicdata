@@ -54,34 +54,6 @@ class RelatedBase(models.Model):
         abstract = True
 
 
-class ContactDetailBase(RelatedBase):
-    type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
-    value = models.CharField(max_length=300, blank=True)
-    note = models.CharField(max_length=300, blank=True)
-    label = models.CharField(max_length=300, blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class IdentifierBase(RelatedBase):
-    identifier = models.CharField(max_length=300)
-    scheme = models.CharField(max_length=300)
-
-    class Meta:
-        abstract = True
-
-
-class OtherNameBase(RelatedBase):
-    name = models.CharField(max_length=500)
-    note = models.CharField(max_length=500, blank=True)
-    start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10)      # YYYY[-MM[-DD]]
-
-    class Meta:
-        abstract = True
-
-
 class LinkBase(RelatedBase):
     note = models.CharField(max_length=300, blank=True)
     url = models.URLField()
