@@ -34,6 +34,7 @@ class OCDIDField(models.CharField):
         kwargs.pop('max_length')
         kwargs.pop('primary_key')
         kwargs['ocd_type'] = self.ocd_type
+        return (name, path, args, kwargs)
 
 
 
