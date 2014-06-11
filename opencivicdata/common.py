@@ -4,9 +4,8 @@ Module for declaration of common constants available throughout Open Civic Data 
 
 import re
 
-DIVISION_ID_REGEX = re.compile(r'^ocd-division/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*$', re.U)
-JURISDICTION_ID_REGEX = re.compile(r'^ocd-jurisdiction/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*/\w+$',
-                                   re.U)
+DIVISION_ID_REGEX = r'^ocd-division/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*$'
+JURISDICTION_ID_REGEX = r'^ocd-jurisdiction/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*/\w+$'
 
 # helper for making options-only lists
 _keys = lambda allopts: [opt[0] for opt in allopts]
