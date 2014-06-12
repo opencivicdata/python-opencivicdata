@@ -109,7 +109,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=300)),
                 ('url', models.URLField()),
                 ('classification', models.CharField(default='government', max_length=50, choices=[('government', 'Government'), ('school board', 'School Board')])),
-                ('feature_flags', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True)),
+                ('feature_flags', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True, dbtype='text')),
                 ('division', models.ForeignKey(to_field='id', to='opencivicdata.Division')),
             ],
             options={

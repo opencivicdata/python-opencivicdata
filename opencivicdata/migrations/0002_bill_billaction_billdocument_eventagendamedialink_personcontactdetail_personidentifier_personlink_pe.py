@@ -107,8 +107,8 @@ class Migration(migrations.Migration):
                 ('id', opencivicdata.models.base.OCDIDField(ocd_type='bill', validators=[django.core.validators.RegexValidator(message='ID must match ^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], serialize=False)),
                 ('name', models.CharField(max_length=100)),
                 ('title', models.TextField()),
-                ('classification', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True)),
-                ('subject', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True)),
+                ('classification', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True, dbtype='text')),
+                ('subject', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True, dbtype='text')),
             ],
             options={
                 'abstract': False,
@@ -123,7 +123,7 @@ class Migration(migrations.Migration):
                 ('actor', models.CharField(max_length=100)),
                 ('description', models.TextField()),
                 ('date', models.CharField(max_length=10)),
-                ('classification', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True)),
+                ('classification', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True, dbtype='text')),
                 ('order', models.PositiveIntegerField()),
             ],
             options={

@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('motion', models.TextField()),
                 ('start_date', models.CharField(max_length=10)),
                 ('end_date', models.CharField(max_length=10, blank=True)),
-                ('classification', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True)),
+                ('classification', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True, dbtype='text')),
                 ('outcome', models.CharField(max_length=50, choices=[('pass', 'Pass'), ('fail', 'Fail')])),
                 ('organization', models.ForeignKey(to_field='id', to='opencivicdata.Organization')),
                 ('session', models.ForeignKey(to_field='id', to='opencivicdata.JurisdictionSession')),

@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('id', uuidfield.fields.UUIDField(unique=True, serialize=False, primary_key=True, editable=False, max_length=32, blank=True)),
                 ('description', models.TextField()),
                 ('order', models.CharField(max_length=100, blank=True)),
-                ('subjects', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True)),
+                ('subjects', djorm_pgarray.fields.ArrayField(default=None, blank=True, null=True, dbtype='text')),
                 ('notes', models.TextField(blank=True)),
             ],
             options={
