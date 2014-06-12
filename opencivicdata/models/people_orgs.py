@@ -1,5 +1,6 @@
 from django.db import models
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
+from .division import Division
 from .jurisdiction import Jurisdiction
 from .. import common
 
@@ -73,6 +74,7 @@ class Post(OCDBase):
     label = models.CharField(max_length=300)
     role = models.CharField(max_length=300, blank=True)
     organization = models.ForeignKey(Organization, related_name='posts')
+    division = models.ForeignKey(Division, related_name='posts', null=True, default=None)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
@@ -88,8 +90,6 @@ class PostLink(LinkBase):
 class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300)
-    # family_name, given_name, additional_name, honorific_prefix, honorifix_suffix, patronymic_name
-    # email
     sort_name = models.CharField(max_length=100, default='')
 
     image = models.URLField(blank=True)
