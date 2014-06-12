@@ -44,7 +44,7 @@ CONTACT_TYPES = _keys(CONTACT_TYPE_CHOICES)
 
 JURISDICTION_CLASSIFICATION_CHOICES = (
     ('government', 'Government'),
-    ('school board', 'School Board'),
+    ('school_system', 'School System'),
 )
 JURISDICTION_CLASSIFICATIONS = _keys(JURISDICTION_CLASSIFICATION_CHOICES)
 
