@@ -88,6 +88,10 @@ class PostLink(LinkBase):
 class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300)
+    # family_name, given_name, additional_name, honorific_prefix, honorifix_suffix, patronymic_name
+    # email
+    sort_name = models.CharField(max_length=100, default='')
+
     image = models.URLField(blank=True)
     gender = models.CharField(max_length=100)
     summary = models.CharField(max_length=500)
