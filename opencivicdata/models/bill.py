@@ -43,7 +43,7 @@ class BillName(RelatedBase):
 class BillAction(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='actions')
     organization = models.ForeignKey(Organization, related_name='actions')
-    description = models.TextField()
+    text = models.TextField()
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     classification = ArrayField(dbtype="text")      # enum
     order = models.PositiveIntegerField()
