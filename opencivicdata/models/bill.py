@@ -42,7 +42,7 @@ class BillName(RelatedBase):
 
 class BillAction(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='actions')
-    actor = models.CharField(max_length=100)
+    organization = models.ForeignKey(Organization, related_name='actions')
     description = models.TextField()
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     classification = ArrayField(dbtype="text")      # enum
@@ -66,7 +66,6 @@ class RelatedBill(RelatedBase):
     def __str__(self):
         return 'relationship of {} to {} ({})'.format(self.bill, self.related_bill,
                                                       self.relation_type)
-
 
 
 class BillSponsor(RelatedEntityBase):
