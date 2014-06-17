@@ -65,7 +65,7 @@ class LinkBase(RelatedBase):
 
 
 class MimetypeLinkBase(RelatedBase):
-    mimetype = models.CharField(max_length=100)
+    media_type = models.CharField(max_length=100)
     url = models.URLField()
 
     class Meta:
