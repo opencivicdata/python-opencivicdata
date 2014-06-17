@@ -8,7 +8,7 @@ from .people_orgs import (
     Post, PostContactDetail, PostLink,
     Membership, MembershipContactDetail, MembershipLink
 )
-from .bill import (Bill, BillAbstract, BillTitle, BillIdentifier, RelatedBill, BillSponsor,
+from .bill import (Bill, BillAbstract, BillTitle, BillIdentifier, RelatedBill, BillSponsorship,
                    BillDocument, BillVersion, BillDocumentLink, BillVersionLink, BillSource,
                    BillActionRelatedEntity, BillAction)
 from .vote import (VoteEvent, VoteCount, PersonVote, VoteSource, PersonVote)

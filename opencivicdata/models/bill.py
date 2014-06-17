@@ -68,8 +68,8 @@ class RelatedBill(RelatedBase):
                                                       self.relation_type)
 
 
-class BillSponsor(RelatedEntityBase):
-    bill = models.ForeignKey(Bill, related_name='sponsors')
+class BillSponsorship(RelatedEntityBase):
+    bill = models.ForeignKey(Bill, related_name='sponsorships')
     primary = models.BooleanField(default=False)
     classification = models.CharField(max_length=100)   # enum?
 
