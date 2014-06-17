@@ -15,8 +15,7 @@ EVENT_STATUS_CHOICES = (
 
 
 class EventMediaBase(RelatedBase):
-    name = models.CharField(max_length=300)
-    type = models.CharField(max_length=100)
+    note = models.CharField(max_length=300)
     date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     offset = models.PositiveIntegerField(null=True)
 
