@@ -1,5 +1,5 @@
 from django.db import models
-from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
+from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
 from .. import common
@@ -11,14 +11,6 @@ class ContactDetailBase(RelatedBase):
     value = models.CharField(max_length=300)
     note = models.CharField(max_length=300, blank=True)
     label = models.CharField(max_length=300, blank=True)
-
-    class Meta:
-        abstract = True
-
-
-class IdentifierBase(RelatedBase):
-    identifier = models.CharField(max_length=300)
-    scheme = models.CharField(max_length=300)
 
     class Meta:
         abstract = True

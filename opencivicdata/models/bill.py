@@ -1,7 +1,8 @@
 from django.db import models
 from djorm_pgarray.fields import ArrayField
 
-from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase
+from .base import (OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase,
+                   IdentifierBase)
 from .people_orgs import Organization, Person
 from .jurisdiction import JurisdictionSession
 from .. import common
@@ -10,7 +11,7 @@ from .. import common
 class Bill(OCDBase):
     id = OCDIDField(ocd_type='bill')
     session = models.ForeignKey(JurisdictionSession, related_name='bills')
-    name = models.CharField(max_length=100)
+    identifier = models.CharField(max_length=100)
 
     title = models.TextField()
 
@@ -22,21 +23,20 @@ class Bill(OCDBase):
         return '{} in {}'.format(self.name, self.session)
 
 
-class BillSummary(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='summaries')
-    text = models.TextField()
+class BillAbstract(RelatedBase):
+    bill = models.ForeignKey(Bill, related_name='abstracts')
+    abstract = models.TextField()
     note = models.TextField(blank=True)
 
 
 class BillTitle(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='other_titles')
-    text = models.TextField()
+    title = models.TextField()
     note = models.TextField(blank=True)
 
 
-class BillName(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='other_names')
-    name = models.CharField(max_length=100)
+class BillIdentifier(IdentifierBase):
+    bill = models.ForeignKey(Bill, related_name='other_identifiers')
     note = models.TextField(blank=True)
 
 
@@ -79,15 +79,13 @@ class BillSponsor(RelatedEntityBase):
 
 class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='documents')
-    name = models.CharField(max_length=300)
-    type = models.CharField(max_length=100)
+    note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 
 class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='versions')
-    name = models.CharField(max_length=300)
-    type = models.CharField(max_length=100)
+    note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
 

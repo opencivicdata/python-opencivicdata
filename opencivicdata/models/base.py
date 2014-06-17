@@ -72,6 +72,14 @@ class MimetypeLinkBase(RelatedBase):
         abstract = True
 
 
+class IdentifierBase(RelatedBase):
+    identifier = models.CharField(max_length=300)
+    scheme = models.CharField(max_length=300)
+
+    class Meta:
+        abstract = True
+
+
 class RelatedEntityBase(RelatedBase):
     name = models.CharField(max_length=300)
     entity_type = models.CharField(max_length=20)
