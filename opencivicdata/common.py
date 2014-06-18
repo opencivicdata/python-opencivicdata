@@ -114,7 +114,3 @@ VOTE_RESULT_CHOICES = (
     ('fail', 'Fail'),
 )
 VOTE_RESULTS = _keys(VOTE_RESULT_CHOICES)
-
-# Possible Candidates for future inclusion:
-# bill_version_types
-# bill_document_types

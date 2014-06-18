@@ -11,7 +11,7 @@ from .. import common
 class VoteEvent(OCDBase):
     id = OCDIDField(ocd_type='vote')
     identifier = models.CharField(max_length=300, blank=True)
-    motion = models.TextField()
+    motion_text = models.TextField()
     start_date = models.CharField(max_length=10)    # YYYY-MM-DD
     end_date = models.CharField(max_length=10, blank=True)    # YYYY-MM-DD
 
