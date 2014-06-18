@@ -102,16 +102,18 @@ VOTE_CLASSIFICATIONS = _keys(VOTE_CLASSIFICATION_CHOICES)
 VOTE_OPTION_CHOICES = (
     ('yes', 'Yes'),
     ('no', 'No'),
+    ('absent', 'Absent'),
     ('abstain', 'Abstain'),
+    ('not voting', 'Not Voting'),
     ('paired', 'Paired'),
 )
 VOTE_OPTIONS = _keys(VOTE_OPTION_CHOICES)
 
-VOTE_OUTCOME_CHOICES = (
+VOTE_RESULT_CHOICES = (
     ('pass', 'Pass'),
     ('fail', 'Fail'),
 )
-VOTE_OUTCOMES = _keys(VOTE_OUTCOME_CHOICES)
+VOTE_RESULTS = _keys(VOTE_RESULT_CHOICES)
 
 # Possible Candidates for future inclusion:
 # bill_version_types

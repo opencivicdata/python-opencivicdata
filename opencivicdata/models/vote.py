@@ -16,7 +16,7 @@ class VoteEvent(OCDBase):
     end_date = models.CharField(max_length=10, blank=True)    # YYYY-MM-DD
 
     classification = ArrayField(dbtype="text")      # enum
-    outcome = models.CharField(max_length=50, choices=common.VOTE_OUTCOME_CHOICES)
+    result = models.CharField(max_length=50, choices=common.VOTE_RESULT_CHOICES)
     organization = models.ForeignKey(Organization, related_name='votes')
     session = models.ForeignKey(JurisdictionSession, related_name='votes')
     bill = models.ForeignKey(Bill, related_name='votes', null=True)
@@ -39,4 +39,4 @@ class PersonVote(RelatedBase):
 
 
 class VoteSource(LinkBase):
-    person = models.ForeignKey(VoteEvent, related_name='sources')
+    vote_event = models.ForeignKey(VoteEvent, related_name='sources')
