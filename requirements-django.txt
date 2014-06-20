@@ -1,4 +1,4 @@
--e git@github.com:django/django.git@stable/1.7.x#egg=django
+-e git+git@github.com:django/django.git@stable/1.7.x#egg=django
 psycopg2
 djorm-pgarray
 jsonfield
