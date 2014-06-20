@@ -1,4 +1,4 @@
-https://www.djangoproject.com/download/1.7b3/tarball/
+-e git@github.com:django/django.git@stable/1.7.x#egg=django
 psycopg2
 djorm-pgarray
 jsonfield
