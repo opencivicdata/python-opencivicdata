@@ -10,7 +10,7 @@ from .. import common
 
 class Bill(OCDBase):
     id = OCDIDField(ocd_type='bill')
-    session = models.ForeignKey(JurisdictionSession, related_name='bills')
+    legislative_session = models.ForeignKey(JurisdictionSession, related_name='bills')
     identifier = models.CharField(max_length=100)
 
     title = models.TextField()
@@ -20,7 +20,7 @@ class Bill(OCDBase):
     subject = ArrayField(dbtype="text")
 
     def __str__(self):
-        return '{} in {}'.format(self.name, self.session)
+        return '{} in {}'.format(self.name, self.legislative_session)
 
 
 class BillAbstract(RelatedBase):
@@ -60,7 +60,7 @@ class RelatedBill(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='related_bills')
     related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse', null=True)
     identifier = models.CharField(max_length=100)
-    session = models.CharField(max_length=100)   # should this be a FK?
+    legislative_session = models.CharField(max_length=100)   # should this be a FK?
     relation_type = models.CharField(max_length=100, choices=common.BILL_RELATION_TYPE_CHOICES)
 
     def __str__(self):

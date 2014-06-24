@@ -18,11 +18,11 @@ class VoteEvent(OCDBase):
     classification = ArrayField(dbtype="text")      # enum
     result = models.CharField(max_length=50, choices=common.VOTE_RESULT_CHOICES)
     organization = models.ForeignKey(Organization, related_name='votes')
-    session = models.ForeignKey(JurisdictionSession, related_name='votes')
+    legislative_session = models.ForeignKey(JurisdictionSession, related_name='votes')
     bill = models.ForeignKey(Bill, related_name='votes', null=True)
 
     def __str__(self):
-        return '{} in {}'.format(self.motion, self.session)
+        return '{} in {}'.format(self.motion, self.legislative_session)
 
 
 class VoteCount(RelatedBase):
