@@ -38,12 +38,26 @@ class OCDIDField(models.CharField):
         return (name, path, args, kwargs)
 
 
-
 class OCDBase(models.Model):
     """ common base fields across all top-level models """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     extras = JSONField(default='{}', blank=True)
+
+    def to_dict(self):
+        ret = {}
+        for x in self._meta.get_all_field_names():
+            val = getattr(self, x)
+
+            if val.__class__.__name__ == 'RelatedManager':
+                # val = [x.to_dict() for x in val.all()]
+                continue
+
+            if hasattr(val, 'to_dict'):
+                val = val.to_dict()
+
+            ret[x] = val
+        return ret
 
     class Meta:
         abstract = True
