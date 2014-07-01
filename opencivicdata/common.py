@@ -85,9 +85,15 @@ BILL_RELATION_TYPES = _keys(BILL_RELATION_TYPE_CHOICES)
 
 BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('introduction', 'Introduced'),
-    ('reading:1', 'First Reading'),
-    ('reading:2', 'Second Reading'),
-    ('reading:3', 'Third Reading'),
+    ('reading-1', 'First Reading'),
+    ('reading-2', 'Second Reading'),
+    ('reading-3', 'Third Reading'),
+    ('passage', 'Passage'),
+    ('committee-referral', 'Committee Referral'),
+    ('committee-passage', 'Passage from Committee'),
+    ('committee-failure', 'Failure in Committee'),
+    ('executive-received', 'Received By Executive'),
+    ('executive-signed', 'Signed By Executive'),
     # this list is notably incomplete!
 )
 BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
