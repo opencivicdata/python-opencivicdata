@@ -89,12 +89,20 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('reading-2', 'Second Reading'),
     ('reading-3', 'Third Reading'),
     ('passage', 'Passage'),
+    ('failure', 'Passage Failure'),
+    ('withdrawal', 'Withdrawal'),
+    ('amendment-introduction', 'Amendment Passage'),
+    ('amendment-passage', 'Amendment Passage'),
+    ('amendment-withdrawal', 'Amendment Withdrawal'),
+    ('amendment-failure', 'Amendment Failure'),
     ('committee-referral', 'Committee Referral'),
     ('committee-passage', 'Passage from Committee'),
+    ('committee-passage-favorable', 'Favorable Passage from Committee'),
+    ('committee-passage-unfavorable', 'Unfavorable Passage from Committee'),
     ('committee-failure', 'Failure in Committee'),
     ('executive-received', 'Received By Executive'),
-    ('executive-signed', 'Signed By Executive'),
-    # this list is notably incomplete!
+    ('executive-signature', 'Signed By Executive'),
+    ('executive-veto', 'Veto By Executive'),
 )
 BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
 
