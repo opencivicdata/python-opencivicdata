@@ -12,10 +12,10 @@ class VoteEvent(OCDBase):
     id = OCDIDField(ocd_type='vote')
     identifier = models.CharField(max_length=300, blank=True)
     motion_text = models.TextField()
+    motion_classification = ArrayField(dbtype="text")      # enum
     start_date = models.CharField(max_length=10)    # YYYY-MM-DD
     end_date = models.CharField(max_length=10, blank=True)    # YYYY-MM-DD
 
-    classification = ArrayField(dbtype="text")      # enum
     result = models.CharField(max_length=50, choices=common.VOTE_RESULT_CHOICES)
     organization = models.ForeignKey(Organization, related_name='votes')
     legislative_session = models.ForeignKey(JurisdictionSession, related_name='votes')
