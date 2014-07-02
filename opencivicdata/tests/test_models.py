@@ -1,5 +1,5 @@
 import pytest
-from ..models import (Jurisdiction, JurisdictionSession, Division,
+from ..models import (Jurisdiction, LegislativeSession, Division,
                       Organization, OrganizationIdentifier, OrganizationName,
                       OrganizationContactDetail, OrganizationSource,
                       Person, PersonIdentifier, PersonName, PersonContactDetail, PersonLink,

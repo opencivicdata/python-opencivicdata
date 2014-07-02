@@ -4,13 +4,13 @@ from djorm_pgarray.fields import ArrayField
 from .base import (OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase,
                    IdentifierBase)
 from .people_orgs import Organization, Person
-from .jurisdiction import JurisdictionSession
+from .jurisdiction import LegislativeSession
 from .. import common
 
 
 class Bill(OCDBase):
     id = OCDIDField(ocd_type='bill')
-    legislative_session = models.ForeignKey(JurisdictionSession, related_name='bills')
+    legislative_session = models.ForeignKey(LegislativeSession, related_name='bills')
     identifier = models.CharField(max_length=100)
 
     title = models.TextField()

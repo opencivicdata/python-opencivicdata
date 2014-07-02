@@ -3,7 +3,7 @@ from djorm_pgarray.fields import ArrayField
 
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
-from .jurisdiction import JurisdictionSession
+from .jurisdiction import LegislativeSession
 from .bill import Bill
 from .. import common
 
@@ -18,7 +18,7 @@ class VoteEvent(OCDBase):
 
     result = models.CharField(max_length=50, choices=common.VOTE_RESULT_CHOICES)
     organization = models.ForeignKey(Organization, related_name='votes')
-    legislative_session = models.ForeignKey(JurisdictionSession, related_name='votes')
+    legislative_session = models.ForeignKey(LegislativeSession, related_name='votes')
     bill = models.ForeignKey(Bill, related_name='votes', null=True)
 
     def __str__(self):

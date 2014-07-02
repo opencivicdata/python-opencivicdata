@@ -16,7 +16,7 @@ class Jurisdiction(OCDBase):
     division = models.ForeignKey(Division, related_name='jurisdictions')
 
 
-class JurisdictionSession(RelatedBase):
+class LegislativeSession(RelatedBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='legislative_sessions')
     name = models.CharField(max_length=300)
     classification = models.CharField(max_length=100, choices=SESSION_CLASSIFICATION_CHOICES)

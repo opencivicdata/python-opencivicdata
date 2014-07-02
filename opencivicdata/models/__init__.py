@@ -1,5 +1,5 @@
 # flake8: NOQA
-from .jurisdiction import Jurisdiction, JurisdictionSession
+from .jurisdiction import Jurisdiction, LegislativeSession
 from .division import Division
 from .people_orgs import (
     Organization, OrganizationIdentifier, OrganizationName, OrganizationContactDetail,
