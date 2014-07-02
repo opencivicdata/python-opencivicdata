@@ -18,6 +18,7 @@ class Jurisdiction(OCDBase):
 
 class LegislativeSession(RelatedBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='legislative_sessions')
+    identifier = models.CharField(max_length=100)
     name = models.CharField(max_length=300)
     classification = models.CharField(max_length=100, choices=SESSION_CLASSIFICATION_CHOICES)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
