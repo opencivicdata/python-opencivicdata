@@ -82,7 +82,7 @@ class IdentifierBase(RelatedBase):
 
 class RelatedEntityBase(RelatedBase):
     name = models.CharField(max_length=300)
-    entity_type = models.CharField(max_length=20)
+    entity_type = models.CharField(max_length=20, blank=True)
 
     # optionally tied to an organization or person if it was linkable
     organization = models.ForeignKey('Organization', null=True)
