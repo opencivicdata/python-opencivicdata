@@ -91,6 +91,7 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('passage', 'Passage'),
     ('failure', 'Passage Failure'),
     ('withdrawal', 'Withdrawal'),
+    ('substitution', 'Substitution'),
     ('amendment-introduction', 'Amendment Passage'),
     ('amendment-passage', 'Amendment Passage'),
     ('amendment-withdrawal', 'Amendment Withdrawal'),
