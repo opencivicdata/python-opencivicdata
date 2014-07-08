@@ -120,6 +120,7 @@ VOTE_OPTION_CHOICES = (
     ('abstain', 'Abstain'),
     ('not voting', 'Not Voting'),
     ('paired', 'Paired'),
+    ('other', 'Other'),
 )
 VOTE_OPTIONS = _keys(VOTE_OPTION_CHOICES)
 
