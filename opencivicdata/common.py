@@ -60,6 +60,9 @@ SESSION_CLASSIFICATIONS = _keys(SESSION_CLASSIFICATION_CHOICES)
 
 ORGANIZATION_CLASSIFICATION_CHOICES = (
     ('legislature', 'Legislature'),
+    ('executive', 'Executive'),
+    ('upper', 'Upper Chamber'),
+    ('lower', 'Lower Chamber'),
     ('party', 'Party'),
     ('committee', 'Committee'),
     ('commission', 'Commission'),
