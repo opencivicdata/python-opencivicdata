@@ -60,7 +60,8 @@ class RelatedBill(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='related_bills')
     related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse', null=True)
     identifier = models.CharField(max_length=100)
-    legislative_session = models.CharField(max_length=100)   # should this be a FK?
+    # not a FK in case we don't know the session yet
+    legislative_session = models.CharField(max_length=100)
     relation_type = models.CharField(max_length=100, choices=common.BILL_RELATION_TYPE_CHOICES)
 
     def __str__(self):
