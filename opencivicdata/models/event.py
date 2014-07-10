@@ -76,6 +76,7 @@ class EventAgendaItem(RelatedBase):
     order = models.CharField(max_length=100, blank=True)
     subjects = ArrayField(dbtype='text')
     notes = models.TextField(blank=True)
+    event = models.ForeignKey(Event, related_name='agenda')
 
 
 class EventRelatedEntity(RelatedEntityBase):
