@@ -55,7 +55,7 @@ class EventMediaLink(MimetypeLinkBase):
 
 class EventDocument(MimetypeLinkBase):
     event = models.ForeignKey(Event, related_name='documents')
-    name = models.CharField(max_length=300)
+    note = models.CharField(max_length=300)
 
 
 class EventLink(LinkBase):
