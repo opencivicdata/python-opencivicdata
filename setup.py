@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata",
-      version='0.5.2',
+      version='0.5.3',
       py_modules=['opencivicdata'],
       author="James Turk",
       author_email='jturk@sunlightfoundation.com',
