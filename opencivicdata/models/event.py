@@ -39,6 +39,7 @@ class Event(OCDBase):
     description = models.TextField()
     classification = models.CharField(max_length=100)
     start_time = models.DateTimeField()
+    timezone = models.CharField(max_length=300)
     end_time = models.DateTimeField(null=True)
     all_day = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=EVENT_STATUS_CHOICES)
