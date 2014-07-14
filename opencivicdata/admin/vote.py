@@ -1,5 +1,5 @@
 from django.contrib import admin
-from opencivicdata.models import votes as models
+from opencivicdata.models import vote as models
 
 
 @admin.register(models.VoteEvent)

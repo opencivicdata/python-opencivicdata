@@ -4,7 +4,18 @@ from opencivicdata.models import bill as models
 
 @admin.register(models.Bill)
 class BillAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('from_organization',)
+
+    list_selected_related = (
+        'legislative_session',
+        'legislative_session__jurisdiction')
+
+    list_display = (
+        'identifier', 'get_jurisdiction_name',
+        'get_session_name', 'get_truncated_sponsors',
+        'get_truncated_title')
+
+    list_filter = ('legislative_session__jurisdiction__name',)
 
 
 @admin.register(models.BillAbstract)
@@ -24,12 +35,13 @@ class BillIdentifierAdmin(admin.ModelAdmin):
 
 @admin.register(models.BillAction)
 class BillActionAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('bill', 'organization')
+    list_selected_related = (
+        'bill',
+        'bill__legislative_session',
+        'bill__legislative_session__jurisdiction')
 
-
-@admin.register(models.Meta)
-class MetaAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('bill', 'date', 'description')
 
 
 @admin.register(models.BillActionRelatedEntity)
@@ -44,7 +56,12 @@ class RelatedBillAdmin(admin.ModelAdmin):
 
 @admin.register(models.BillSponsorship)
 class BillSponsorshipAdmin(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('bill', 'person', 'organization')
+    list_selected_related = (
+        'person',
+        'organization',
+        'bill_legislative_session',
+        'bill_legislative_session__jurisdiction')
 
 
 @admin.register(models.BillDocument)
@@ -69,5 +86,5 @@ class BillVersionLinkAdmin(admin.ModelAdmin):
 
 @admin.register(models.BillSource)
 class BillSourceAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('bill', 'url', 'note')
 

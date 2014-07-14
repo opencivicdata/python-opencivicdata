@@ -1,5 +1,5 @@
 from django.contrib import admin
-from opencivicdata.models import jurisdiction as models
+from opencivicdata.models import event as models
 
 
 @admin.register(models.EventLocation)
