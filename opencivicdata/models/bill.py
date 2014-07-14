@@ -1,4 +1,5 @@
 from django.db import models
+from django.template import defaultfilters
 from djorm_pgarray.fields import ArrayField
 
 from .base import (OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase,
@@ -20,7 +21,28 @@ class Bill(OCDBase):
     subject = ArrayField(dbtype="text")
 
     def __str__(self):
-        return '{} in {}'.format(self.name, self.legislative_session)
+        return '{} in {}'.format(self.identifier, self.legislative_session)
+
+    # ------------------------------------------------------------------------
+    # Display methods used in the admin.
+    # ------------------------------------------------------------------------
+    def get_jurisdiction_name(self):
+        return self.legislative_session.jurisdiction.name
+
+    def get_session_name(self):
+        return self.legislative_session.name
+
+    def get_truncated_sponsors(self):
+        spons = ', '.join(s.name for s in self.sponsorships.all()[:5])
+        return defaultfilters.truncatewords(spons, 10)
+
+    def get_truncated_title(self):
+        return defaultfilters.truncatewords(self.title, 25)
+
+    get_jurisdiction_name.short_description = 'Jurisdiction'
+    get_session_name.short_description = 'Session'
+    get_truncated_sponsors.short_description = 'Sponsors'
+    get_truncated_title.short_description = 'Title'
 
 
 class BillAbstract(RelatedBase):

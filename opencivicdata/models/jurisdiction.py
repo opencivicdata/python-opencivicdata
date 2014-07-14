@@ -15,6 +15,9 @@ class Jurisdiction(OCDBase):
     feature_flags = ArrayField(dbtype="text")
     division = models.ForeignKey(Division, related_name='jurisdictions')
 
+    def __str__(self):
+        return self.name
+
 
 class LegislativeSession(RelatedBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='legislative_sessions')
@@ -23,3 +26,6 @@ class LegislativeSession(RelatedBase):
     classification = models.CharField(max_length=100, choices=SESSION_CLASSIFICATION_CHOICES)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+
+    def __str__(self):
+        return '{} {} Session'.format(self.jurisdiction, self.name)

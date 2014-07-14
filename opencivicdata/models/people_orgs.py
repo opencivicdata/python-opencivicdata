@@ -39,6 +39,9 @@ class Organization(OCDBase):
     founding_date = models.CharField(max_length=10, blank=True)     # YYYY[-MM[-DD]]
     dissolution_date = models.CharField(max_length=10, blank=True)  # YYYY[-MM[-DD]]
 
+    def __str__(self):
+        return self.name
+
 
 class OrganizationIdentifier(IdentifierBase):
     organization = models.ForeignKey(Organization, related_name='identifiers')
@@ -91,6 +94,8 @@ class Person(OCDBase):
     birth_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     death_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
 
+    def __str__(self):
+        return self.name
 
 class PersonIdentifier(IdentifierBase):
     person = models.ForeignKey(Person, related_name='identifiers')
