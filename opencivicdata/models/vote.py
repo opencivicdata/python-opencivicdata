@@ -25,8 +25,7 @@ class VoteEvent(OCDBase):
         if self.identifier:
             return '{} in {}'.format(self.identifier, self.legislative_session)
         else:
-            return '{} on {} in {}'.format(self.motion_text, self.bill,
-                                           self.legislative_session)
+            return '{} on {}'.format(self.motion_text, self.bill)
 
 class VoteCount(RelatedBase):
     vote = models.ForeignKey(VoteEvent, related_name='counts')
