@@ -58,7 +58,7 @@ class RelatedBase(models.Model):
 
 class LinkBase(RelatedBase):
     note = models.CharField(max_length=300, blank=True)
-    url = models.URLField()
+    url = models.URLField(max_length=500)
 
     class Meta:
         abstract = True
@@ -66,7 +66,7 @@ class LinkBase(RelatedBase):
 
 class MimetypeLinkBase(RelatedBase):
     media_type = models.CharField(max_length=100)
-    url = models.URLField()
+    url = models.URLField(max_length=500)
 
     class Meta:
         abstract = True
