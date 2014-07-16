@@ -58,7 +58,7 @@ class RelatedBase(models.Model):
 
 class LinkBase(RelatedBase):
     note = models.CharField(max_length=300, blank=True)
-    url = models.URLField(max_length=500)
+    url = models.URLField(max_length=2000)
 
     class Meta:
         abstract = True
@@ -66,7 +66,7 @@ class LinkBase(RelatedBase):
 
 class MimetypeLinkBase(RelatedBase):
     media_type = models.CharField(max_length=100)
-    url = models.URLField(max_length=500)
+    url = models.URLField(max_length=2000)
 
     class Meta:
         abstract = True
@@ -81,7 +81,7 @@ class IdentifierBase(RelatedBase):
 
 
 class RelatedEntityBase(RelatedBase):
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=2000)
     entity_type = models.CharField(max_length=20, blank=True)
 
     # optionally tied to an organization or person if it was linkable
