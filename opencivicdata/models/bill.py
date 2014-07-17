@@ -23,6 +23,11 @@ class Bill(OCDBase):
     def __str__(self):
         return '{} in {}'.format(self.identifier, self.legislative_session)
 
+    class Meta:
+        index_together = [
+            ['from_organization', 'legislative_session', 'identifier'],
+        ]
+
     # ------------------------------------------------------------------------
     # Display methods used in the admin.
     # ------------------------------------------------------------------------

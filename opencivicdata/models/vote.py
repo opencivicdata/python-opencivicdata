@@ -27,6 +27,12 @@ class VoteEvent(OCDBase):
         else:
             return '{} on {}'.format(self.motion_text, self.bill)
 
+    class Meta:
+        index_together = [
+            ['legislative_session', 'identifier', 'bill'],
+            ['legislative_session', 'bill']
+        ]
+
 class VoteCount(RelatedBase):
     vote = models.ForeignKey(VoteEvent, related_name='counts')
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)

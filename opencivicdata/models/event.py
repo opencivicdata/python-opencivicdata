@@ -45,6 +45,11 @@ class Event(OCDBase):
     status = models.CharField(max_length=20, choices=EVENT_STATUS_CHOICES)
     location = models.ForeignKey(EventLocation, null=True)
 
+    class Meta:
+        index_together = [
+            ['jurisdiction', 'start_time', 'name']
+        ]
+
 
 class EventMedia(EventMediaBase):
     event = models.ForeignKey(Event, related_name='media')
