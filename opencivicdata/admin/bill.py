@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.template import defaultfilters
 from opencivicdata.models import bill as models
 
 
@@ -12,12 +13,29 @@ class BillAdmin(admin.ModelAdmin):
         'legislative_session',
         'legislative_session__jurisdiction')
 
+    def get_jurisdiction_name(self, obj):
+        return obj.legislative_session.jurisdiction.name
+    get_jurisdiction_name.short_description = 'Jurisdiction'
+
+    def get_session_name(self, obj):
+        return obj.legislative_session.name
+    get_session_name.short_description = 'Session'
+
     def source_link(self, obj):
         source = obj.sources.filter(url__icontains="legislationdetail").get()
         tmpl = u'<a href="{0}" target="_blank">View source</a>'
         return tmpl.format(source.url)
     source_link.short_description = 'View source'
     source_link.allow_tags = True
+
+    def get_truncated_sponsors(self, obj):
+        spons = ', '.join(s.name for s in obj.sponsorships.all()[:5])
+        return defaultfilters.truncatewords(spons, 10)
+    get_truncated_sponsors.short_description = 'Sponsors'
+
+    def get_truncated_title(self, obj):
+        return defaultfilters.truncatewords(obj.title, 25)
+    get_truncated_title.short_description = 'Title'
 
     list_display = (
         'identifier', 'get_jurisdiction_name',
