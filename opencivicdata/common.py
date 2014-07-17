@@ -124,6 +124,9 @@ VOTE_OPTION_CHOICES = (
     ('abstain', 'Abstain'),
     ('not voting', 'Not Voting'),
     ('paired', 'Paired'),
+    ('excused', 'Excused'),
+
+    # Only for open states.
     ('other', 'Other'),
 )
 VOTE_OPTIONS = _keys(VOTE_OPTION_CHOICES)
