@@ -31,7 +31,7 @@ class OtherNameBase(RelatedBase):
 class Organization(OCDBase):
     id = OCDIDField(ocd_type='organization')
     name = models.CharField(max_length=300)
-    image = models.URLField(blank=True)
+    image = models.URLField(blank=True, max_length=2000)
     parent = models.ForeignKey('self', related_name='children', null=True)
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations', null=True)
     classification = models.CharField(max_length=100, blank=True,
@@ -86,7 +86,7 @@ class Person(OCDBase):
     name = models.CharField(max_length=300)
     sort_name = models.CharField(max_length=100, default='')
 
-    image = models.URLField(blank=True)
+    image = models.URLField(blank=True, max_length=2000)
     gender = models.CharField(max_length=100)
     summary = models.CharField(max_length=500)
     national_identity = models.CharField(max_length=300)

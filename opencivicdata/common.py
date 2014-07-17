@@ -73,6 +73,7 @@ BILL_CLASSIFICATION_CHOICES = (
     ('bill', 'Bill'),
     ('resolution', 'Resolution'),
     ('concurrent resolution', 'Concurrent Resolution'),
+    ('concurrent memorial', 'Concurrent Memorial'),
     ('joint resolution', 'Joint Resolution'),
     ('memorial', 'Memorial'),
 )
@@ -107,6 +108,8 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('executive-received', 'Received By Executive'),
     ('executive-signature', 'Signed By Executive'),
     ('executive-veto', 'Veto By Executive'),
+    ('executive-veto-line-item', 'Line Item Veto By Executive'),
+    ('veto-override-passage', 'Veto Override Passage'),
 )
 BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
 
