@@ -4,16 +4,25 @@ from opencivicdata.models import bill as models
 
 @admin.register(models.Bill)
 class BillAdmin(admin.ModelAdmin):
+
     raw_id_fields = ('from_organization',)
 
     list_selected_related = (
+        'sources',
         'legislative_session',
         'legislative_session__jurisdiction')
+
+    def source_link(self, obj):
+        source = obj.sources.filter(url__icontains="legislationdetail").get()
+        tmpl = u'<a href="{0}" target="_blank">View source</a>'
+        return tmpl.format(source.url)
+    source_link.short_description = 'View source'
+    source_link.allow_tags = True
 
     list_display = (
         'identifier', 'get_jurisdiction_name',
         'get_session_name', 'get_truncated_sponsors',
-        'get_truncated_title')
+        'get_truncated_title', 'source_link')
 
     list_filter = ('legislative_session__jurisdiction__name',)
 
