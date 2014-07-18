@@ -104,6 +104,7 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('amendment-passage', 'Amendment Passage'),
     ('amendment-withdrawal', 'Amendment Withdrawal'),
     ('amendment-failure', 'Amendment Failure'),
+    ('amendment-amended', 'Amendment Amended'),
     ('committee-referral', 'Committee Referral'),
     ('committee-passage', 'Passage from Committee'),
     ('committee-passage-favorable', 'Favorable Passage from Committee'),
