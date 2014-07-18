@@ -79,6 +79,7 @@ BILL_CLASSIFICATION_CHOICES = (
     ('joint memorial', 'Joint Memorial'),
     ('proposed bill', 'Proposed Bill'),
     ('proclamation', 'Proclamation'),
+    ('nomination', 'Nomination'),
 )
 BILL_CLASSIFICATIONS = _keys(BILL_CLASSIFICATION_CHOICES)
 
