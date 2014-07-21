@@ -97,6 +97,10 @@ class Person(OCDBase):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = "people"
+
+
 class PersonIdentifier(IdentifierBase):
     person = models.ForeignKey(Person, related_name='identifiers')
 

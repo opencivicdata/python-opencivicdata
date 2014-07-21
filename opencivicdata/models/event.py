@@ -31,6 +31,9 @@ class EventLocation(RelatedBase):
 
     objects = models.GeoManager()
 
+    def __str__(self):
+        return self.name
+
 
 class Event(OCDBase):
     id = OCDIDField(ocd_type='event')
@@ -44,6 +47,9 @@ class Event(OCDBase):
     all_day = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=EVENT_STATUS_CHOICES)
     location = models.ForeignKey(EventLocation, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class EventMedia(EventMediaBase):
