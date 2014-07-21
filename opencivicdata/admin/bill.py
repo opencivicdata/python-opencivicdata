@@ -3,15 +3,41 @@ from django.template import defaultfilters
 from opencivicdata.models import bill as models
 
 
+@admin.register(models.BillAction)
+class BillActionAdmin(admin.ModelAdmin):
+    readonly_fields = ('id', 'bill', 'organization')
+    list_selected_related = (
+        'bill',
+        'bill__legislative_session',
+        'bill__legislative_session__jurisdiction')
+    list_display = ('bill', 'date', 'description')
+
+
+class BillActionInline(admin.TabularInline):
+    model = models.BillAction
+    readonly_fields = ('date', 'organization', 'description')
+    fields = ('date', 'description', 'organization')
+    extra = 0
+
+
+class BillSponsorshipInline(admin.TabularInline):
+    model = models.BillSponsorship
+    readonly_fields = ('name',)
+    fields = ('name', 'primary', 'classification')
+    extra = 0
+
+
 @admin.register(models.Bill)
 class BillAdmin(admin.ModelAdmin):
-
-    raw_id_fields = ('from_organization',)
-
+    readonly_fields = ('from_organization', 'legislative_session')
+    fields = (
+        'identifier', 'legislative_session', 'classification',
+        'from_organization', 'title', 'id', 'extras')
     list_selected_related = (
         'sources',
         'legislative_session',
         'legislative_session__jurisdiction')
+    inlines = [BillActionInline, BillSponsorshipInline]
 
     def get_jurisdiction_name(self, obj):
         return obj.legislative_session.jurisdiction.name
@@ -58,17 +84,6 @@ class BillTitleAdmin(admin.ModelAdmin):
 @admin.register(models.BillIdentifier)
 class BillIdentifierAdmin(admin.ModelAdmin):
     pass
-
-
-@admin.register(models.BillAction)
-class BillActionAdmin(admin.ModelAdmin):
-    raw_id_fields = ('bill', 'organization')
-    list_selected_related = (
-        'bill',
-        'bill__legislative_session',
-        'bill__legislative_session__jurisdiction')
-
-    list_display = ('bill', 'date', 'description')
 
 
 @admin.register(models.BillActionRelatedEntity)
