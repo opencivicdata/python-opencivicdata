@@ -129,4 +129,5 @@ class BillVersionLinkAdmin(admin.ModelAdmin):
 @admin.register(models.BillSource)
 class BillSourceAdmin(admin.ModelAdmin):
     list_display = ('bill', 'url', 'note')
+    readonly_fields = ('bill',)
 

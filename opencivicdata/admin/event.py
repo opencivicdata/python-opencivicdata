@@ -1,15 +1,32 @@
 from django.contrib import admin
+from django.template import defaultfilters
 from opencivicdata.models import event as models
 
 
 @admin.register(models.EventLocation)
 class EventLocationAdmin(admin.ModelAdmin):
-    pass
+   pass
 
 
 @admin.register(models.Event)
 class EventAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('jurisdiction', 'location')
+    fields = (
+        'name', 'jurisdiction', 'location', 'description',
+        'classification', 'status',
+        ('start_time', 'end_time'),
+        ('timezone', 'all_day'),
+        )
+
+    def source_link(self, obj):
+        source = obj.sources.filter(url__icontains="meetingdetail").get()
+        tmpl = u'<a href="{0}" target="_blank">View source</a>'
+        return tmpl.format(source.url)
+    source_link.short_description = 'View source'
+    source_link.allow_tags = True
+
+    list_display = (
+        'jurisdiction', 'name', 'start_time', 'source_link')
 
 
 @admin.register(models.EventMedia)
