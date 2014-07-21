@@ -42,6 +42,12 @@ class Organization(OCDBase):
     def __str__(self):
         return self.name
 
+    class Meta:
+        index_together = [
+            ['jurisdiction', 'classification', 'name'],
+            ['classification', 'name'],
+        ]
+
 
 class OrganizationIdentifier(IdentifierBase):
     organization = models.ForeignKey(Organization, related_name='identifiers')
@@ -71,6 +77,11 @@ class Post(OCDBase):
     division = models.ForeignKey(Division, related_name='posts', null=True, default=None)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+
+    class Meta:
+        index_together = [
+            ['organization', 'label']
+        ]
 
 
 class PostContactDetail(ContactDetailBase):
@@ -132,6 +143,11 @@ class Membership(OCDBase):
     role = models.CharField(max_length=300, blank=True)
     start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
+
+    class Meta:
+        index_together = [
+            ['organization', 'person', 'label', 'post']
+        ]
 
 
 class MembershipContactDetail(ContactDetailBase):

@@ -22,6 +22,32 @@ class Bill(OCDBase):
     def __str__(self):
         return '{} in {}'.format(self.identifier, self.legislative_session)
 
+    class Meta:
+        index_together = [
+            ['from_organization', 'legislative_session', 'identifier'],
+        ]
+
+    # ------------------------------------------------------------------------
+    # Display methods used in the admin.
+    # ------------------------------------------------------------------------
+    def get_jurisdiction_name(self):
+        return self.legislative_session.jurisdiction.name
+
+    def get_session_name(self):
+        return self.legislative_session.name
+
+    def get_truncated_sponsors(self):
+        spons = ', '.join(s.name for s in self.sponsorships.all()[:5])
+        return defaultfilters.truncatewords(spons, 10)
+
+    def get_truncated_title(self):
+        return defaultfilters.truncatewords(self.title, 25)
+
+    get_jurisdiction_name.short_description = 'Jurisdiction'
+    get_session_name.short_description = 'Session'
+    get_truncated_sponsors.short_description = 'Sponsors'
+    get_truncated_title.short_description = 'Title'
+
 
 class BillAbstract(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='abstracts')

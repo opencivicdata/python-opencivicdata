@@ -73,9 +73,13 @@ BILL_CLASSIFICATION_CHOICES = (
     ('bill', 'Bill'),
     ('resolution', 'Resolution'),
     ('concurrent resolution', 'Concurrent Resolution'),
-    ('concurrent memorial', 'Concurrent Memorial'),
     ('joint resolution', 'Joint Resolution'),
     ('memorial', 'Memorial'),
+    ('concurrent memorial', 'Concurrent Memorial'),
+    ('joint memorial', 'Joint Memorial'),
+    ('proposed bill', 'Proposed Bill'),
+    ('proclamation', 'Proclamation'),
+    ('nomination', 'Nomination'),
 )
 BILL_CLASSIFICATIONS = _keys(BILL_CLASSIFICATION_CHOICES)
 
@@ -88,6 +92,7 @@ BILL_RELATION_TYPE_CHOICES = (
 BILL_RELATION_TYPES = _keys(BILL_RELATION_TYPE_CHOICES)
 
 BILL_ACTION_CLASSIFICATION_CHOICES = (
+    ('filing', 'Filing'),
     ('introduction', 'Introduced'),
     ('reading-1', 'First Reading'),
     ('reading-2', 'Second Reading'),
@@ -100,6 +105,7 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('amendment-passage', 'Amendment Passage'),
     ('amendment-withdrawal', 'Amendment Withdrawal'),
     ('amendment-failure', 'Amendment Failure'),
+    ('amendment-amended', 'Amendment Amended'),
     ('committee-referral', 'Committee Referral'),
     ('committee-passage', 'Passage from Committee'),
     ('committee-passage-favorable', 'Favorable Passage from Committee'),
@@ -110,6 +116,7 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('executive-veto', 'Veto By Executive'),
     ('executive-veto-line-item', 'Line Item Veto By Executive'),
     ('veto-override-passage', 'Veto Override Passage'),
+    ('veto-override-failure', 'Veto Override Failure'),
 )
 BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
 

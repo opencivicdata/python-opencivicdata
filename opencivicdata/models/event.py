@@ -51,6 +51,10 @@ class Event(OCDBase):
     def __str__(self):
         return self.name
 
+    class Meta:
+        index_together = [
+            ['jurisdiction', 'start_time', 'name']
+        ]
 
 class EventMedia(EventMediaBase):
     event = models.ForeignKey(Event, related_name='media')
@@ -87,7 +91,7 @@ class EventAgendaItem(RelatedBase):
     description = models.TextField()
     order = models.CharField(max_length=100, blank=True)
     subjects = ArrayField(dbtype='text')
-    notes = models.TextField(blank=True)
+    notes = ArrayField(dbtype='text')
     event = models.ForeignKey(Event, related_name='agenda')
 
 
