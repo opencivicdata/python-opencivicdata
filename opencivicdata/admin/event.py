@@ -56,7 +56,7 @@ class EventLinkAdmin(admin.ModelAdmin):
 
 @admin.register(models.EventSource)
 class EventSourceAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('event',)
 
 
 @admin.register(models.EventParticipant)
@@ -66,7 +66,18 @@ class EventParticipantAdmin(admin.ModelAdmin):
 
 @admin.register(models.EventAgendaItem)
 class EventAgendaItemAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('event',)
+    fields = ('event', 'description', 'order', 'subjects', 'notes')
+
+    def get_truncated_description(self, obj):
+        return defaultfilters.truncatewords(obj.description, 25)
+    get_truncated_description.short_description = 'Description'
+
+    def get_truncated_event_name(self, obj):
+        return defaultfilters.truncatewords(obj.event.name, 8)
+    get_truncated_event_name.short_description = 'Event Name'
+
+    list_display = ('get_truncated_event_name', 'get_truncated_description')
 
 
 @admin.register(models.EventRelatedEntity)
