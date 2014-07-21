@@ -75,6 +75,7 @@ BILL_CLASSIFICATION_CHOICES = (
     ('concurrent resolution', 'Concurrent Resolution'),
     ('joint resolution', 'Joint Resolution'),
     ('memorial', 'Memorial'),
+    ('commemoration', 'Commemoration'),
     ('concurrent memorial', 'Concurrent Memorial'),
     ('joint memorial', 'Joint Memorial'),
     ('proposed bill', 'Proposed Bill'),
