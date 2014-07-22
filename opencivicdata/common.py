@@ -75,11 +75,15 @@ BILL_CLASSIFICATION_CHOICES = (
     ('concurrent resolution', 'Concurrent Resolution'),
     ('joint resolution', 'Joint Resolution'),
     ('memorial', 'Memorial'),
+    ('commemoration', 'Commemoration'),
     ('concurrent memorial', 'Concurrent Memorial'),
     ('joint memorial', 'Joint Memorial'),
     ('proposed bill', 'Proposed Bill'),
     ('proclamation', 'Proclamation'),
     ('nomination', 'Nomination'),
+    ('constitutional amendment', 'Constitutional Amendment'),
+    ('petition', 'Petition'),
+    ('concurrent order', 'Concurrent Order'),
 )
 BILL_CLASSIFICATIONS = _keys(BILL_CLASSIFICATION_CHOICES)
 
