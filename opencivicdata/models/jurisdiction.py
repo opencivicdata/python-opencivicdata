@@ -11,9 +11,9 @@ class Jurisdiction(OCDBase):
     name = models.CharField(max_length=300)
     url = models.URLField(max_length=2000)
     classification = models.CharField(max_length=50, choices=JURISDICTION_CLASSIFICATION_CHOICES,
-                                      default='government')
+                                      default='government', db_index=True)
     feature_flags = ArrayField(dbtype="text")
-    division = models.ForeignKey(Division, related_name='jurisdictions')
+    division = models.ForeignKey(Division, related_name='jurisdictions', db_index=True)
 
     def __str__(self):
         return self.name
