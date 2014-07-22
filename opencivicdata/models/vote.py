@@ -44,6 +44,7 @@ class PersonVote(RelatedBase):
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     voter_name = models.CharField(max_length=300)
     voter = models.ForeignKey(Person, related_name='votes', null=True)
+    note = models.TextField(blank=True)
 
 
 class VoteSource(LinkBase):
