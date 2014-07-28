@@ -90,9 +90,9 @@ class RelatedEntityBase(RelatedBase):
 
     @property
     def entity_name(self):
-        if entity_type == 'organization' and self.organization_id:
+        if self.entity_type == 'organization' and self.organization_id:
             return self.organization.name
-        elif entity_type == 'person' and self.person_id:
+        elif self.entity_type == 'person' and self.person_id:
             return self.person.name
         else:
             return self.name
