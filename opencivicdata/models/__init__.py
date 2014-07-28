@@ -14,4 +14,4 @@ from .bill import (Bill, BillAbstract, BillTitle, BillIdentifier, RelatedBill, B
 from .vote import (VoteEvent, VoteCount, PersonVote, VoteSource, PersonVote)
 from .event import (Event, EventLocation, EventMedia, EventMediaLink, EventDocument, EventLink,
                     EventSource, EventParticipant, EventAgendaItem, EventRelatedEntity,
-                    EventAgendaMedia, EventAgendaMediaLink)
+                    EventAgendaMedia, EventAgendaMediaLink, EventDocumentLink)
