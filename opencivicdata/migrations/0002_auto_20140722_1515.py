@@ -15,12 +15,6 @@ class Migration(migrations.Migration):
             name='person',
             options={'verbose_name_plural': 'people'},
         ),
-        migrations.AddField(
-            model_name='personvote',
-            name='note',
-            field=models.CharField(default='', max_length=300),
-            preserve_default=False,
-        ),
         migrations.AlterField(
             model_name='personvote',
             name='option',
