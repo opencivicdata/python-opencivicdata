@@ -15,6 +15,9 @@ class ContactDetailBase(RelatedBase):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return '{}: {}'.format(self.get_type_display(), self.value)
+
 
 class OtherNameBase(RelatedBase):
     name = models.CharField(max_length=500, db_index=True)
