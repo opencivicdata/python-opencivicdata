@@ -24,7 +24,7 @@ class EventMediaBase(RelatedBase):
 
 
 class EventLocation(RelatedBase):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=200)
     url = models.URLField(blank=True, max_length=2000)
     coordinates = models.PointField(null=True)
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='event_locations')
