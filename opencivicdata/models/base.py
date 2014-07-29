@@ -97,6 +97,13 @@ class RelatedEntityBase(RelatedBase):
         else:
             return self.name
 
+    @property
+    def entity_id(self):
+        if self.entity_type == 'organization':
+            return self.organization_id
+        if self.entity_type == 'person':
+            return self.person_id
+        return None
+
     class Meta:
         abstract = True
-
