@@ -128,9 +128,9 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
 BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
 
 VOTE_CLASSIFICATION_CHOICES = (
-    ('passage:bill', 'Bill Passage'),
-    ('passage:amendment', 'Amendment Passage'),
-    ('passage:veto-override', 'Veto Override'),
+    ('bill-passage', 'Bill Passage'),
+    ('amendment-passage', 'Amendment Passage'),
+    ('veto-override', 'Veto Override'),
 )
 VOTE_CLASSIFICATIONS = _keys(VOTE_CLASSIFICATION_CHOICES)
 
