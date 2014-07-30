@@ -55,6 +55,10 @@ class Organization(OCDBase):
 class OrganizationIdentifier(IdentifierBase):
     organization = models.ForeignKey(Organization, related_name='identifiers')
 
+    def __str__(self):
+        tmpl = '%s identifies %s'
+        return tmpl % (self.identifier, self.organization)
+
 
 class OrganizationName(OtherNameBase):
     organization = models.ForeignKey(Organization, related_name='other_names')
