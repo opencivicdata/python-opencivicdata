@@ -30,6 +30,7 @@ class BillSponsorshipInline(admin.TabularInline):
 @admin.register(models.Bill)
 class BillAdmin(admin.ModelAdmin):
     readonly_fields = ('from_organization', 'legislative_session')
+    search_fields = ['identifier', 'title',]
     fields = (
         'identifier', 'legislative_session', 'classification',
         'from_organization', 'title', 'id', 'extras')
