@@ -103,12 +103,20 @@ class EventRelatedEntity(RelatedEntityBase):
 
     @property
     def entity_name(self):
-        if entity_type == 'vote' and self.vote_id:
+        if self.entity_type == 'vote' and self.vote_id:
             return self.vote.name
-        elif entity_type == 'bill' and self.bill_id:
+        elif self.entity_type == 'bill' and self.bill_id:
             return self.bill.name
         else:
             return super(EventRelatedEntity, self).entity_name
+
+    @property
+    def entity_id(self):
+        if self.entity_type == 'vote':
+            return self.vote_id
+        if self.entity_type == 'bill':
+            return self.bill_id
+        return super(EventRelatedEntity, self).entity_id
 
 
 class EventAgendaMedia(EventMediaBase):
