@@ -59,6 +59,9 @@ class Event(OCDBase):
 class EventMedia(EventMediaBase):
     event = models.ForeignKey(Event, related_name='media')
 
+    def __str__(self):
+        return '%s for %s' % (self.note, self.event)
+
 
 class EventMediaLink(MimetypeLinkBase):
     media = models.ForeignKey(EventMedia, related_name='links')
@@ -68,6 +71,10 @@ class EventDocument(MimetypeLinkBase):
     event = models.ForeignKey(Event, related_name='documents')
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)
+
+    def __str__(self):
+        tmpl = '{doc.note} for event {doc.event}'
+        return tmpl.format(doc=self)
 
 
 class EventDocumentLink(MimetypeLinkBase):
@@ -85,6 +92,10 @@ class EventSource(LinkBase):
 class EventParticipant(RelatedEntityBase):
     event = models.ForeignKey(Event, related_name='participants')
     note = models.TextField()
+
+    def __str__(self):
+        tmpl = '%s at %s'
+        return tmpl % (self.name, self.event)
 
 
 class EventAgendaItem(RelatedBase):
