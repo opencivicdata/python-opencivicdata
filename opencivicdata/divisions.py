@@ -64,7 +64,8 @@ class Division(object):
             if (not _type or d._type == _type) and (duplicates or not d.sameAs):
                 yield d
                 if levels > 1:
-                    yield from d.children(_type, duplicates, levels - 1)
+                    for c in d.children(_type, duplicates, levels - 1):
+                        yield c
 
     def __str__(self):
         return '{} - {}'.format(self.id, self.name)
