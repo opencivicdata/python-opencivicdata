@@ -9,4 +9,4 @@ def test_get():
 
 def test_children():
     us = Division.get('ocd-division/country:us')
-    assert len(list(us.children('state'))) == 50
+    assert len(list(us.children('state', duplicates=False))) == 50

@@ -8,21 +8,21 @@ from optparse import make_option
 from django.db import transaction, connection
 from django.core.management.base import BaseCommand, CommandError
 
+from ...divisions import Division as FileDivision
 from ...models import Division
 
+def to_db(fd):
+    """ convert a FileDivision to a Division """
+    args, _ = Division.subtypes_from_id(fd.id)
+    args['redirect_id'] = fd.sameAs
+    return Division(id=fd.id, display_name=fd.name, **args)
 
 def load_divisions(country):
-    count = 0
-    filename = os.path.join(os.path.dirname(__file__), '..', '..', 'division-ids', 'identifiers',
-                            'country-{}.csv'.format(country))
-    print('loading ' + filename)
+    country = FileDivision.get('ocd-division/country:' + country)
+    objects = [to_db(country)]
 
-    objects = []
-    # country csv
-    for row in csv.DictReader(io.open(filename, encoding='utf8')):
-        args, _ = Division.subtypes_from_id(row['id'])
-        args['redirect_id'] = row.get('sameAs', None) or None
-        objects.append(Division(id=row['id'], display_name=row['name'], **args))
+    for child in country.children():
+        objects.append(to_db(child))
 
     print(len(objects), 'divisions loaded from CSV')
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import re
+import io
 import csv
 
 PWD = os.path.abspath(os.path.dirname(__file__))
@@ -19,12 +20,12 @@ class Division(object):
                 from_csv = OCD_DIVISION_CSV.format(country)
 
             # load division and all children
-            for row in csv.DictReader(open(from_csv)):
+            for row in csv.DictReader(io.open(from_csv, encoding='utf8')):
                 if row['id'].startswith(division):
-                    same_as = row.pop('sameAs', None)
-                    if same_as:
+                    #same_as = row.pop('sameAs', None)
+                    #if same_as:
                         #divisions[same_as].names.append(row['id'])
-                        continue
+                        #continue
                     #same_as_note = row.pop('sameAsNote', None)
                     Division(**row)
 
@@ -34,6 +35,7 @@ class Division(object):
         self._cache[id] = self
         self.id = id
         self.name = name
+        self.sameAs = kwargs.pop('sameAs', None)
         valid_through = kwargs.pop('validThrough', None)
         if valid_through:
             self.valid_through = valid_through
@@ -57,9 +59,9 @@ class Division(object):
         self.names = []
         self._children = []
 
-    def children(self, _type=None):
+    def children(self, _type=None, duplicates=True):
         for d in self._children:
-            if not _type or d._type == _type:
+            if (not _type or d._type == _type) and (duplicates or not d.sameAs):
                 yield d
 
     def __str__(self):
