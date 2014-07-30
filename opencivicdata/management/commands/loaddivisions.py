@@ -14,14 +14,15 @@ from ...models import Division
 def to_db(fd):
     """ convert a FileDivision to a Division """
     args, _ = Division.subtypes_from_id(fd.id)
-    args['redirect_id'] = fd.sameAs
+    if fd.sameAs:
+        args['redirect_id'] = fd.sameAs
     return Division(id=fd.id, display_name=fd.name, **args)
 
 def load_divisions(country):
     country = FileDivision.get('ocd-division/country:' + country)
     objects = [to_db(country)]
 
-    for child in country.children():
+    for child in country.children(levels=100):
         objects.append(to_db(child))
 
     print(len(objects), 'divisions loaded from CSV')
