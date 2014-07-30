@@ -1,11 +1,18 @@
 from django.contrib import admin
 from django.template import defaultfilters
 from opencivicdata.models import event as models
+from opencivicdata.admin.base import (
+    LinkAdmin, LinkAdminInline,
+    MimetypeLinkAdmin)
 
 
 @admin.register(models.EventLocation)
 class EventLocationAdmin(admin.ModelAdmin):
    pass
+
+
+class EventLinkInline(LinkAdminInline):
+    model = models.EventLink
 
 
 @admin.register(models.Event)
@@ -28,6 +35,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = (
         'jurisdiction', 'name', 'start_time', 'source_link')
 
+    inlines = [EventLinkInline]
 
 @admin.register(models.EventMedia)
 class EventMediaAdmin(admin.ModelAdmin):
@@ -41,17 +49,19 @@ class EventMediaLinkAdmin(admin.ModelAdmin):
 
 @admin.register(models.EventDocument)
 class EventDocumentAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('event',)
+    list_display = ('event', 'date', 'note')
 
 
 @admin.register(models.EventDocumentLink)
-class EventDocumentLinkAdmin(admin.ModelAdmin):
-    pass
+class EventDocumentLinkAdmin(MimetypeLinkAdmin):
+    readonly_fields = ('document',)
 
 
 @admin.register(models.EventLink)
-class EventLinkAdmin(admin.ModelAdmin):
-    pass
+class EventLinkAdmin(LinkAdmin):
+    readonly_fields = ('event',)
+    list_display = ('url', 'note')
 
 
 @admin.register(models.EventSource)

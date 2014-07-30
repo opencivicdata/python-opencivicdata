@@ -84,7 +84,8 @@ class BillTitleAdmin(admin.ModelAdmin):
 
 @admin.register(models.BillIdentifier)
 class BillIdentifierAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('bill', 'identifier')
+    readonly_fields = ('bill',)
 
 
 @admin.register(models.BillActionRelatedEntity)
