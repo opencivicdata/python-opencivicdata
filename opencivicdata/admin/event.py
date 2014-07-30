@@ -58,7 +58,7 @@ class EventMediaAdmin(admin.ModelAdmin):
 
 @admin.register(models.EventMediaLink)
 class EventMediaLinkAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('media', 'media_type', 'url')
 
 
 @admin.register(models.EventDocument)
@@ -70,6 +70,7 @@ class EventDocumentAdmin(admin.ModelAdmin):
 @admin.register(models.EventDocumentLink)
 class EventDocumentLinkAdmin(MimetypeLinkAdmin):
     readonly_fields = ('document',)
+    list_display = ('document', 'media_type', 'url',)
 
 
 @admin.register(models.EventLink)
