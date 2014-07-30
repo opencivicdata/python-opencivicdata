@@ -3,7 +3,8 @@ from django.template import defaultfilters
 from opencivicdata.models import event as models
 from opencivicdata.admin.base import (
     LinkAdmin, LinkAdminInline,
-    MimetypeLinkAdmin)
+    MimetypeLinkAdmin, MimetypeLinkInline,
+    RelatedEntityInline)
 
 
 @admin.register(models.EventLocation)
@@ -13,6 +14,15 @@ class EventLocationAdmin(admin.ModelAdmin):
 
 class EventLinkInline(LinkAdminInline):
     model = models.EventLink
+
+
+class EventSourceInline(LinkAdminInline):
+    model = models.EventSource
+
+
+class EventParticipantInline(RelatedEntityInline):
+    model = models.EventParticipant
+    readonly_fields = ('organization', 'person')
 
 
 @admin.register(models.Event)
@@ -35,7 +45,11 @@ class EventAdmin(admin.ModelAdmin):
     list_display = (
         'jurisdiction', 'name', 'start_time', 'source_link')
 
-    inlines = [EventLinkInline]
+    inlines = [
+        EventLinkInline,
+        EventSourceInline,
+        EventParticipantInline,
+        ]
 
 @admin.register(models.EventMedia)
 class EventMediaAdmin(admin.ModelAdmin):
