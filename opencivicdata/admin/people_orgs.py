@@ -1,11 +1,20 @@
 from django.contrib import admin
 from opencivicdata.models import people_orgs as models
+from opencivicdata.admin.base import (
+    IdentifierInline, LinkAdmin
+    )
 
+
+class OrganizationIdentifierInline(IdentifierInline):
+    model = models.OrganizationIdentifier
 
 
 @admin.register(models.Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('parent', 'jurisdiction')
+    inlines = [
+        OrganizationIdentifierInline
+        ]
 
 
 @admin.register(models.OrganizationIdentifier)
@@ -29,8 +38,8 @@ class OrganizationLinkAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.OrganizationSource)
-class OrganizationSourceAdmin(admin.ModelAdmin):
-    pass
+class OrganizationSourceAdmin(LinkAdmin):
+    list_display = ('organization', 'note', 'url')
 
 
 @admin.register(models.PostContactDetail)
@@ -69,13 +78,14 @@ class PersonLinkAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.PersonSource)
-class PersonSourceAdmin(admin.ModelAdmin):
-    pass
+class PersonSourceAdmin(LinkAdmin):
+    list_display = ('person', 'note', 'url')
 
 
 @admin.register(models.Membership)
 class MembershipAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('organization', 'person', 'post', 'on_behalf_of',
+        'label', 'role', 'start_date', 'end_date',)
 
 
 @admin.register(models.MembershipContactDetail)
