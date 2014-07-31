@@ -16,7 +16,7 @@ def to_db(fd):
     args, _ = Division.subtypes_from_id(fd.id)
     if fd.sameAs:
         args['redirect_id'] = fd.sameAs
-    return Division(id=fd.id, display_name=fd.name, **args)
+    return Division(id=fd.id, name=fd.name, **args)
 
 def load_divisions(country):
     country = FileDivision.get('ocd-division/country:' + country)
