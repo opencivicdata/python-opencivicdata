@@ -15,9 +15,12 @@ class ContactDetailBase(RelatedBase):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return '{}: {}'.format(self.get_type_display(), self.value)
+
 
 class OtherNameBase(RelatedBase):
-    name = models.CharField(max_length=500)
+    name = models.CharField(max_length=500, db_index=True)
     note = models.CharField(max_length=500, blank=True)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10)      # YYYY[-MM[-DD]]
@@ -94,7 +97,7 @@ class PostLink(LinkBase):
 
 class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300, db_index=True)
     sort_name = models.CharField(max_length=100, default='')
 
     image = models.URLField(blank=True, max_length=2000)

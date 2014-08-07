@@ -122,7 +122,7 @@ class BillDocumentLink(MimetypeLinkBase):
 
 
 class BillVersionLink(MimetypeLinkBase):
-    document = models.ForeignKey(BillVersion, related_name='links')
+    version = models.ForeignKey(BillVersion, related_name='links')
 
 
 class BillSource(LinkBase):

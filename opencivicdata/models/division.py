@@ -23,9 +23,8 @@ class DivisionManager(models.Manager):
 
         return self.filter(*q_objects, **query)
 
-    def create(self, id, display_name, redirect=None):
-        return super(DivisionManager, self).create(id=id, display_name=display_name,
-                                                   redirect=redirect,
+    def create(self, id, name, redirect=None):
+        return super(DivisionManager, self).create(id=id, name=name, redirect=redirect,
                                                    **Division.subtypes_from_id(id)[0])
 
 
@@ -33,7 +32,7 @@ class Division(models.Model):
     objects = DivisionManager()
 
     id = models.CharField(max_length=300, primary_key=True)
-    display_name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300)
     redirect = models.ForeignKey('self', null=True)
     country = models.CharField(max_length=2)
 
@@ -54,7 +53,7 @@ class Division(models.Model):
     subid7 = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return '{0} ({1})'.format(self.display_name, self.id)
+        return '{0} ({1})'.format(self.name, self.id)
     __unicode__ = __str__
 
     @staticmethod
