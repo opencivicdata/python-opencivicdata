@@ -27,7 +27,7 @@ def test_division_subtypes_from_id():
 @pytest.mark.django_db
 def test_division_create():
     division_id = 'ocd-division/country:us/state:ak/county:wild'
-    d = Division.objects.create(id=division_id, display_name='Wild County')
+    d = Division.objects.create(id=division_id, name='Wild County')
     assert d.country == 'us'
     assert d.subtype1 == 'state'
     assert d.subid1 == 'ak'
@@ -38,22 +38,20 @@ def test_division_create():
 
 @pytest.mark.django_db
 def test_division_children_of():
-    us = Division.objects.create('ocd-division/country:us', display_name='US')
-    ak = Division.objects.create('ocd-division/country:us/state:ak', display_name='Alaska')
-    wild = Division.objects.create('ocd-division/country:us/state:ak/county:wild',
-                                   display_name='Wild')
-    mild = Division.objects.create('ocd-division/country:us/state:ak/county:mild',
-                                   display_name='Mild')
+    us = Division.objects.create('ocd-division/country:us', name='US')
+    ak = Division.objects.create('ocd-division/country:us/state:ak', name='Alaska')
+    wild = Division.objects.create('ocd-division/country:us/state:ak/county:wild', name='Wild')
+    mild = Division.objects.create('ocd-division/country:us/state:ak/county:mild', name='Mild')
     wild_a = Division.objects.create('ocd-division/country:us/state:ak/county:wild/place:a',
-                                     display_name='A')
+                                     name='A')
     wild_b = Division.objects.create('ocd-division/country:us/state:ak/county:wild/place:b',
-                                     display_name='B')
+                                     name='B')
     school = Division.objects.create('ocd-division/country:us/state:ak/county:wild/school:a',
-                                     display_name='A')
+                                     name='A')
     mild_a = Division.objects.create('ocd-division/country:us/state:ak/county:mild/place:a',
-                                     display_name='A')
+                                     name='A')
     mild_a = Division.objects.create('ocd-division/country:us/state:ak/county:mild/place:a/x:y',
-                                     display_name='A')
+                                     name='A')
 
     # simplest ==
     assert Division.objects.children_of('ocd-division/country:us')[0].id == ak.id
