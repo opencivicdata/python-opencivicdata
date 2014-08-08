@@ -2,7 +2,7 @@ language: python
 python:
     - "3.3"
     - "3.4"
-install: pip install -r requirements-test.txt
+install: pip install pytest pytest-cov pytest-django coveralls
 script: ./run-tests.sh
 after_success:
     - coveralls

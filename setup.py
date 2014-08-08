@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata-divisions",
-      version='0.5.9',
+      version='2014.08.08',
       py_modules=['opencivicdata.divisions'],
       author="James Turk",
       author_email='jturk@sunlightfoundation.com',
@@ -18,7 +18,6 @@ setup(name="opencivicdata-divisions",
                    "License :: OSI Approved :: BSD License",
                    "Natural Language :: English",
                    "Operating System :: OS Independent",
-                   "Programming Language :: Python :: 2.7",
                    "Programming Language :: Python :: 3.3",
                    "Programming Language :: Python :: 3.4",
                    ],
