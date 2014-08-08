@@ -65,6 +65,11 @@ class PersonMembershipInline(admin.TabularInline):
     fields = ('organization', 'post', 'label', 'role')
     extra = 0
 
+
+class PersonIdentifierInline(IdentifierInline):
+    model = models.PersonIdentifier
+
+
 @admin.register(models.Person)
 class PersonAdmin(admin.ModelAdmin):
     search_fields = ['name']
@@ -77,7 +82,7 @@ class PersonAdmin(admin.ModelAdmin):
     list_selected_related = (
         'memberships',
         )
-    inlines = [PersonMembershipInline]
+    inlines = [PersonMembershipInline, PersonIdentifierInline]
 
     def get_memberships(self, obj):
         memberships = obj.memberships.select_related('organization__jurisdiction')
