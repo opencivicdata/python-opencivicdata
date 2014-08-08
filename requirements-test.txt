@@ -2,4 +2,4 @@ pytest
 pytest-cov
 pytest-django
 coveralls
--r requirements-django.txt
+-r requirements.txt
