@@ -14,6 +14,11 @@ class OrganizationIdentifierInline(IdentifierInline):
 @admin.register(models.Organization)
 class OrganizationAdmin(admin.ModelAdmin):
     readonly_fields = ('parent', 'jurisdiction')
+    fields = (
+        'name', 'jurisdiction', 'id', 'classification',
+        'parent', ('founding_date', 'dissolution_date'),
+        'image', 'extras')
+    list_display = ('name', 'jurisdiction')
     inlines = [
         OrganizationIdentifierInline
         ]
