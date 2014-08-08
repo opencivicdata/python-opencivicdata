@@ -1,11 +1,10 @@
 import pytest
-from ..models import (Jurisdiction, LegislativeSession, Division,
-                      Organization, OrganizationIdentifier, OrganizationName,
-                      OrganizationContactDetail, OrganizationSource,
-                      Person, PersonIdentifier, PersonName, PersonContactDetail, PersonLink,
-                      PersonSource,
-                      Post, PostContactDetail, PostLink,
-                      Membership, MembershipContactDetail, MembershipLink)
+from opencivicdata.models import (Jurisdiction, LegislativeSession, Division,
+                                  Organization, OrganizationIdentifier, OrganizationName,
+                                  OrganizationContactDetail, OrganizationSource,
+                                  Person, PersonIdentifier, PersonName, PersonContactDetail,
+                                  PersonLink, PersonSource, Post, PostContactDetail, PostLink,
+                                  Membership, MembershipContactDetail, MembershipLink)
 from django.core.exceptions import ValidationError
 
 

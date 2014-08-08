@@ -1,3 +1,0 @@
-[submodule "opencivicdata/division-ids"]
-	path = opencivicdata/division-ids
-	url = git://github.com/opencivicdata/ocd-division-ids.git

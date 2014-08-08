@@ -1,7 +1,7 @@
 import sys
 import pytest
 from django.core.management import call_command
-from ..models import Division
+from opencivicdata.models import Division
 
 @pytest.mark.django_db
 @pytest.mark.skipif(sys.version_info < (3,3), reason="requires python3.3")

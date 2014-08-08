@@ -8,7 +8,7 @@ from optparse import make_option
 from django.db import transaction, connection
 from django.core.management.base import BaseCommand, CommandError
 
-from ...divisions import Division as FileDivision
+from opencivicdata.divisions import Division as FileDivision
 from ...models import Division
 
 def to_db(fd):
