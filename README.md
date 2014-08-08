@@ -7,7 +7,7 @@ python-opencivicdata-divisions
 [![Download Format](https://pypip.in/format/opencivicdata-divisions/badge.png)](https://pypi.python.org/pypi/opencivicdata-divisions/)
 
 
-Part of the opencivicdata namespace package containing the utilities for dealing with ocd-division identifiers.
+This package is part of the opencivicdata namespace package containing the utilities for dealing with ocd-division identifiers.
 
 
 Development
