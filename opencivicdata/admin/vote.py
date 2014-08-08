@@ -41,13 +41,17 @@ class VoteEventAdmin(admin.ModelAdmin):
         VoteCountInline, PersonVoteInline,
         VoteSourceInline]
 
+
 @admin.register(models.VoteCount)
 class VoteCountAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(models.PersonVote)
 class PersonVoteAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('voter_name', 'vote')
+    readonly_fields = ('vote',)
+
 
 @admin.register(models.VoteSource)
 class VoteSourceAdmin(admin.ModelAdmin):
