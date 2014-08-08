@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import djorm_pgarray.fields
-import django.core.validators
-import django.contrib.gis.db.models.fields
-import jsonfield.fields
 import uuidfield.fields
+import django.core.validators
+import jsonfield.fields
+import django.contrib.gis.db.models.fields
+import djorm_pgarray.fields
 import opencivicdata.models.base
 
 
@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, ocd_type='bill', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='bill')),
                 ('identifier', models.CharField(max_length=100)),
                 ('title', models.TextField()),
                 ('classification', djorm_pgarray.fields.ArrayField(dbtype='text')),
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillAbstract',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('abstract', models.TextField()),
                 ('note', models.TextField(blank=True)),
                 ('bill', models.ForeignKey(to='opencivicdata.Bill')),
@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillAction',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('description', models.TextField()),
                 ('date', models.CharField(max_length=10)),
                 ('classification', djorm_pgarray.fields.ArrayField(dbtype='text')),
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillActionRelatedEntity',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('name', models.CharField(max_length=2000)),
                 ('entity_type', models.CharField(blank=True, max_length=20)),
                 ('action', models.ForeignKey(to='opencivicdata.BillAction')),
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillDocument',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(max_length=300)),
                 ('date', models.CharField(max_length=10)),
                 ('bill', models.ForeignKey(to='opencivicdata.Bill')),
@@ -89,7 +89,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillDocumentLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('media_type', models.CharField(max_length=100)),
                 ('url', models.URLField(max_length=2000)),
                 ('document', models.ForeignKey(to='opencivicdata.BillDocument')),
@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillIdentifier',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('identifier', models.CharField(max_length=300)),
                 ('scheme', models.CharField(max_length=300)),
                 ('note', models.TextField(blank=True)),
@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillSource',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('bill', models.ForeignKey(to='opencivicdata.Bill')),
@@ -129,7 +129,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillSponsorship',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('name', models.CharField(max_length=2000)),
                 ('entity_type', models.CharField(blank=True, max_length=20)),
                 ('primary', models.BooleanField(default=False)),
@@ -144,7 +144,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillTitle',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('title', models.TextField()),
                 ('note', models.TextField(blank=True)),
                 ('bill', models.ForeignKey(to='opencivicdata.Bill')),
@@ -157,7 +157,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillVersion',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(max_length=300)),
                 ('date', models.CharField(max_length=10)),
                 ('bill', models.ForeignKey(to='opencivicdata.Bill')),
@@ -170,7 +170,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BillVersionLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('media_type', models.CharField(max_length=100)),
                 ('url', models.URLField(max_length=2000)),
                 ('version', models.ForeignKey(to='opencivicdata.BillVersion')),
@@ -200,7 +200,7 @@ class Migration(migrations.Migration):
                 ('subid6', models.CharField(blank=True, max_length=100)),
                 ('subtype7', models.CharField(blank=True, max_length=50)),
                 ('subid7', models.CharField(blank=True, max_length=100)),
-                ('redirect', models.ForeignKey(to='opencivicdata.Division', null=True)),
+                ('redirect', models.ForeignKey(null=True, to='opencivicdata.Division')),
             ],
             options={
             },
@@ -212,7 +212,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, ocd_type='event', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='event')),
                 ('name', models.CharField(max_length=300)),
                 ('description', models.TextField()),
                 ('classification', models.CharField(max_length=100)),
@@ -229,7 +229,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventAgendaItem',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('description', models.TextField()),
                 ('order', models.CharField(blank=True, max_length=100)),
                 ('subjects', djorm_pgarray.fields.ArrayField(dbtype='text')),
@@ -244,7 +244,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventAgendaMedia',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(max_length=300)),
                 ('date', models.CharField(blank=True, max_length=10)),
                 ('offset', models.PositiveIntegerField(null=True)),
@@ -258,7 +258,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventAgendaMediaLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('media_type', models.CharField(max_length=100)),
                 ('url', models.URLField(max_length=2000)),
                 ('media', models.ForeignKey(to='opencivicdata.EventAgendaMedia')),
@@ -271,7 +271,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventDocument',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('media_type', models.CharField(max_length=100)),
                 ('url', models.URLField(max_length=2000)),
                 ('note', models.CharField(max_length=300)),
@@ -286,7 +286,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventDocumentLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('media_type', models.CharField(max_length=100)),
                 ('url', models.URLField(max_length=2000)),
                 ('document', models.ForeignKey(to='opencivicdata.EventDocument')),
@@ -299,7 +299,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('event', models.ForeignKey(to='opencivicdata.Event')),
@@ -312,10 +312,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventLocation',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
-                ('name', models.CharField(max_length=100)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
+                ('name', models.CharField(max_length=200)),
                 ('url', models.URLField(blank=True, max_length=2000)),
-                ('coordinates', django.contrib.gis.db.models.fields.PointField(srid=4326, null=True)),
+                ('coordinates', django.contrib.gis.db.models.fields.PointField(null=True, srid=4326)),
             ],
             options={
                 'abstract': False,
@@ -325,13 +325,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='event',
             name='location',
-            field=models.ForeignKey(to='opencivicdata.EventLocation', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.EventLocation'),
             preserve_default=True,
         ),
         migrations.CreateModel(
             name='EventMedia',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(max_length=300)),
                 ('date', models.CharField(blank=True, max_length=10)),
                 ('offset', models.PositiveIntegerField(null=True)),
@@ -345,7 +345,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventMediaLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('media_type', models.CharField(max_length=100)),
                 ('url', models.URLField(max_length=2000)),
                 ('media', models.ForeignKey(to='opencivicdata.EventMedia')),
@@ -358,7 +358,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventParticipant',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('name', models.CharField(max_length=2000)),
                 ('entity_type', models.CharField(blank=True, max_length=20)),
                 ('note', models.TextField()),
@@ -372,12 +372,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventRelatedEntity',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('name', models.CharField(max_length=2000)),
                 ('entity_type', models.CharField(blank=True, max_length=20)),
                 ('note', models.TextField()),
                 ('agenda_item', models.ForeignKey(to='opencivicdata.EventAgendaItem')),
-                ('bill', models.ForeignKey(to='opencivicdata.Bill', null=True)),
+                ('bill', models.ForeignKey(null=True, to='opencivicdata.Bill')),
             ],
             options={
                 'abstract': False,
@@ -387,7 +387,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventSource',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('event', models.ForeignKey(to='opencivicdata.Event')),
@@ -403,10 +403,10 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$', regex='^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$')], ocd_type='jurisdiction')),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$', message='ID must match ^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$', flags=32)], ocd_type='jurisdiction')),
                 ('name', models.CharField(max_length=300)),
                 ('url', models.URLField(max_length=2000)),
-                ('classification', models.CharField(default='government', db_index=True, max_length=50, choices=[('government', 'Government'), ('legislature', 'Legislature'), ('executive', 'Executive'), ('school_system', 'School System')])),
+                ('classification', models.CharField(max_length=50, db_index=True, choices=[('government', 'Government'), ('legislature', 'Legislature'), ('executive', 'Executive'), ('school_system', 'School System')], default='government')),
                 ('feature_flags', djorm_pgarray.fields.ArrayField(dbtype='text')),
                 ('division', models.ForeignKey(to='opencivicdata.Division')),
             ],
@@ -434,7 +434,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LegislativeSession',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('identifier', models.CharField(max_length=100)),
                 ('name', models.CharField(max_length=300)),
                 ('classification', models.CharField(max_length=100, choices=[('primary', 'Primary'), ('special', 'Special')])),
@@ -459,7 +459,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, ocd_type='membership', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='membership')),
                 ('label', models.CharField(blank=True, max_length=300)),
                 ('role', models.CharField(blank=True, max_length=300)),
                 ('start_date', models.CharField(blank=True, max_length=10)),
@@ -472,7 +472,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MembershipContactDetail',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('type', models.CharField(max_length=50, choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')])),
                 ('value', models.CharField(max_length=300)),
                 ('note', models.CharField(blank=True, max_length=300)),
@@ -487,7 +487,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MembershipLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('membership', models.ForeignKey(to='opencivicdata.Membership')),
@@ -503,14 +503,14 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, ocd_type='organization', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='organization')),
                 ('name', models.CharField(max_length=300)),
                 ('image', models.URLField(blank=True, max_length=2000)),
                 ('classification', models.CharField(blank=True, max_length=100, choices=[('legislature', 'Legislature'), ('executive', 'Executive'), ('upper', 'Upper Chamber'), ('lower', 'Lower Chamber'), ('party', 'Party'), ('committee', 'Committee'), ('commission', 'Commission')])),
                 ('founding_date', models.CharField(blank=True, max_length=10)),
                 ('dissolution_date', models.CharField(blank=True, max_length=10)),
-                ('jurisdiction', models.ForeignKey(to='opencivicdata.Jurisdiction', null=True)),
-                ('parent', models.ForeignKey(to='opencivicdata.Organization', null=True)),
+                ('jurisdiction', models.ForeignKey(null=True, to='opencivicdata.Jurisdiction')),
+                ('parent', models.ForeignKey(null=True, to='opencivicdata.Organization')),
             ],
             options={
             },
@@ -525,31 +525,31 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='membership',
             name='on_behalf_of',
-            field=models.ForeignKey(to='opencivicdata.Organization', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Organization'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='eventrelatedentity',
             name='organization',
-            field=models.ForeignKey(to='opencivicdata.Organization', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Organization'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='eventparticipant',
             name='organization',
-            field=models.ForeignKey(to='opencivicdata.Organization', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Organization'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='billsponsorship',
             name='organization',
-            field=models.ForeignKey(to='opencivicdata.Organization', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Organization'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='billactionrelatedentity',
             name='organization',
-            field=models.ForeignKey(to='opencivicdata.Organization', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Organization'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -561,7 +561,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='bill',
             name='from_organization',
-            field=models.ForeignKey(to='opencivicdata.Organization', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Organization'),
             preserve_default=True,
         ),
         migrations.AlterIndexTogether(
@@ -570,12 +570,12 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterIndexTogether(
             name='organization',
-            index_together=set([('classification', 'name'), ('jurisdiction', 'classification', 'name')]),
+            index_together=set([('jurisdiction', 'classification', 'name'), ('classification', 'name')]),
         ),
         migrations.CreateModel(
             name='OrganizationContactDetail',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('type', models.CharField(max_length=50, choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')])),
                 ('value', models.CharField(max_length=300)),
                 ('note', models.CharField(blank=True, max_length=300)),
@@ -590,7 +590,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrganizationIdentifier',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('identifier', models.CharField(max_length=300)),
                 ('scheme', models.CharField(max_length=300)),
                 ('organization', models.ForeignKey(to='opencivicdata.Organization')),
@@ -603,7 +603,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrganizationLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('organization', models.ForeignKey(to='opencivicdata.Organization')),
@@ -616,8 +616,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrganizationName',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
-                ('name', models.CharField(db_index=True, max_length=500)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
+                ('name', models.CharField(max_length=500, db_index=True)),
                 ('note', models.CharField(blank=True, max_length=500)),
                 ('start_date', models.CharField(max_length=10)),
                 ('end_date', models.CharField(max_length=10)),
@@ -631,7 +631,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrganizationSource',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('organization', models.ForeignKey(to='opencivicdata.Organization')),
@@ -647,9 +647,9 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, ocd_type='person', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
-                ('name', models.CharField(db_index=True, max_length=300)),
-                ('sort_name', models.CharField(default='', max_length=100)),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='person')),
+                ('name', models.CharField(max_length=300, db_index=True)),
+                ('sort_name', models.CharField(max_length=100, default='')),
                 ('image', models.URLField(blank=True, max_length=2000)),
                 ('gender', models.CharField(max_length=100)),
                 ('summary', models.CharField(max_length=500)),
@@ -659,7 +659,7 @@ class Migration(migrations.Migration):
                 ('death_date', models.CharField(blank=True, max_length=10)),
             ],
             options={
-                'abstract': False,
+                'verbose_name_plural': 'people',
             },
             bases=(models.Model,),
         ),
@@ -672,31 +672,31 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='eventrelatedentity',
             name='person',
-            field=models.ForeignKey(to='opencivicdata.Person', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Person'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='eventparticipant',
             name='person',
-            field=models.ForeignKey(to='opencivicdata.Person', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Person'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='billsponsorship',
             name='person',
-            field=models.ForeignKey(to='opencivicdata.Person', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Person'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='billactionrelatedentity',
             name='person',
-            field=models.ForeignKey(to='opencivicdata.Person', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Person'),
             preserve_default=True,
         ),
         migrations.CreateModel(
             name='PersonContactDetail',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('type', models.CharField(max_length=50, choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')])),
                 ('value', models.CharField(max_length=300)),
                 ('note', models.CharField(blank=True, max_length=300)),
@@ -711,7 +711,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PersonIdentifier',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('identifier', models.CharField(max_length=300)),
                 ('scheme', models.CharField(max_length=300)),
                 ('person', models.ForeignKey(to='opencivicdata.Person')),
@@ -724,7 +724,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PersonLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('person', models.ForeignKey(to='opencivicdata.Person')),
@@ -737,8 +737,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PersonName',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
-                ('name', models.CharField(db_index=True, max_length=500)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
+                ('name', models.CharField(max_length=500, db_index=True)),
                 ('note', models.CharField(blank=True, max_length=500)),
                 ('start_date', models.CharField(max_length=10)),
                 ('end_date', models.CharField(max_length=10)),
@@ -752,7 +752,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PersonSource',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('person', models.ForeignKey(to='opencivicdata.Person')),
@@ -765,11 +765,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PersonVote',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('option', models.CharField(max_length=50, choices=[('yes', 'Yes'), ('no', 'No'), ('absent', 'Absent'), ('abstain', 'Abstain'), ('not voting', 'Not Voting'), ('paired', 'Paired'), ('excused', 'Excused'), ('other', 'Other')])),
                 ('voter_name', models.CharField(max_length=300)),
                 ('note', models.TextField(blank=True)),
-                ('voter', models.ForeignKey(to='opencivicdata.Person', null=True)),
+                ('voter', models.ForeignKey(null=True, to='opencivicdata.Person')),
             ],
             options={
                 'abstract': False,
@@ -782,12 +782,12 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, ocd_type='post', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='post')),
                 ('label', models.CharField(max_length=300)),
                 ('role', models.CharField(blank=True, max_length=300)),
                 ('start_date', models.CharField(max_length=10)),
                 ('end_date', models.CharField(max_length=10)),
-                ('division', models.ForeignKey(default=None, null=True, to='opencivicdata.Division')),
+                ('division', models.ForeignKey(null=True, to='opencivicdata.Division', default=None)),
                 ('organization', models.ForeignKey(to='opencivicdata.Organization')),
             ],
             options={
@@ -797,7 +797,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='membership',
             name='post',
-            field=models.ForeignKey(to='opencivicdata.Post', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.Post'),
             preserve_default=True,
         ),
         migrations.AlterIndexTogether(
@@ -811,7 +811,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PostContactDetail',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('type', models.CharField(max_length=50, choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')])),
                 ('value', models.CharField(max_length=300)),
                 ('note', models.CharField(blank=True, max_length=300)),
@@ -826,7 +826,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PostLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('post', models.ForeignKey(to='opencivicdata.Post')),
@@ -839,12 +839,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='RelatedBill',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('identifier', models.CharField(max_length=100)),
                 ('legislative_session', models.CharField(max_length=100)),
                 ('relation_type', models.CharField(max_length=100, choices=[('companion', 'Companion'), ('prior-session', 'Prior Session'), ('replaced-by', 'Replaced By'), ('replaces', 'Replaces')])),
                 ('bill', models.ForeignKey(to='opencivicdata.Bill')),
-                ('related_bill', models.ForeignKey(to='opencivicdata.Bill', null=True)),
+                ('related_bill', models.ForeignKey(null=True, to='opencivicdata.Bill')),
             ],
             options={
                 'abstract': False,
@@ -854,7 +854,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='VoteCount',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('option', models.CharField(max_length=50, choices=[('yes', 'Yes'), ('no', 'No'), ('absent', 'Absent'), ('abstain', 'Abstain'), ('not voting', 'Not Voting'), ('paired', 'Paired'), ('excused', 'Excused'), ('other', 'Other')])),
                 ('value', models.PositiveIntegerField()),
             ],
@@ -869,14 +869,14 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
-                ('id', opencivicdata.models.base.OCDIDField(serialize=False, ocd_type='vote', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
+                ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='vote')),
                 ('identifier', models.CharField(blank=True, max_length=300)),
                 ('motion_text', models.TextField()),
                 ('motion_classification', djorm_pgarray.fields.ArrayField(dbtype='text')),
                 ('start_date', models.CharField(max_length=19)),
                 ('end_date', models.CharField(blank=True, max_length=19)),
                 ('result', models.CharField(max_length=50, choices=[('pass', 'Pass'), ('fail', 'Fail')])),
-                ('bill', models.ForeignKey(to='opencivicdata.Bill', null=True)),
+                ('bill', models.ForeignKey(null=True, to='opencivicdata.Bill')),
                 ('legislative_session', models.ForeignKey(to='opencivicdata.LegislativeSession')),
                 ('organization', models.ForeignKey(to='opencivicdata.Organization')),
             ],
@@ -899,17 +899,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='eventrelatedentity',
             name='vote',
-            field=models.ForeignKey(to='opencivicdata.VoteEvent', null=True),
+            field=models.ForeignKey(null=True, to='opencivicdata.VoteEvent'),
             preserve_default=True,
         ),
         migrations.AlterIndexTogether(
             name='voteevent',
-            index_together=set([('legislative_session', 'bill'), ('legislative_session', 'identifier', 'bill')]),
+            index_together=set([('legislative_session', 'identifier', 'bill'), ('legislative_session', 'bill')]),
         ),
         migrations.CreateModel(
             name='VoteSource',
             fields=[
-                ('id', uuidfield.fields.UUIDField(serialize=False, primary_key=True, unique=True, blank=True, max_length=32, editable=False)),
+                ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('vote_event', models.ForeignKey(to='opencivicdata.VoteEvent')),

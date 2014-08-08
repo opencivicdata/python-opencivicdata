@@ -1,5 +1,4 @@
 from django.db import models
-from django.template import defaultfilters
 from djorm_pgarray.fields import ArrayField
 
 from .base import (OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase,

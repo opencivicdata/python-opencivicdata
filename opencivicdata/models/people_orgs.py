@@ -55,6 +55,10 @@ class Organization(OCDBase):
 class OrganizationIdentifier(IdentifierBase):
     organization = models.ForeignKey(Organization, related_name='identifiers')
 
+    def __str__(self):
+        tmpl = '%s identifies %s'
+        return tmpl % (self.identifier, self.organization)
+
 
 class OrganizationName(OtherNameBase):
     organization = models.ForeignKey(Organization, related_name='other_names')
@@ -110,6 +114,9 @@ class Person(OCDBase):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "people"
 
 
 class PersonIdentifier(IdentifierBase):
