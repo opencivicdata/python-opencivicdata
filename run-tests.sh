@@ -1,1 +1,1 @@
-export PYTHONPATH=.; py.test --cov opencivicdata --ds=opencivicdata.tests.test_settings --cov-report html --cov-config=.coveragerc
+export PYTHONPATH=.; py.test --cov opencivicdata --cov-report html --cov-config=.coveragerc

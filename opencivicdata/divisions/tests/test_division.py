@@ -1,6 +1,6 @@
 import sys
 import pytest
-from ..divisions import Division
+from .. import Division
 
 
 @pytest.mark.skipif(sys.version_info < (3,3), reason="requires python3.3")

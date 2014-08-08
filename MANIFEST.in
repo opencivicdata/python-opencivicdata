@@ -1,1 +1,1 @@
-include opencivicdata/division-ids/identifiers/*.csv
+include opencivicdata/divisions/division-ids/identifiers/*.csv

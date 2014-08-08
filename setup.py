@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-setup(name="opencivicdata",
+setup(name="opencivicdata-divisions",
       version='0.5.9',
-      py_modules=['opencivicdata'],
+      py_modules=['opencivicdata.divisions'],
       author="James Turk",
       author_email='jturk@sunlightfoundation.com',
       license="BSD",
       description="python opencivicdata library",
       long_description="",
       url="",
-      packages=find_packages(),
+      packages=['opencivicdata.divisions'],
       include_package_data=True,
       platforms=["any"],
       classifiers=["Development Status :: 4 - Beta",
