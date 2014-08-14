@@ -21,7 +21,7 @@ def to_db(fd):
 
 
 def load_divisions(country):
-    existing_divisions = Division.objects.filter(country=count).count()
+    existing_divisions = Division.objects.filter(country=country).count()
 
     country = FileDivision.get('ocd-division/country:' + country)
     objects = [to_db(country)]
