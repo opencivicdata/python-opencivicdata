@@ -11,6 +11,7 @@ from django.core.management.base import BaseCommand, CommandError
 from opencivicdata.divisions import Division as FileDivision
 from ...models import Division
 
+
 def to_db(fd):
     """ convert a FileDivision to a Division """
     args, _ = Division.subtypes_from_id(fd.id)
@@ -18,21 +19,26 @@ def to_db(fd):
         args['redirect_id'] = fd.sameAs
     return Division(id=fd.id, name=fd.name, **args)
 
+
 def load_divisions(country):
+    existing_divisions = Division.objects.filter(country=count).count()
+
     country = FileDivision.get('ocd-division/country:' + country)
     objects = [to_db(country)]
 
     for child in country.children(levels=100):
         objects.append(to_db(child))
 
-    print(len(objects), 'divisions loaded from CSV')
+    print(len(objects), 'divisions loaded from CSV and ', existing_divisions, 'already in DB')
 
-    # delete old ids and add new ones all at once
-    with transaction.atomic():
-        Division.objects.filter(country=country).delete()
-        Division.objects.bulk_create(objects, batch_size=10000)
-
-    print(len(objects), 'divisions created')
+    if len(objects) == existing_divisions:
+        print('no work to be done!')
+    else:
+        # delete old ids and add new ones all at once
+        with transaction.atomic():
+            Division.objects.filter(country=country).delete()
+            Division.objects.bulk_create(objects, batch_size=10000)
+        print(len(objects), 'divisions created')
 
 
 class Command(BaseCommand):
