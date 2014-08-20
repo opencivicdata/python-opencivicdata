@@ -1,5 +1,6 @@
-from django.contrib import admin
 from django.core import urlresolvers
+from django.contrib import admin
+from django.template import defaultfilters
 from .. import models
 
 # Helpers ##########
@@ -10,9 +11,10 @@ class ModelAdmin(admin.ModelAdmin):
         return False
 
 
-class NoAddTabularInline(admin.TabularInline):
+class ReadOnlyTabularInline(admin.TabularInline):
     def has_add_permission(self, request):
         return False
+    can_delete = False
 
 
 class IdentifierInline(admin.TabularInline):
@@ -47,10 +49,9 @@ class DivisionAdmin(ModelAdmin):
     search_fields = list_display
     fields = readonly_fields = ('id', 'name', 'redirect', 'country')
 
-class LegislativeSessionInline(NoAddTabularInline):
+class LegislativeSessionInline(ReadOnlyTabularInline):
     model = models.LegislativeSession
     readonly_fields = ('identifier', 'name', 'classification')
-    can_delete = False
 
 
 @admin.register(models.Jurisdiction)
@@ -150,7 +151,7 @@ class PersonSourceInline(LinkInline):
     model = models.PersonSource
 
 
-class MembershipInline(NoAddTabularInline):
+class MembershipInline(ReadOnlyTabularInline):
     model = models.Membership
     readonly_fields = ('organization', 'post')
     fields = ('organization', 'post', 'label', 'role', 'start_date', 'end_date')
@@ -222,3 +223,94 @@ class MembershipAdmin(ModelAdmin):
         MembershipContactDetailInline,
         MembershipLinkInline,
     ]
+
+
+# Bills ################
+
+
+class BillAbstractInline(ReadOnlyTabularInline):
+    model = models.BillAbstract
+    readonly_fields = ('abstract', 'note')
+    can_delete = False
+
+
+class BillTitleInline(ReadOnlyTabularInline):
+    model = models.BillTitle
+    readonly_fields = ('title', 'note')
+    can_delete = False
+
+
+class BillIdentifierInline(IdentifierInline):
+    model = models.BillIdentifier
+
+
+class BillActionInline(ReadOnlyTabularInline):
+    model = models.BillAction
+    readonly_fields = ('date', 'organization', 'description')
+    fields = ('date', 'description', 'organization')
+    ordering = ('date',)
+
+# TODO: BillActionRelatedEntity
+# TODO: RelatedBill
+
+class BillSponsorshipInline(ReadOnlyTabularInline):
+    model = models.BillSponsorship
+    readonly_fields = fields = ('name', 'primary', 'classification')
+    extra = 0
+
+# TODO: Document & Version
+
+class BillSourceInline(ReadOnlyTabularInline):
+    readonly_fields = ('url', 'note')
+    model = models.BillSource
+
+
+@admin.register(models.Bill)
+class BillAdmin(admin.ModelAdmin):
+    readonly_fields = fields = (
+        'identifier', 'legislative_session', 'classification',
+        'from_organization', 'title', 'id', 'extras')
+    search_fields = ['identifier', 'title',]
+    list_selected_related = (
+        'sources',
+        'legislative_session',
+        'legislative_session__jurisdiction')
+    inlines = [
+        BillAbstractInline,
+        BillTitleInline,
+        BillIdentifierInline,
+        BillActionInline,
+        BillSponsorshipInline,
+        BillSourceInline,
+    ]
+
+    def get_jurisdiction_name(self, obj):
+        return obj.legislative_session.jurisdiction.name
+    get_jurisdiction_name.short_description = 'Jurisdiction'
+
+    def get_session_name(self, obj):
+        return obj.legislative_session.name
+    get_session_name.short_description = 'Session'
+
+    def source_link(self, obj):
+        source = obj.sources.filter(url__icontains="legislationdetail").get()
+        tmpl = u'<a href="{0}" target="_blank">View source</a>'
+        return tmpl.format(source.url)
+    source_link.short_description = 'View source'
+    source_link.allow_tags = True
+
+    def get_truncated_sponsors(self, obj):
+        spons = ', '.join(s.name for s in obj.sponsorships.all()[:5])
+        return defaultfilters.truncatewords(spons, 10)
+    get_truncated_sponsors.short_description = 'Sponsors'
+
+    def get_truncated_title(self, obj):
+        return defaultfilters.truncatewords(obj.title, 25)
+    get_truncated_title.short_description = 'Title'
+
+    list_display = (
+        'identifier', 'get_jurisdiction_name',
+        'get_session_name', 'get_truncated_sponsors',
+        'get_truncated_title', 'source_link')
+
+    list_filter = ('legislative_session__jurisdiction__name',)
