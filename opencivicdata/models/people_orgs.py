@@ -90,6 +90,9 @@ class Post(OCDBase):
             ['organization', 'label']
         ]
 
+    def __str__(self):
+        return '{} - {} - {}'.format(self.role, self.label, self.organization)
+
 
 class PostContactDetail(ContactDetailBase):
     post = models.ForeignKey(Post, related_name='contact_details')
