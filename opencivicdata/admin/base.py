@@ -2,27 +2,27 @@ from django.contrib import admin
 from django.template import defaultfilters
 
 
-class LinkAdminInline(admin.TabularInline):
-    fields = ('url', 'note')
-    extra = 0
+class ModelAdmin(admin.ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
-class LinkAdmin(admin.ModelAdmin):
-    list_display = ('note', 'url')
-
-
-class MimetypeLinkInline(admin.TabularInline):
-    fields = ('media_type', 'url')
-    extra = 0
-
-
-class MimetypeLinkAdmin(admin.ModelAdmin):
-    list_display = ('media',)
+class NoAddTabularInline(admin.TabularInline):
+    def has_add_permission(self, request):
+        return False
 
 
 class IdentifierInline(admin.TabularInline):
     fields = ('identifier', 'scheme')
     extra = 0
 
-class RelatedEntityInline(admin.TabularInline):
-    fields = ('name', 'entity_type', 'organization', 'person')
+
+class LinkInline(admin.TabularInline):
+    fields = ('url', 'note')
+    extra = 0
+
+
+#class MimetypeLinkInline(admin.TabularInline):
+#    fields = ('media_type', 'url')
+#class RelatedEntityInline(admin.TabularInline):
+#    fields = ('name', 'entity_type', 'organization', 'person')

@@ -1,14 +1,17 @@
 from django.contrib import admin
-from opencivicdata.models import jurisdiction as models
+from opencivicdata import models
+from . import base
 
 
-@admin.register(models.LegislativeSession)
-class LegislativeSessionAdmin(admin.TabularInline):
-    pass
+class LegislativeSessionInline(base.NoAddTabularInline):
+    model = models.LegislativeSession
+    readonly_fields = ('identifier', 'name', 'classification')
+    can_delete = False
 
 
 @admin.register(models.Jurisdiction)
-class JurisdictionAdmin(admin.ModelAdmin):
-    readonly_fields = ['id', 'jurisdiction', 'extras', 'feature_flags']
-    inlines = [LegislativeSessionAdmin]
-
+class JurisdictionAdmin(base.ModelAdmin):
+    list_display = ('name', 'id')
+    readonly_fields = fields = ('id', 'name', 'classification', 'url', 'division', 'feature_flags',
+                                'extras')
+    inlines = [LegislativeSessionInline]

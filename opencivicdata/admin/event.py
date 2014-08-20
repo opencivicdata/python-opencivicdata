@@ -1,10 +1,8 @@
 from django.contrib import admin
 from django.template import defaultfilters
-from opencivicdata.models import event as models
-from opencivicdata.admin.base import (
-    LinkAdmin, LinkAdminInline,
-    MimetypeLinkAdmin, MimetypeLinkInline,
-    RelatedEntityInline)
+
+from opencivicdata import models
+from . import base
 
 
 @admin.register(models.EventLocation)
@@ -12,15 +10,15 @@ class EventLocationAdmin(admin.ModelAdmin):
    pass
 
 
-class EventLinkInline(LinkAdminInline):
+class EventLinkInline(base.LinkAdminInline):
     model = models.EventLink
 
 
-class EventSourceInline(LinkAdminInline):
+class EventSourceInline(base.LinkAdminInline):
     model = models.EventSource
 
 
-class EventParticipantInline(RelatedEntityInline):
+class EventParticipantInline(base.RelatedEntityInline):
     model = models.EventParticipant
     readonly_fields = ('organization', 'person')
 
@@ -56,27 +54,16 @@ class EventMediaAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.EventMediaLink)
-class EventMediaLinkAdmin(admin.ModelAdmin):
-    list_display = ('media', 'media_type', 'url')
-
-
 @admin.register(models.EventDocument)
 class EventDocumentAdmin(admin.ModelAdmin):
     readonly_fields = ('event',)
     list_display = ('event', 'date', 'note')
 
 
-@admin.register(models.EventDocumentLink)
-class EventDocumentLinkAdmin(MimetypeLinkAdmin):
-    readonly_fields = ('document',)
-    list_display = ('document', 'media_type', 'url',)
-
-
-@admin.register(models.EventLink)
-class EventLinkAdmin(LinkAdmin):
-    readonly_fields = ('event',)
-    list_display = ('url', 'note')
+#@admin.register(models.EventDocumentLink)
+#class EventDocumentLinkAdmin(base.MimetypeLinkAdmin):
+#    readonly_fields = ('document',)
+#    list_display = ('document', 'media_type', 'url',)
 
 
 @admin.register(models.EventSource)
