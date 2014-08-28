@@ -159,6 +159,9 @@ class Membership(OCDBase):
             ['organization', 'person', 'label', 'post']
         ]
 
+    def __str__(self):
+        return '{} in {} ({})'.format(self.person, self.organization, self.role)
+
 
 class MembershipContactDetail(ContactDetailBase):
     membership = models.ForeignKey(Membership, related_name='contact_details')

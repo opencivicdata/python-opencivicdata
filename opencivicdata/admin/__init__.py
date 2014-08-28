@@ -190,7 +190,7 @@ class PersonAdmin(ModelAdmin):
             tmpl = '<a href="%s">%s %s</a>\n'
             html.append(tmpl % (
                 admin_url,
-                memb.organization.jurisdiction.name,
+                memb.organization.jurisdiction.name if memb.organization.jurisdiction else '',
                 memb.organization.name))
         more = len(memberships) - SHOW_N
         if 0 < more:
