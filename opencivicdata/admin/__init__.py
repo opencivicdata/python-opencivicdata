@@ -102,6 +102,7 @@ class OrganizationAdmin(ModelAdmin):
         'parent', ('founding_date', 'dissolution_date'),
         'image', 'extras')
     list_display = ('name', 'jurisdiction', 'classification')
+    list_select_related = ('jurisdiction',)
     inlines = [
         OrganizationIdentifierInline,
         OrganizationNameInline,
@@ -200,15 +201,15 @@ class PersonAdmin(ModelAdmin):
     get_memberships.short_description = 'Memberships'
     get_memberships.allow_tags = True
 
-    list_selected_related = ('memberships',)
+    list_select_related = ('memberships',)
     list_display = ('name', 'id', 'get_memberships')
 
 
-class MembershipContactDetailInline(ContactDetailInline):
+class MembershipContactDetailInline(ContactDetailInline, ReadOnlyTabularInline):
     model = models.MembershipContactDetail
 
 
-class MembershipLinkInline(LinkInline):
+class MembershipLinkInline(LinkInline, ReadOnlyTabularInline):
     model = models.MembershipLink
 
 
@@ -219,6 +220,7 @@ class MembershipAdmin(ModelAdmin):
                     'label', 'role', 'start_date', 'end_date',)
     fields = ('organization', 'person', 'role', 'post', 'label', 'on_behalf_of',
               ('start_date', 'end_date'), 'extras')
+    list_select_related = ('post', 'person', 'organization', 'on_behalf_of')
     inlines = [
         MembershipContactDetailInline,
         MembershipLinkInline,
@@ -271,10 +273,11 @@ class BillAdmin(admin.ModelAdmin):
         'identifier', 'legislative_session', 'classification',
         'from_organization', 'title', 'id', 'extras')
     search_fields = ['identifier', 'title',]
-    list_selected_related = (
+    list_select_related = (
         'sources',
         'legislative_session',
-        'legislative_session__jurisdiction')
+        'legislative_session__jurisdiction',
+    )
     inlines = [
         BillAbstractInline,
         BillTitleInline,
