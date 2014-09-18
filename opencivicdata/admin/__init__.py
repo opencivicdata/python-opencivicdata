@@ -124,7 +124,7 @@ class PostLinkInline(LinkInline):
 class PostAdmin(ModelAdmin):
     readonly_fields = ('id', 'label', 'organization', 'division', 'extras', 'role')
     fields = readonly_fields + (('start_date', 'end_date'), )
-    list_display = ('label', 'organization')
+    list_display = ('label', 'organization', 'division')
     inlines = [
         PostContactDetailInline,
         PostLinkInline,
