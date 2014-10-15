@@ -5,7 +5,7 @@ import io
 import csv
 
 PWD = os.path.abspath(os.path.dirname(__file__))
-OCD_DIVISION_CSV = os.path.join(PWD, 'division-ids/identifiers/country-{}.csv')
+OCD_DIVISION_CSV = os.environ.get('OCD_DIVISION_CSV', os.path.join(PWD, 'division-ids/identifiers/country-{}.csv'))
 
 
 class Division(object):
