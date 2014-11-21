@@ -12,6 +12,14 @@ class Division(object):
     _cache = {}
 
     @classmethod
+    def all(self, country, from_csv=None):
+        if not from_csv:
+            from_csv = OCD_DIVISION_CSV.format(country)
+
+        for row in csv.DictReader(io.open(from_csv, encoding='utf8')):
+            yield Division(**row)
+
+    @classmethod
     def get(self, division, from_csv=None):
         if division not in self._cache:
             # figure out the source
