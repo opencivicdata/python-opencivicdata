@@ -95,6 +95,7 @@ BILL_RELATION_TYPE_CHOICES = (
     ('prior-session', 'Prior Session'),     # an introduction from a prior session
     ('replaced-by', 'Replaced By'),         # a bill has been replaced by another
     ('replaces', 'Replaces'),               # a bill that replaces another
+    ('pending', 'Pending Post-Hook'),       # a relation to be resolved by a pupa post-hook
 )
 BILL_RELATION_TYPES = _keys(BILL_RELATION_TYPE_CHOICES)
 
