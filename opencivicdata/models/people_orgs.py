@@ -106,6 +106,8 @@ class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300, db_index=True)
     sort_name = models.CharField(max_length=100, default='')
+    family_name = models.CharField(max_length=100, default='')
+    given_name = models.CharField(max_length=100, default='')
 
     image = models.URLField(blank=True, max_length=2000)
     gender = models.CharField(max_length=100)
