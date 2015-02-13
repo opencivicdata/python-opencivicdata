@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata-divisions",
-      version='2014.08.08',
+      version='2015.02.13',
       py_modules=['opencivicdata.divisions'],
       author="James Turk",
       author_email='jturk@sunlightfoundation.com',
