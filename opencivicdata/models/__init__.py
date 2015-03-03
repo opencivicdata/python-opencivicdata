@@ -16,6 +16,6 @@ from .event import (Event, EventLocation, EventMedia, EventMediaLink, EventDocum
                     EventSource, EventParticipant, EventAgendaItem, EventRelatedEntity,
                     EventAgendaMedia, EventAgendaMediaLink, EventDocumentLink)
 from .disclosure import (Disclosure, DisclosureRegistrant, DisclosureAuthority,
-                          DisclosureRelatedEntity, DisclosureDisclosedEvent,
-                          DisclosureDocumentLink, DisclosureDocument,
-                          DisclosureSource, DisclosureIdentifier)
+                         DisclosureRelatedEntity, DisclosureDocumentLink,
+                         DisclosureDocument, DisclosureSource,
+                         DisclosureIdentifier)

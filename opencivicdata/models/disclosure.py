@@ -49,11 +49,14 @@ class DisclosureAuthority(RelatedEntityBase):
 class DisclosureRelatedEntity(RelatedEntityBase):
     disclosure = models.ForeignKey(Disclosure, related_name="related_entities")
     note = models.TextField()
-
-
-class DisclosureDisclosedEvent(RelatedEntityBase):
-    event = models.ForeignKey(Event)
-    disclosure = models.ForeignKey(Disclosure, related_name="disclosed_events")
+    classification = models.TextField()
+    event = models.ForeignKey('Event', null=True)
+    
+    @property
+    def entity_id(self):
+        if self.entity_type == 'event':
+            return self.event_id
+        return super(DisclosureRelatedEntity, self).entity_id
 
 
 class DisclosureDocument(LinkBase):
