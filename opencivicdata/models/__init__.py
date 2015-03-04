@@ -15,7 +15,7 @@ from .vote import (VoteEvent, VoteCount, PersonVote, VoteSource)
 from .event import (Event, EventLocation, EventMedia, EventMediaLink, EventDocument, EventLink,
                     EventSource, EventParticipant, EventAgendaItem, EventRelatedEntity,
                     EventAgendaMedia, EventAgendaMediaLink, EventDocumentLink)
-from .disclosure import (Disclosure, DisclosureRegistrant, DisclosureAuthority,
-                         DisclosureRelatedEntity, DisclosureDocumentLink,
+from .disclosure import (Disclosure, DisclosureRelatedEntity,
+                         DisclosureDocumentLink,
                          DisclosureDocument, DisclosureSource,
                          DisclosureIdentifier)

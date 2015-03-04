@@ -24,28 +24,6 @@ class Disclosure(OCDBase):
         ]
 
 
-class DisclosureRegistrant(RelatedEntityBase):
-
-    disclosure = models.ForeignKey(Disclosure, related_name="registrant")
-
-    def __str__(self):
-        tmpl = '{reg}: {dc} ({dd})'
-        return tmpl.format(reg=self.name,
-                           dc=self.disclosure.classification,
-                           dd=self.disclosure.submitted_date)
-
-
-class DisclosureAuthority(RelatedEntityBase):
-
-    disclosure = models.ForeignKey(Disclosure, related_name="authority")
-
-    def __str__(self):
-        tmpl = '{reg}: {dc} ({dd})'
-        return tmpl.format(reg=self.name,
-                           dc=self.disclosure.classification,
-                           dd=self.disclosure.submitted_date)
-
-
 class DisclosureRelatedEntity(RelatedEntityBase):
     disclosure = models.ForeignKey(Disclosure, related_name="related_entities")
     note = models.TextField()

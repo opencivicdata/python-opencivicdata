@@ -35,21 +35,6 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='DisclosureAuthority',
-            fields=[
-                ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
-                ('name', models.CharField(max_length=2000)),
-                ('entity_type', models.CharField(max_length=20, blank=True)),
-                ('disclosure', models.ForeignKey(related_name='authority', to='opencivicdata.Disclosure')),
-                ('organization', models.ForeignKey(null=True, to='opencivicdata.Organization')),
-                ('person', models.ForeignKey(null=True, to='opencivicdata.Person')),
-            ],
-            options={
-                'abstract': False,
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
             name='DisclosureDocument',
             fields=[
                 ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
@@ -83,21 +68,6 @@ class Migration(migrations.Migration):
                 ('identifier', models.CharField(max_length=300)),
                 ('scheme', models.CharField(max_length=300)),
                 ('disclosure', models.ForeignKey(related_name='identifiers', to='opencivicdata.Disclosure')),
-            ],
-            options={
-                'abstract': False,
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='DisclosureRegistrant',
-            fields=[
-                ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
-                ('name', models.CharField(max_length=2000)),
-                ('entity_type', models.CharField(max_length=20, blank=True)),
-                ('disclosure', models.ForeignKey(related_name='registrant', to='opencivicdata.Disclosure')),
-                ('organization', models.ForeignKey(null=True, to='opencivicdata.Organization')),
-                ('person', models.ForeignKey(null=True, to='opencivicdata.Person')),
             ],
             options={
                 'abstract': False,
