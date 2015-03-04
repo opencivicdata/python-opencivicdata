@@ -2,10 +2,10 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import uuidfield.fields
 import opencivicdata.models.base
-import django.core.validators
 import jsonfield.fields
+import django.core.validators
+import uuidfield.fields
 
 
 class Migration(migrations.Migration):
@@ -20,8 +20,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
-                ('id', opencivicdata.models.base.OCDIDField(ocd_type='disclosure', serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-disclosure/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-disclosure/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
+                ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
+                ('id', opencivicdata.models.base.OCDIDField(ocd_type='disclosure', validators=[django.core.validators.RegexValidator(flags=32, regex='^ocd-disclosure/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-disclosure/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], serialize=False)),
                 ('name', models.CharField(max_length=300)),
                 ('description', models.TextField()),
                 ('classification', models.CharField(max_length=100)),
@@ -37,8 +37,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DisclosureDocument',
             fields=[
-                ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
-                ('note', models.CharField(max_length=300, blank=True)),
+                ('id', uuidfield.fields.UUIDField(blank=True, max_length=32, serialize=False, primary_key=True, editable=False, unique=True)),
+                ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('date', models.CharField(max_length=10)),
                 ('disclosure', models.ForeignKey(related_name='documents', to='opencivicdata.Disclosure')),
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DisclosureDocumentLink',
             fields=[
-                ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
+                ('id', uuidfield.fields.UUIDField(blank=True, max_length=32, serialize=False, primary_key=True, editable=False, unique=True)),
                 ('media_type', models.CharField(max_length=100)),
                 ('url', models.URLField(max_length=2000)),
                 ('document', models.ForeignKey(related_name='links', to='opencivicdata.DisclosureDocument')),
@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DisclosureIdentifier',
             fields=[
-                ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
+                ('id', uuidfield.fields.UUIDField(blank=True, max_length=32, serialize=False, primary_key=True, editable=False, unique=True)),
                 ('identifier', models.CharField(max_length=300)),
                 ('scheme', models.CharField(max_length=300)),
                 ('disclosure', models.ForeignKey(related_name='identifiers', to='opencivicdata.Disclosure')),
@@ -77,15 +77,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DisclosureRelatedEntity',
             fields=[
-                ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
+                ('id', uuidfield.fields.UUIDField(blank=True, max_length=32, serialize=False, primary_key=True, editable=False, unique=True)),
                 ('name', models.CharField(max_length=2000)),
-                ('entity_type', models.CharField(max_length=20, blank=True)),
+                ('entity_type', models.CharField(blank=True, max_length=20)),
                 ('note', models.TextField()),
                 ('classification', models.TextField()),
                 ('disclosure', models.ForeignKey(related_name='related_entities', to='opencivicdata.Disclosure')),
-                ('event', models.ForeignKey(null=True, to='opencivicdata.Event')),
-                ('organization', models.ForeignKey(null=True, to='opencivicdata.Organization')),
-                ('person', models.ForeignKey(null=True, to='opencivicdata.Person')),
+                ('event', models.ForeignKey(to='opencivicdata.Event', null=True)),
+                ('organization', models.ForeignKey(to='opencivicdata.Organization', null=True)),
+                ('person', models.ForeignKey(to='opencivicdata.Person', null=True)),
             ],
             options={
                 'abstract': False,
@@ -95,8 +95,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='DisclosureSource',
             fields=[
-                ('id', uuidfield.fields.UUIDField(editable=False, unique=True, serialize=False, max_length=32, primary_key=True, blank=True)),
-                ('note', models.CharField(max_length=300, blank=True)),
+                ('id', uuidfield.fields.UUIDField(blank=True, max_length=32, serialize=False, primary_key=True, editable=False, unique=True)),
+                ('note', models.CharField(blank=True, max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('disclosure', models.ForeignKey(related_name='sources', to='opencivicdata.Disclosure')),
             ],
@@ -108,5 +108,17 @@ class Migration(migrations.Migration):
         migrations.AlterIndexTogether(
             name='disclosure',
             index_together=set([('jurisdiction', 'classification', 'effective_date')]),
+        ),
+        migrations.AddField(
+            model_name='organization',
+            name='source_identified',
+            field=models.NullBooleanField(default=False),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='post',
+            name='source_identified',
+            field=models.NullBooleanField(default=False),
+            preserve_default=True,
         ),
     ]

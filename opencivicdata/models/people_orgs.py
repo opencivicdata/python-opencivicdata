@@ -6,6 +6,7 @@ from .. import common
 
 # abstract models
 
+
 class ContactDetailBase(RelatedBase):
     type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
     value = models.CharField(max_length=300)
@@ -35,6 +36,7 @@ class Organization(OCDBase):
     id = OCDIDField(ocd_type='organization')
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True, max_length=2000)
+    source_identified = models.NullBooleanField(default=False)
     parent = models.ForeignKey('self', related_name='children', null=True)
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations', null=True)
     classification = models.CharField(max_length=100, blank=True,
@@ -80,6 +82,7 @@ class Post(OCDBase):
     id = OCDIDField(ocd_type='post')
     label = models.CharField(max_length=300)
     role = models.CharField(max_length=300, blank=True)
+    source_identified = models.NullBooleanField(default=False)
     organization = models.ForeignKey(Organization, related_name='posts')
     division = models.ForeignKey(Division, related_name='posts', null=True, default=None)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
