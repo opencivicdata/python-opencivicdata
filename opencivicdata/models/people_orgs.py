@@ -82,7 +82,6 @@ class Post(OCDBase):
     id = OCDIDField(ocd_type='post')
     label = models.CharField(max_length=300)
     role = models.CharField(max_length=300, blank=True)
-    source_identified = models.NullBooleanField(default=False)
     organization = models.ForeignKey(Organization, related_name='posts')
     division = models.ForeignKey(Division, related_name='posts', null=True, default=None)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
@@ -109,6 +108,7 @@ class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300, db_index=True)
     sort_name = models.CharField(max_length=100, default='')
+    source_identified = models.NullBooleanField(default=False)
 
     image = models.URLField(blank=True, max_length=2000)
     gender = models.CharField(max_length=100)
