@@ -60,11 +60,15 @@ class BillTitle(RelatedBase):
     title = models.TextField()
     note = models.TextField(blank=True)
 
+class BillSummary(RelatedBase):
+    bill = models.ForeignKey(Bill, related_name='summaries')
+    note = models.TextField()
+    text = models.TextField()
+    date = models.TextField(max_length=10, blank=True) # YYYY[-MM[-DD]]
 
 class BillIdentifier(IdentifierBase):
     bill = models.ForeignKey(Bill, related_name='other_identifiers')
     note = models.TextField(blank=True)
-
 
 class BillAction(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='actions')
@@ -76,7 +80,6 @@ class BillAction(RelatedBase):
 
     class Meta:
         ordering = ['order']
-
 
 class BillActionRelatedEntity(RelatedEntityBase):
     action = models.ForeignKey(BillAction, related_name='related_entities')
