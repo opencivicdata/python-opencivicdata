@@ -160,7 +160,8 @@ VOTE_RESULTS = _keys(VOTE_RESULT_CHOICES)
 
 DISCLOSURE_CLASSIFICATION_CHOICES = (
     ('lobbying', 'Lobbying'),
-    ('contributions', 'Contributions')
+    ('contributions', 'Contributions'),
+    ('post_employment', 'Post Employment')
 )
 
 DISCLOSURE_CLASSIFICATIONS = _keys(DISCLOSURE_CLASSIFICATION_CHOICES)

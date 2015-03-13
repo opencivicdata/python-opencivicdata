@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('extras', jsonfield.fields.JSONField(blank=True, default='{}')),
                 ('id', opencivicdata.models.base.OCDIDField(ocd_type='disclosure', validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-disclosure/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-disclosure/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], serialize=False)),
                 ('name', models.CharField(max_length=300)),
+                ('source_identified', models.NullBooleanField(default=False)),
                 ('description', models.TextField()),
                 ('classification', models.CharField(max_length=100)),
                 ('effective_date', models.DateTimeField()),

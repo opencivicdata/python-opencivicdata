@@ -14,6 +14,7 @@ class Disclosure(OCDBase):
     effective_date = models.DateTimeField()
     submitted_date = models.DateTimeField()
     timezone = models.CharField(max_length=300)
+    source_identified = models.NullBooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -28,7 +29,7 @@ class DisclosureRelatedEntity(RelatedEntityBase):
     disclosure = models.ForeignKey(Disclosure, related_name="related_entities")
     note = models.TextField()
     classification = models.TextField()
-    event = models.ForeignKey('Event', null=True)
+    event = models.ForeignKey(Event, null=True)
     
     @property
     def entity_id(self):
