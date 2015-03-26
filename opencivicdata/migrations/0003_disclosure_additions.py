@@ -11,7 +11,7 @@ import django.core.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencivicdata', '0001_initial', '0002_other_name_null_date'),
+        ('opencivicdata', '0002_other_name_null_date'),
     ]
 
     operations = [
