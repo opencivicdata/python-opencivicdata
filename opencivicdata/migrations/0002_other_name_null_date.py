@@ -21,4 +21,14 @@ class Migration(migrations.Migration):
             name='start_date',
             field=models.CharField(max_length=10, null=True),
         ),
+        migrations.AlterField(
+            model_name='personname',
+            name='end_date',
+            field=models.CharField(max_length=10, null=True),
+        ),
+        migrations.AlterField(
+            model_name='personname',
+            name='start_date',
+            field=models.CharField(max_length=10, null=True),
+        ),
     ]
