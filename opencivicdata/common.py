@@ -86,8 +86,10 @@ BILL_CLASSIFICATION_CHOICES = (
     ('appointment', 'Appointment'),
     ('constitutional amendment', 'Constitutional Amendment'),
     ('petition', 'Petition'),
+    ('order', 'Order'),
     ('concurrent order', 'Concurrent Order'),
     ('appropriation', 'Appropriation'),
+    ('ordinance', 'Ordinance')
 )
 BILL_CLASSIFICATIONS = _keys(BILL_CLASSIFICATION_CHOICES)
 
