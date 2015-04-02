@@ -51,6 +51,9 @@ def load_divisions(country):
 class Command(BaseCommand):
     help = 'initialize a pupa database'
 
+    def add_arguments(self, parser):
+        parser.add_argument('countries', nargs='+', type=str)
+
     def handle(self, *args, **options):
-        for country in args:
+        for country in options['countries']:
             load_divisions(country)
