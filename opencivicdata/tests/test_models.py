@@ -92,12 +92,12 @@ def test_ocdid_validation_jurisdiction():
     # this fails
     with pytest.raises(ValidationError):
         j = Jurisdiction(name='test juris', id='ocd-division/country:us/test:something/else',
-                         url='http://example.com')
+                         url='http://example.com', feature_flags=[])
         j.full_clean(exclude=['division'])
 
     # this succeeds
     j = Jurisdiction(name='test juris', id='ocd-jurisdiction/country:us/test:something/else',
-                     url='http://example.com')
+                     url='http://example.com', feature_flags=[])
     j.full_clean(exclude=['division'])
 
 

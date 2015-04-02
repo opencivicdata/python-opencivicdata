@@ -1,5 +1,5 @@
 from django.db import models
-from djorm_pgarray.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField
 
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
@@ -12,7 +12,7 @@ class VoteEvent(OCDBase):
     id = OCDIDField(ocd_type='vote')
     identifier = models.CharField(max_length=300, blank=True)
     motion_text = models.TextField()
-    motion_classification = ArrayField(dbtype="text")      # enum
+    motion_classification = ArrayField(models.TextField(), blank=True)      # enum
     start_date = models.CharField(max_length=19)    # YYYY-MM-DD HH:MM:SS
     end_date = models.CharField(max_length=19, blank=True)    # YYYY-MM-DD
 

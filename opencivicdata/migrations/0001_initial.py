@@ -6,7 +6,7 @@ import uuidfield.fields
 import django.core.validators
 import jsonfield.fields
 import django.contrib.gis.db.models.fields
-import djorm_pgarray.fields
+import django.contrib.postgres.fields
 import opencivicdata.models.base
 
 
@@ -25,8 +25,8 @@ class Migration(migrations.Migration):
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='bill')),
                 ('identifier', models.CharField(max_length=100)),
                 ('title', models.TextField()),
-                ('classification', djorm_pgarray.fields.ArrayField(dbtype='text')),
-                ('subject', djorm_pgarray.fields.ArrayField(dbtype='text')),
+                ('classification', django.contrib.postgres.fields.ArrayField(models.TextField(), blank=True)),
+                ('subject', django.contrib.postgres.fields.ArrayField(models.TextField(), blank=True)),
             ],
             options={
             },
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('description', models.TextField()),
                 ('date', models.CharField(max_length=10)),
-                ('classification', djorm_pgarray.fields.ArrayField(dbtype='text')),
+                ('classification', django.contrib.postgres.fields.ArrayField(models.TextField(), blank=True)),
                 ('order', models.PositiveIntegerField()),
                 ('bill', models.ForeignKey(to='opencivicdata.Bill')),
             ],
@@ -232,8 +232,8 @@ class Migration(migrations.Migration):
                 ('id', uuidfield.fields.UUIDField(unique=True, max_length=32, editable=False, primary_key=True, serialize=False, blank=True)),
                 ('description', models.TextField()),
                 ('order', models.CharField(blank=True, max_length=100)),
-                ('subjects', djorm_pgarray.fields.ArrayField(dbtype='text')),
-                ('notes', djorm_pgarray.fields.ArrayField(dbtype='text')),
+                ('subjects', django.contrib.postgres.fields.ArrayField(models.TextField(), blank=True)),
+                ('notes', django.contrib.postgres.fields.ArrayField(models.TextField(), blank=True)),
                 ('event', models.ForeignKey(to='opencivicdata.Event')),
             ],
             options={
@@ -407,7 +407,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=300)),
                 ('url', models.URLField(max_length=2000)),
                 ('classification', models.CharField(max_length=50, db_index=True, choices=[('government', 'Government'), ('legislature', 'Legislature'), ('executive', 'Executive'), ('school_system', 'School System')], default='government')),
-                ('feature_flags', djorm_pgarray.fields.ArrayField(dbtype='text')),
+                ('feature_flags', django.contrib.postgres.fields.ArrayField(models.TextField(), blank=True)),
                 ('division', models.ForeignKey(to='opencivicdata.Division')),
             ],
             options={
@@ -872,7 +872,7 @@ class Migration(migrations.Migration):
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(regex='^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', message='ID must match ^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', flags=32)], ocd_type='vote')),
                 ('identifier', models.CharField(blank=True, max_length=300)),
                 ('motion_text', models.TextField()),
-                ('motion_classification', djorm_pgarray.fields.ArrayField(dbtype='text')),
+                ('motion_classification', django.contrib.postgres.fields.ArrayField(models.TextField(), blank=True)),
                 ('start_date', models.CharField(max_length=19)),
                 ('end_date', models.CharField(blank=True, max_length=19)),
                 ('result', models.CharField(max_length=50, choices=[('pass', 'Pass'), ('fail', 'Fail')])),
