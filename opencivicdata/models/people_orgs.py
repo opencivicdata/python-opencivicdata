@@ -84,6 +84,7 @@ class Post(OCDBase):
     division = models.ForeignKey(Division, related_name='posts', null=True, default=None)
     start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+    num_seats = models.IntegerField(default=1)
 
     class Meta:
         index_together = [
