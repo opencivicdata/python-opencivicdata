@@ -66,6 +66,7 @@ ORGANIZATION_CLASSIFICATION_CHOICES = (
     ('party', 'Party'),
     ('committee', 'Committee'),
     ('commission', 'Commission'),
+    ('department', 'Department'),
     ('office', 'Office'),
     ('company', 'Company'),
     ('political action committee', 'Political Action Committee (PAC)')
