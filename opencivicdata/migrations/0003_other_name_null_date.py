@@ -7,6 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        #TODO change to depend on auto 0002
         ('opencivicdata', '0001_initial'),
     ]
 
