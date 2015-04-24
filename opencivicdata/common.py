@@ -86,6 +86,7 @@ BILL_CLASSIFICATION_CHOICES = (
     ('proclamation', 'Proclamation'),
     ('nomination', 'Nomination'),
     ('contract', 'Contract'),
+    ('claim', 'Claim'),
     ('appointment', 'Appointment'),
     ('constitutional amendment', 'Constitutional Amendment'),
     ('petition', 'Petition'),
