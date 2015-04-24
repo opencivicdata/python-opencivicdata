@@ -7,8 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        #TODO change to depend on auto 0002
-        ('opencivicdata', '0001_initial'),
+        ('opencivicdata', '0002_auto_20150131_1021'),
     ]
 
     operations = [
