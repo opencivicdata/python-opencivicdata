@@ -71,6 +71,7 @@ ORGANIZATION_CLASSIFICATIONS = _keys(ORGANIZATION_CLASSIFICATION_CHOICES)
 
 BILL_CLASSIFICATION_CHOICES = (
     ('bill', 'Bill'),
+    ('amendment', 'Amendment'),
     ('resolution', 'Resolution'),
     ('concurrent resolution', 'Concurrent Resolution'),
     ('joint resolution', 'Joint Resolution'),
