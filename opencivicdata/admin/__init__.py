@@ -48,18 +48,26 @@ class DivisionAdmin(ModelAdmin):
     list_display = ('name', 'id')
     search_fields = list_display
     fields = readonly_fields = ('id', 'name', 'redirect', 'country')
+    ordering = ('id',)
+    def has_add_permission(self, request):
+        return False
+
 
 class LegislativeSessionInline(ReadOnlyTabularInline):
     model = models.LegislativeSession
     readonly_fields = ('identifier', 'name', 'classification')
-
+    ordering = ('-identifier',)
 
 @admin.register(models.Jurisdiction)
 class JurisdictionAdmin(ModelAdmin):
     list_display = ('name', 'id')
     readonly_fields = fields = ('id', 'name', 'classification', 'url', 'division', 'feature_flags',
                                 'extras')
+    ordering = ('id',)
     inlines = [LegislativeSessionInline]
+
+    def has_add_permission(self, request):
+        return False
 
 # Organizations and Posts #############
 
@@ -270,7 +278,7 @@ class BillSourceInline(ReadOnlyTabularInline):
 @admin.register(models.Bill)
 class BillAdmin(admin.ModelAdmin):
     readonly_fields = fields = (
-        'identifier', 'legislative_session', 'classification',
+        'identifier', 'legislative_session', 'bill_classifications',
         'from_organization', 'title', 'id', 'extras')
     search_fields = ['identifier', 'title',]
     list_select_related = (
@@ -286,6 +294,13 @@ class BillAdmin(admin.ModelAdmin):
         BillSponsorshipInline,
         BillSourceInline,
     ]
+
+    def has_add_permission(self, request):
+        #we shouldn't be able to add a bill in the interface
+        return False
+
+    def bill_classifications(self,obj):
+        return ", ".join(obj.classification)
 
     def get_jurisdiction_name(self, obj):
         return obj.legislative_session.jurisdiction.name
