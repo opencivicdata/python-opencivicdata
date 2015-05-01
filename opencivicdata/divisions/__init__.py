@@ -24,11 +24,18 @@ class Division(object):
         if division not in self._cache:
             # figure out the source
             if not from_csv:
+                if not re.match(r"ocd-division/country:\w{2}", division):
+                    raise ValueError("Invalid OCD format.")
                 country = re.findall(r'country:(\w{2})', division)[0]
                 from_csv = OCD_DIVISION_CSV.format(country)
 
             # load division and all children
-            for row in csv.DictReader(io.open(from_csv, encoding='utf8')):
+            try:
+                country_csv = io.open(from_csv, encoding='utf8')
+            except FileNotFoundError:
+                raise ValueError("Unknown country in OCD ID")
+
+            for row in csv.DictReader(country_csv):
                 if row['id'].startswith(division):
                     #same_as = row.pop('sameAs', None)
                     #if same_as:
@@ -36,7 +43,9 @@ class Division(object):
                         #continue
                     #same_as_note = row.pop('sameAsNote', None)
                     Division(**row)
-
+            if division not in self._cache:
+                raise ValueError("Division not found")
+                
         return self._cache[division]
 
     def __init__(self, id, name, **kwargs):
