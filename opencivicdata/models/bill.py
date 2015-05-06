@@ -60,6 +60,11 @@ class BillTitle(RelatedBase):
     title = models.TextField()
     note = models.TextField(blank=True)
 
+class BillSummary(RelatedBase):
+    bill = models.ForeignKey(Bill, related_name='summaries')
+    note = models.TextField(blank=True)
+    text = models.TextField()
+    date = models.TextField(max_length=10, blank=True) # YYYY[-MM[-DD]]
 
 class BillIdentifier(IdentifierBase):
     bill = models.ForeignKey(Bill, related_name='other_identifiers')
