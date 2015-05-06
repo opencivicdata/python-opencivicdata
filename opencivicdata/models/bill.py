@@ -70,7 +70,6 @@ class BillIdentifier(IdentifierBase):
     bill = models.ForeignKey(Bill, related_name='other_identifiers')
     note = models.TextField(blank=True)
 
-
 class BillAction(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='actions')
     organization = models.ForeignKey(Organization, related_name='actions')
@@ -81,7 +80,6 @@ class BillAction(RelatedBase):
 
     class Meta:
         ordering = ['order']
-
 
 class BillActionRelatedEntity(RelatedEntityBase):
     action = models.ForeignKey(BillAction, related_name='related_entities')
