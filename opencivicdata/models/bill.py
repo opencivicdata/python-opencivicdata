@@ -53,6 +53,7 @@ class BillAbstract(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='abstracts')
     abstract = models.TextField()
     note = models.TextField(blank=True)
+    date = models.TextField(max_length=10, blank=True) # YYYY[-MM[-DD]]
 
 
 class BillTitle(RelatedBase):
