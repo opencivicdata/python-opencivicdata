@@ -55,14 +55,15 @@ class DivisionAdmin(ModelAdmin):
 
 class LegislativeSessionInline(ReadOnlyTabularInline):
     model = models.LegislativeSession
-    readonly_fields = ('identifier', 'name', 'classification')
+    readonly_fields = ('identifier', 'name')
     ordering = ('-identifier',)
 
 @admin.register(models.Jurisdiction)
 class JurisdictionAdmin(ModelAdmin):
     list_display = ('name', 'id')
-    readonly_fields = fields = ('id', 'name', 'classification', 'url', 'division', 'feature_flags',
-                                'extras')
+    readonly_fields = fields = ('id', 'name', 'division', 'classification',
+                                'feature_flags','extras')
+    fields = readonly_fields + ('url',)
     ordering = ('id',)
     inlines = [LegislativeSessionInline]
 
