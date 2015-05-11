@@ -196,12 +196,12 @@ class PersonAdmin(ModelAdmin):
         html = []
         SHOW_N = 5
         for memb in memberships[:SHOW_N]:
-            info = (memb._meta.app_label, memb._meta.module_name)
-            admin_url = ''#urlresolvers.reverse('admin:%s_%s_change' % info, args=(memb.pk,))
-            tmpl = '<a href="%s">%s %s</a>\n'
+            org = memb.organization
+            admin_url = urlresolvers.reverse('admin:opencivicdata_organization_change', args=(org.pk,))
+            tmpl = '<a href="%s">%s%s</a>\n'
             html.append(tmpl % (
                 admin_url,
-                memb.organization.jurisdiction.name if memb.organization.jurisdiction else '',
+                memb.organization.jurisdiction.name + ": " if memb.organization.jurisdiction else '',
                 memb.organization.name))
         more = len(memberships) - SHOW_N
         if 0 < more:
