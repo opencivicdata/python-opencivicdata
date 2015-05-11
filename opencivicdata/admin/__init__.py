@@ -117,8 +117,7 @@ class OrganizationAdmin(ModelAdmin):
         'name', 'jurisdiction', 'id', 'classification',
         'parent', ('founding_date', 'dissolution_date'),
         'image', 'extras')
-    list_display = ('name', 'jurisdiction', 'classification')
-    list_select_related = ('jurisdiction',)
+
     inlines = [
         OrganizationIdentifierInline,
         OrganizationNameInline,
@@ -127,6 +126,25 @@ class OrganizationAdmin(ModelAdmin):
         OrganizationSourceInline,
         PostInline
     ]
+
+    def get_jurisdiction(self, obj):
+        jurisdiction = obj.jurisdiction
+        if jurisdiction:
+            admin_url = urlresolvers.reverse('admin:opencivicdata_jurisdiction_change',
+                                                args=(jurisdiction.pk,))
+            tmpl = '<a href="%s">%s</a>'
+            return tmpl % (admin_url, jurisdiction.name)
+
+        return "(none)"
+
+    get_jurisdiction.short_description = 'Jurisdiction'
+    get_jurisdiction.allow_tags = True
+    get_jurisdiction.admin_order_field = 'jurisdiction__name'
+
+    list_select_related = ('jurisdiction',)
+    list_display = ('name', 'get_jurisdiction', 'classification')
+    ordering = ('name',)
+    
 
 class PostContactDetailInline(ContactDetailInline):
     model = models.PostContactDetail
