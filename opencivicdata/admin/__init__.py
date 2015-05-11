@@ -10,6 +10,10 @@ class ModelAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
+    #we probably don't want to add anything through the interface
+    def has_add_permission(self, request):
+        return False
+
 
 class ReadOnlyTabularInline(admin.TabularInline):
     def has_add_permission(self, request):
@@ -20,6 +24,7 @@ class ReadOnlyTabularInline(admin.TabularInline):
 class IdentifierInline(admin.TabularInline):
     fields = ('identifier', 'scheme')
     extra = 0
+    can_delete = False
 
 
 class LinkInline(admin.TabularInline):
@@ -49,8 +54,7 @@ class DivisionAdmin(ModelAdmin):
     search_fields = list_display
     fields = readonly_fields = ('id', 'name', 'redirect', 'country')
     ordering = ('id',)
-    def has_add_permission(self, request):
-        return False
+
 
 
 class LegislativeSessionInline(ReadOnlyTabularInline):
@@ -66,9 +70,6 @@ class JurisdictionAdmin(ModelAdmin):
     fields = readonly_fields + ('url',)
     ordering = ('id',)
     inlines = [LegislativeSessionInline]
-
-    def has_add_permission(self, request):
-        return False
 
 # Organizations and Posts #############
 
@@ -164,9 +165,9 @@ class PersonSourceInline(LinkInline):
 class MembershipInline(ReadOnlyTabularInline):
     model = models.Membership
     readonly_fields = ('organization', 'post')
-    fields = ('organization', 'post', 'label', 'role', 'start_date', 'end_date')
+    fields = ('organization', 'post', 'label', 'role', 'start_date', 'end_date', 'id')
     extra = 0
-    can_delete = False
+    can_delete = True
 
 
 @admin.register(models.Person)
@@ -212,29 +213,6 @@ class PersonAdmin(ModelAdmin):
 
     list_select_related = ('memberships',)
     list_display = ('name', 'id', 'get_memberships')
-
-
-class MembershipContactDetailInline(ContactDetailInline, ReadOnlyTabularInline):
-    model = models.MembershipContactDetail
-
-
-class MembershipLinkInline(LinkInline, ReadOnlyTabularInline):
-    model = models.MembershipLink
-
-
-@admin.register(models.Membership)
-class MembershipAdmin(ModelAdmin):
-    readonly_fields = ('organization', 'person', 'post', 'on_behalf_of', 'extras')
-    list_display = ('organization', 'person', 'post', 'on_behalf_of',
-                    'label', 'role', 'start_date', 'end_date',)
-    fields = ('organization', 'person', 'role', 'post', 'label', 'on_behalf_of',
-              ('start_date', 'end_date'), 'extras')
-    list_select_related = ('post', 'person', 'organization', 'on_behalf_of')
-    inlines = [
-        MembershipContactDetailInline,
-        MembershipLinkInline,
-    ]
-
 
 # Bills ################
 
@@ -296,9 +274,6 @@ class BillAdmin(admin.ModelAdmin):
         BillSourceInline,
     ]
 
-    def has_add_permission(self, request):
-        #we shouldn't be able to add a bill in the interface
-        return False
 
     def bill_classifications(self,obj):
         return ", ".join(obj.classification)
