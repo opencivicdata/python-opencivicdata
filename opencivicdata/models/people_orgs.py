@@ -110,10 +110,10 @@ class Person(OCDBase):
     given_name = models.CharField(max_length=100, blank=True)
 
     image = models.URLField(blank=True, max_length=2000)
-    gender = models.CharField(max_length=100)
-    summary = models.CharField(max_length=500)
-    national_identity = models.CharField(max_length=300)
-    biography = models.TextField()
+    gender = models.CharField(max_length=100, blank=True)
+    summary = models.CharField(max_length=500, blank=True)
+    national_identity = models.CharField(max_length=300, blank=True)
+    biography = models.TextField(blank=True)
     birth_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     death_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
 
