@@ -22,8 +22,8 @@ class ContactDetailBase(RelatedBase):
 class OtherNameBase(RelatedBase):
     name = models.CharField(max_length=500, db_index=True)
     note = models.CharField(max_length=500, blank=True)
-    start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10)      # YYYY[-MM[-DD]]
+    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
+    end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
 
     class Meta:
         abstract = True

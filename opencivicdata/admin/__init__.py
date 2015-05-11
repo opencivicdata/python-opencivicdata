@@ -22,9 +22,11 @@ class ReadOnlyTabularInline(admin.TabularInline):
 
 
 class IdentifierInline(admin.TabularInline):
-    fields = ('identifier', 'scheme')
+    fields = readonly_fields = ('identifier', 'scheme')
     extra = 0
     can_delete = False
+    verbose_name = "ID from another system"
+    verbose_name_plural = "IDs from other systems"
 
 
 class LinkInline(admin.TabularInline):
@@ -35,11 +37,15 @@ class LinkInline(admin.TabularInline):
 class ContactDetailInline(admin.TabularInline):
     fields = ('type', 'value', 'note', 'label')
     extra = 0
+    verbose_name = "Piece of contact information"
+    verbose_name_plural = "Contact information"
 
 
 class OtherNameInline(admin.TabularInline):
     fields = ('name', 'note', 'start_date', 'end_date')
     extra = 0
+    verbose_name = "Alternate name"
+    verbose_name_plural = "Alternate names"
 
 #class MimetypeLinkInline(admin.TabularInline):
 #    fields = ('media_type', 'url')
@@ -155,10 +161,14 @@ class PersonContactDetailInline(ContactDetailInline):
 
 
 class PersonLinkInline(LinkInline):
+    verbose_name = "Related link"
+    verbose_name_plural = "Related links"
     model = models.PersonLink
 
 
 class PersonSourceInline(LinkInline):
+    verbose_name = "Source link"
+    verbose_name_plural = "Source links"
     model = models.PersonSource
 
 
@@ -180,6 +190,7 @@ class PersonAdmin(ModelAdmin):
         ('gender', 'national_identity', 'sort_name', 'summary'),
         'biography', 'extras',
     )
+    ordering = ('name',)
 
     inlines = [
         PersonIdentifierInline,
