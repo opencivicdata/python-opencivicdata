@@ -117,6 +117,7 @@ class OrganizationAdmin(ModelAdmin):
         'name', 'jurisdiction', 'id', 'classification',
         'parent', ('founding_date', 'dissolution_date'),
         'image', 'extras')
+    search_fields = ('name',)
 
     inlines = [
         OrganizationIdentifierInline,
@@ -126,6 +127,16 @@ class OrganizationAdmin(ModelAdmin):
         OrganizationSourceInline,
         PostInline
     ]
+
+    def get_org_name(self, obj):
+        parent = obj.parent
+        if parent:
+            return "{org} ({parent})".format(org=obj.name,
+                                            parent=parent.name)
+        return obj.name
+    get_org_name.short_description = "Name"
+    get_org_name.allow_tags = True
+    get_org_name.admin_order_field = "name"
 
     def get_jurisdiction(self, obj):
         jurisdiction = obj.jurisdiction
@@ -142,7 +153,7 @@ class OrganizationAdmin(ModelAdmin):
     get_jurisdiction.admin_order_field = 'jurisdiction__name'
 
     list_select_related = ('jurisdiction',)
-    list_display = ('name', 'get_jurisdiction', 'classification')
+    list_display = ('get_org_name', 'get_jurisdiction', 'classification')
     ordering = ('name',)
     
 
@@ -159,10 +170,12 @@ class PostAdmin(ModelAdmin):
     readonly_fields = ('id', 'label', 'organization', 'division', 'extras', 'role')
     fields = readonly_fields + (('start_date', 'end_date'), )
     list_display = ('label', 'organization', 'division')
+    ordering = ('organization__name',)
     inlines = [
         PostContactDetailInline,
         PostLinkInline,
     ]
+    search_fields = ('organization__name','label')
 
 ### People & Memberships #######
 
@@ -284,7 +297,7 @@ class BillSourceInline(ReadOnlyTabularInline):
 
 
 @admin.register(models.Bill)
-class BillAdmin(admin.ModelAdmin):
+class BillAdmin(ModelAdmin):
     readonly_fields = fields = (
         'identifier', 'legislative_session', 'bill_classifications',
         'from_organization', 'title', 'id', 'extras')
@@ -314,6 +327,7 @@ class BillAdmin(admin.ModelAdmin):
     def get_session_name(self, obj):
         return obj.legislative_session.name
     get_session_name.short_description = 'Session'
+    get_session_name.admin_order_field = 'legislative_session__name'
 
     def source_link(self, obj):
         source = obj.sources.filter(url__icontains="legislationdetail").get()
