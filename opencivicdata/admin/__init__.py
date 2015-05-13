@@ -282,7 +282,12 @@ class BillActionInline(ReadOnlyTabularInline):
     ordering = ('date',)
 
 # TODO: BillActionRelatedEntity
-# TODO: RelatedBill
+
+class RelatedBillInline(ReadOnlyTabularInline):
+    model = models.RelatedBill
+    fk_name = 'bill'
+    readonly_fields = fields = ('identifier', 'legislative_session', 'relation_type')
+    extra = 0
 
 class BillSponsorshipInline(ReadOnlyTabularInline):
     model = models.BillSponsorship
@@ -292,7 +297,7 @@ class BillSponsorshipInline(ReadOnlyTabularInline):
 # TODO: Document & Version
 
 class BillSourceInline(ReadOnlyTabularInline):
-    readonly_fields = ('url', 'note')
+    fields = ('url', 'note')
     model = models.BillSource
 
 
@@ -314,6 +319,7 @@ class BillAdmin(ModelAdmin):
         BillActionInline,
         BillSponsorshipInline,
         BillSourceInline,
+        RelatedBillInline,
     ]
 
 
