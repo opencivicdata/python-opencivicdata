@@ -110,6 +110,14 @@ class PostInline(admin.TabularInline):
     show_change_link = True # Django 1.8?
 
 
+class OrgMembershipInline(ReadOnlyTabularInline):
+    model = models.Membership
+    fk_name = "organization"
+    readonly_fields = ('person', 'post')
+    fields = ('person', 'post', 'label', 'role', 'start_date', 'end_date', 'id')
+    extra = 0
+    can_delete = True
+
 @admin.register(models.Organization)
 class OrganizationAdmin(ModelAdmin):
     readonly_fields = ('id', 'classification', 'parent', 'jurisdiction', 'extras')
@@ -125,7 +133,8 @@ class OrganizationAdmin(ModelAdmin):
         OrganizationContactDetailInline,
         OrganizationLinkInline,
         OrganizationSourceInline,
-        PostInline
+        PostInline,
+        OrgMembershipInline,
     ]
 
     def get_org_name(self, obj):
@@ -210,7 +219,7 @@ class MembershipInline(ReadOnlyTabularInline):
     extra = 0
     can_delete = True
 
-
+#TODO field locking
 @admin.register(models.Person)
 class PersonAdmin(ModelAdmin):
     search_fields = ['name']
@@ -277,11 +286,22 @@ class BillIdentifierInline(IdentifierInline):
 
 class BillActionInline(ReadOnlyTabularInline):
     model = models.BillAction
-    readonly_fields = ('date', 'organization', 'description')
-    fields = ('date', 'description', 'organization')
-    ordering = ('date',)
+    def get_related_entities(self, obj):
+        ents = obj.related_entities.all()
+        #this seems to be a uuid problem, get
+        #rid of the below return stmt when uuids are fixed
+        return None
+        ent_list = [e.name for e in ents]
+        return ', '.join(ent_list)
 
-# TODO: BillActionRelatedEntity
+    get_related_entities.short_description = 'Related Entities'
+    get_related_entities.allow_tags = True
+            
+    list_select_related = ('BillActionRelatedEntity',)
+    readonly_fields = ('date', 'organization',
+                        'description','get_related_entities')
+
+
 
 class RelatedBillInline(ReadOnlyTabularInline):
     model = models.RelatedBill
@@ -294,7 +314,33 @@ class BillSponsorshipInline(ReadOnlyTabularInline):
     readonly_fields = fields = ('name', 'primary', 'classification')
     extra = 0
 
-# TODO: Document & Version
+
+class BillDocumentInline(ReadOnlyTabularInline):
+    model = models.BillDocument
+    def get_link(self, obj):
+        return None #get rid of this line when uuid issue fixed
+        link = obj.links.first()
+        return link.url
+
+    get_link.short_description = 'Link'
+    get_link.allow_tags = True
+
+    list_select_related = ('BillDocumentLink',)
+    readonly_fields = ('note','date', 'get_link')
+
+
+class BillVersionInline(ReadOnlyTabularInline):
+    model = models.BillVersion
+    def get_link(self, obj):
+        return None #get rid of this line when uuid issue fixed
+        link = obj.links.first()
+        return link.url
+
+    get_link.short_description = 'Link'
+    get_link.allow_tags = True
+
+    list_select_related = ('BillVersionLink',)
+    readonly_fields = ('note','date', 'get_link')
 
 class BillSourceInline(ReadOnlyTabularInline):
     fields = ('url', 'note')
@@ -320,6 +366,8 @@ class BillAdmin(ModelAdmin):
         BillSponsorshipInline,
         BillSourceInline,
         RelatedBillInline,
+        BillVersionInline,
+        BillDocumentInline,
     ]
 
 
