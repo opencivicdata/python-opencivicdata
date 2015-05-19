@@ -5,7 +5,6 @@ from django.db import models, migrations
 import uuid
 import opencivicdata.models.base
 import django.contrib.gis.db.models.fields
-import jsonfield.fields
 import django.core.validators
 import django.contrib.postgres.fields
 
@@ -21,7 +20,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], ocd_type='bill')),
                 ('identifier', models.CharField(max_length=100)),
                 ('title', models.TextField()),
@@ -194,7 +192,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], ocd_type='event')),
                 ('name', models.CharField(max_length=300)),
                 ('description', models.TextField()),
@@ -364,7 +361,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$', regex='^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$')], ocd_type='jurisdiction')),
                 ('name', models.CharField(max_length=300)),
                 ('url', models.URLField(max_length=2000)),
@@ -396,7 +392,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], ocd_type='membership')),
                 ('label', models.CharField(blank=True, max_length=300)),
                 ('role', models.CharField(blank=True, max_length=300)),
@@ -435,7 +430,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], ocd_type='organization')),
                 ('name', models.CharField(max_length=300)),
                 ('image', models.URLField(blank=True, max_length=2000)),
@@ -515,7 +509,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], ocd_type='person')),
                 ('name', models.CharField(max_length=300, db_index=True)),
                 ('sort_name', models.CharField(default='', max_length=100)),
@@ -614,7 +607,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], ocd_type='post')),
                 ('label', models.CharField(max_length=300)),
                 ('role', models.CharField(blank=True, max_length=300)),
@@ -680,7 +672,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', jsonfield.fields.JSONField(default='{}', blank=True)),
                 ('id', opencivicdata.models.base.OCDIDField(serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')], ocd_type='vote')),
                 ('identifier', models.CharField(blank=True, max_length=300)),
                 ('motion_text', models.TextField()),

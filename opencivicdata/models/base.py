@@ -2,7 +2,6 @@ import re
 import uuid
 from django.db import models
 from django.core.validators import RegexValidator
-from jsonfield import JSONField
 from .. import common
 
 
@@ -42,7 +41,6 @@ class OCDBase(models.Model):
     """ common base fields across all top-level models """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    extras = JSONField(default='{}', blank=True)
 
     class Meta:
         abstract = True
