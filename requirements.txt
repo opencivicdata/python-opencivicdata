@@ -1,4 +1,5 @@
 Django==1.8.0
 psycopg2
 jsonfield
+django-uuidfield
 opencivicdata-divisions
