@@ -101,8 +101,8 @@ class EventParticipant(RelatedEntityBase):
 class EventAgendaItem(RelatedBase):
     description = models.TextField()
     order = models.CharField(max_length=100, blank=True)
-    subjects = ArrayField(models.TextField(), blank=True)
-    notes = ArrayField(models.TextField(), blank=True)
+    subjects = ArrayField(models.TextField(), blank=True, default=list)
+    notes = ArrayField(models.TextField(), blank=True, default=list)
     event = models.ForeignKey(Event, related_name='agenda')
 
 

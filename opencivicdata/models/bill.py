@@ -16,8 +16,8 @@ class Bill(OCDBase):
     title = models.TextField()
 
     from_organization = models.ForeignKey(Organization, related_name='bills', null=True)
-    classification = ArrayField(models.TextField(), blank=True)   # check that array values are in enum?
-    subject = ArrayField(models.TextField())
+    classification = ArrayField(models.TextField(), blank=True, default=list)   # check that array values are in enum?
+    subject = ArrayField(models.TextField(), default=list)
 
     def __str__(self):
         return '{} in {}'.format(self.identifier, self.legislative_session)
@@ -71,7 +71,7 @@ class BillAction(RelatedBase):
     organization = models.ForeignKey(Organization, related_name='actions')
     description = models.TextField()
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-    classification = ArrayField(models.TextField(), blank=True)      # enum
+    classification = ArrayField(models.TextField(), blank=True, default=list)      # enum
     order = models.PositiveIntegerField()
 
     class Meta:
