@@ -1,5 +1,5 @@
 from django.db import models
-from djorm_pgarray.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField
 
 from ..common import JURISDICTION_CLASSIFICATION_CHOICES, SESSION_CLASSIFICATION_CHOICES
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
@@ -12,7 +12,7 @@ class Jurisdiction(OCDBase):
     url = models.URLField(max_length=2000)
     classification = models.CharField(max_length=50, choices=JURISDICTION_CLASSIFICATION_CHOICES,
                                       default='government', db_index=True)
-    feature_flags = ArrayField(dbtype="text")
+    feature_flags = ArrayField(models.TextField(), blank=True, default=list)
     division = models.ForeignKey(Division, related_name='jurisdictions', db_index=True)
 
     def __str__(self):

@@ -1,6 +1,3 @@
-Django>=1.7,<1.8
+Django==1.8.1
 psycopg2
-djorm-pgarray>=1.0
-jsonfield
-django-uuidfield
 opencivicdata-divisions

@@ -2,8 +2,6 @@ import re
 import uuid
 from django.db import models
 from django.core.validators import RegexValidator
-from jsonfield import JSONField
-from uuidfield import UUIDField
 from .. import common
 
 
@@ -43,14 +41,13 @@ class OCDBase(models.Model):
     """ common base fields across all top-level models """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    extras = JSONField(default='{}', blank=True)
 
     class Meta:
         abstract = True
 
 
 class RelatedBase(models.Model):
-    id = UUIDField(auto=True, primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
         abstract = True

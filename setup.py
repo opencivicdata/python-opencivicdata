@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata-django",
-      version='0.6.2',
+      version='0.7.0',
       author="James Turk",
       author_email='jturk@sunlightfoundation.com',
       license="BSD",
@@ -23,7 +23,6 @@ setup(name="opencivicdata-django",
                    "License :: OSI Approved :: BSD License",
                    "Natural Language :: English",
                    "Operating System :: OS Independent",
-                   "Programming Language :: Python :: 3.3",
                    "Programming Language :: Python :: 3.4",
                    ],
       )
