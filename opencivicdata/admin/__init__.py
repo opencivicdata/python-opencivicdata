@@ -48,9 +48,9 @@ class OtherNameInline(admin.TabularInline):
     verbose_name = "Alternate name"
     verbose_name_plural = "Alternate names"
 
-#class MimetypeLinkInline(admin.TabularInline):
+# class MimetypeLinkInline(admin.TabularInline):
 #    fields = ('media_type', 'url')
-#class RelatedEntityInline(admin.TabularInline):
+# class RelatedEntityInline(admin.TabularInline):
 #    fields = ('name', 'entity_type', 'organization', 'person')
 
 # Divisions & Jurisdictions ##########
@@ -188,7 +188,7 @@ class PostAdmin(ModelAdmin):
     ]
     search_fields = ('organization__name', 'label')
 
-### People & Memberships #######
+# People & Memberships #######
 
 
 class PersonIdentifierInline(IdentifierInline):

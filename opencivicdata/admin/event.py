@@ -61,8 +61,8 @@ class EventDocumentAdmin(admin.ModelAdmin):
     list_display = ('event', 'date', 'note')
 
 
-#@admin.register(models.EventDocumentLink)
-#class EventDocumentLinkAdmin(base.MimetypeLinkAdmin):
+# @admin.register(models.EventDocumentLink)
+# class EventDocumentLinkAdmin(base.MimetypeLinkAdmin):
 #    readonly_fields = ('document',)
 #    list_display = ('document', 'media_type', 'url',)
 
