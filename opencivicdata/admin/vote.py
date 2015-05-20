@@ -2,7 +2,6 @@ from django.contrib import admin
 from opencivicdata.models import vote as models
 
 
-
 class VoteCountInline(admin.TabularInline):
     model = models.VoteCount
     fields = readonly_fields = ('option', 'value')
@@ -56,4 +55,3 @@ class PersonVoteAdmin(admin.ModelAdmin):
 @admin.register(models.VoteSource)
 class VoteSourceAdmin(admin.ModelAdmin):
     pass
-

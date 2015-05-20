@@ -7,7 +7,7 @@ from . import base
 
 @admin.register(models.EventLocation)
 class EventLocationAdmin(admin.ModelAdmin):
-   pass
+    pass
 
 
 class EventLinkInline(base.LinkAdminInline):
@@ -48,6 +48,7 @@ class EventAdmin(admin.ModelAdmin):
         EventSourceInline,
         EventParticipantInline,
         ]
+
 
 @admin.register(models.EventMedia)
 class EventMediaAdmin(admin.ModelAdmin):
@@ -105,4 +106,3 @@ class EventAgendaMediaAdmin(admin.ModelAdmin):
 @admin.register(models.EventAgendaMediaLink)
 class EventAgendaMediaLinkAdmin(admin.ModelAdmin):
     pass
-
