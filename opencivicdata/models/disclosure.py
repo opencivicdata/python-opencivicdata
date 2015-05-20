@@ -30,7 +30,7 @@ class DisclosureRelatedEntity(RelatedEntityBase):
     note = models.TextField()
     classification = models.TextField()
     event = models.ForeignKey(Event, null=True)
-    
+
     @property
     def entity_id(self):
         if self.entity_type == 'event':
