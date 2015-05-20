@@ -6,6 +6,7 @@ from .. import common
 
 # abstract models
 
+
 class ContactDetailBase(RelatedBase):
     type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
     value = models.CharField(max_length=300)

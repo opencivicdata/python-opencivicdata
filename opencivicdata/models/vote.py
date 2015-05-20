@@ -33,6 +33,7 @@ class VoteEvent(OCDBase):
             ['legislative_session', 'bill']
         ]
 
+
 class VoteCount(RelatedBase):
     vote = models.ForeignKey(VoteEvent, related_name='counts')
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)

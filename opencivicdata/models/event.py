@@ -56,6 +56,7 @@ class Event(OCDBase):
             ['jurisdiction', 'start_time', 'name']
         ]
 
+
 class EventMedia(EventMediaBase):
     event = models.ForeignKey(Event, related_name='media')
 

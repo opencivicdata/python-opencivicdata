@@ -3,7 +3,7 @@ from djorm_pgarray.fields import ArrayField
 
 from .base import (OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase,
                    IdentifierBase)
-from .people_orgs import Organization, Person
+from .people_orgs import Organization
 from .jurisdiction import LegislativeSession
 from .. import common
 
@@ -53,7 +53,7 @@ class BillAbstract(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='abstracts')
     abstract = models.TextField()
     note = models.TextField(blank=True)
-    date = models.TextField(max_length=10, blank=True) # YYYY[-MM[-DD]]
+    date = models.TextField(max_length=10, blank=True)  # YYYY[-MM[-DD]]
 
 
 class BillTitle(RelatedBase):
