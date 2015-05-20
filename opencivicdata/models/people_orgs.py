@@ -23,8 +23,8 @@ class ContactDetailBase(RelatedBase):
 class OtherNameBase(RelatedBase):
     name = models.CharField(max_length=500, db_index=True)
     note = models.CharField(max_length=500, blank=True)
-    start_date = models.CharField(max_length=10, null=True)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10, null=True)      # YYYY[-MM[-DD]]
+    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
+    end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
 
     class Meta:
         abstract = True
@@ -84,8 +84,8 @@ class Post(OCDBase):
     role = models.CharField(max_length=300, blank=True)
     organization = models.ForeignKey(Organization, related_name='posts')
     division = models.ForeignKey(Division, related_name='posts', null=True, default=None)
-    start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
+    end_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
 
     class Meta:
         index_together = [
@@ -113,10 +113,10 @@ class Person(OCDBase):
     given_name = models.CharField(max_length=100, blank=True)
 
     image = models.URLField(blank=True, max_length=2000)
-    gender = models.CharField(max_length=100)
-    summary = models.CharField(max_length=500)
-    national_identity = models.CharField(max_length=300)
-    biography = models.TextField()
+    gender = models.CharField(max_length=100, blank=True)
+    summary = models.CharField(max_length=500, blank=True)
+    national_identity = models.CharField(max_length=300, blank=True)
+    biography = models.TextField(blank=True)
     birth_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     death_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
 
