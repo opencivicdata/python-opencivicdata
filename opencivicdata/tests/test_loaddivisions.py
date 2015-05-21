@@ -3,8 +3,9 @@ import pytest
 from django.core.management import call_command
 from opencivicdata.models import Division
 
+
 @pytest.mark.django_db
-@pytest.mark.skipif(sys.version_info < (3,3), reason="requires python3.3")
+@pytest.mark.skipif(sys.version_info < (3, 3), reason="requires python3.3")
 def test_loaddivisions():
     assert Division.objects.count() == 0
     call_command('loaddivisions', 'in')

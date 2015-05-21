@@ -5,12 +5,13 @@ from .. import models
 
 # Helpers ##########
 
+
 class ModelAdmin(admin.ModelAdmin):
     """ deletion of top level objects is evil """
     def has_delete_permission(self, request, obj=None):
         return False
 
-    #we probably don't want to add anything through the interface
+    # we probably don't want to add anything through the interface
     def has_add_permission(self, request):
         return False
 
@@ -47,12 +48,13 @@ class OtherNameInline(admin.TabularInline):
     verbose_name = "Alternate name"
     verbose_name_plural = "Alternate names"
 
-#class MimetypeLinkInline(admin.TabularInline):
+# class MimetypeLinkInline(admin.TabularInline):
 #    fields = ('media_type', 'url')
-#class RelatedEntityInline(admin.TabularInline):
+# class RelatedEntityInline(admin.TabularInline):
 #    fields = ('name', 'entity_type', 'organization', 'person')
 
 # Divisions & Jurisdictions ##########
+
 
 @admin.register(models.Division)
 class DivisionAdmin(ModelAdmin):
@@ -62,18 +64,18 @@ class DivisionAdmin(ModelAdmin):
     ordering = ('id',)
 
 
-
 class LegislativeSessionInline(ReadOnlyTabularInline):
     model = models.LegislativeSession
     readonly_fields = ('identifier', 'name')
     ordering = ('-identifier',)
 
+
 @admin.register(models.Jurisdiction)
 class JurisdictionAdmin(ModelAdmin):
     list_display = ('name', 'id')
     readonly_fields = fields = ('id', 'name', 'division', 'classification',
-                                'feature_flags','extras')
-    fields = readonly_fields + ('url',)
+                                'feature_flags', 'extras')
+    fields = readonly_fields + ('url', )
     ordering = ('id',)
     inlines = [LegislativeSessionInline]
 
@@ -107,7 +109,7 @@ class PostInline(admin.TabularInline):
     fields = readonly_fields = ('label', 'role')
     ordering = ('label',)
     can_delete = False
-    show_change_link = True # Django 1.8?
+    show_change_link = True
 
 
 class OrgMembershipInline(ReadOnlyTabularInline):
@@ -117,6 +119,7 @@ class OrgMembershipInline(ReadOnlyTabularInline):
     fields = ('person', 'post', 'label', 'role', 'start_date', 'end_date', 'id')
     extra = 0
     can_delete = True
+
 
 @admin.register(models.Organization)
 class OrganizationAdmin(ModelAdmin):
@@ -140,8 +143,7 @@ class OrganizationAdmin(ModelAdmin):
     def get_org_name(self, obj):
         parent = obj.parent
         if parent:
-            return "{org} ({parent})".format(org=obj.name,
-                                            parent=parent.name)
+            return "{org} ({parent})".format(org=obj.name, parent=parent.name)
         return obj.name
     get_org_name.short_description = "Name"
     get_org_name.allow_tags = True
@@ -151,7 +153,7 @@ class OrganizationAdmin(ModelAdmin):
         jurisdiction = obj.jurisdiction
         if jurisdiction:
             admin_url = urlresolvers.reverse('admin:opencivicdata_jurisdiction_change',
-                                                args=(jurisdiction.pk,))
+                                             args=(jurisdiction.pk,))
             tmpl = '<a href="%s">%s</a>'
             return tmpl % (admin_url, jurisdiction.name)
 
@@ -164,7 +166,7 @@ class OrganizationAdmin(ModelAdmin):
     list_select_related = ('jurisdiction',)
     list_display = ('get_org_name', 'get_jurisdiction', 'classification')
     ordering = ('name',)
-    
+
 
 class PostContactDetailInline(ContactDetailInline):
     model = models.PostContactDetail
@@ -184,9 +186,10 @@ class PostAdmin(ModelAdmin):
         PostContactDetailInline,
         PostLinkInline,
     ]
-    search_fields = ('organization__name','label')
+    search_fields = ('organization__name', 'label')
 
-### People & Memberships #######
+# People & Memberships #######
+
 
 class PersonIdentifierInline(IdentifierInline):
     model = models.PersonIdentifier
@@ -219,7 +222,8 @@ class MembershipInline(ReadOnlyTabularInline):
     extra = 0
     can_delete = True
 
-#TODO field locking
+
+# TODO field locking
 @admin.register(models.Person)
 class PersonAdmin(ModelAdmin):
     search_fields = ['name']
@@ -241,18 +245,19 @@ class PersonAdmin(ModelAdmin):
         MembershipInline
     ]
 
-
     def get_memberships(self, obj):
         memberships = obj.memberships.select_related('organization__jurisdiction')
         html = []
         SHOW_N = 5
         for memb in memberships[:SHOW_N]:
             org = memb.organization
-            admin_url = urlresolvers.reverse('admin:opencivicdata_organization_change', args=(org.pk,))
+            admin_url = urlresolvers.reverse('admin:opencivicdata_organization_change',
+                                             args=(org.pk,))
             tmpl = '<a href="%s">%s%s</a>\n'
             html.append(tmpl % (
                 admin_url,
-                memb.organization.jurisdiction.name + ": " if memb.organization.jurisdiction else '',
+                (memb.organization.jurisdiction.name +
+                 ": " if memb.organization.jurisdiction else ''),
                 memb.organization.name))
         more = len(memberships) - SHOW_N
         if 0 < more:
@@ -286,21 +291,20 @@ class BillIdentifierInline(IdentifierInline):
 
 class BillActionInline(ReadOnlyTabularInline):
     model = models.BillAction
+
     def get_related_entities(self, obj):
         ents = obj.related_entities.all()
-        #this seems to be a uuid problem, get
-        #rid of the below return stmt when uuids are fixed
+        # this seems to be a uuid problem, get
+        # rid of the below return stmt when uuids are fixed
         return None
         ent_list = [e.name for e in ents]
         return ', '.join(ent_list)
 
     get_related_entities.short_description = 'Related Entities'
     get_related_entities.allow_tags = True
-            
-    list_select_related = ('BillActionRelatedEntity',)
-    readonly_fields = ('date', 'organization',
-                        'description','get_related_entities')
 
+    list_select_related = ('BillActionRelatedEntity',)
+    readonly_fields = ('date', 'organization', 'description', 'get_related_entities')
 
 
 class RelatedBillInline(ReadOnlyTabularInline):
@@ -308,6 +312,7 @@ class RelatedBillInline(ReadOnlyTabularInline):
     fk_name = 'bill'
     readonly_fields = fields = ('identifier', 'legislative_session', 'relation_type')
     extra = 0
+
 
 class BillSponsorshipInline(ReadOnlyTabularInline):
     model = models.BillSponsorship
@@ -317,8 +322,9 @@ class BillSponsorshipInline(ReadOnlyTabularInline):
 
 class BillDocumentInline(ReadOnlyTabularInline):
     model = models.BillDocument
+
     def get_link(self, obj):
-        return None #get rid of this line when uuid issue fixed
+        return None  # TODO: get rid of this line when uuid issue fixed
         link = obj.links.first()
         return link.url
 
@@ -326,13 +332,14 @@ class BillDocumentInline(ReadOnlyTabularInline):
     get_link.allow_tags = True
 
     list_select_related = ('BillDocumentLink',)
-    readonly_fields = ('note','date', 'get_link')
+    readonly_fields = ('note', 'date', 'get_link')
 
 
 class BillVersionInline(ReadOnlyTabularInline):
     model = models.BillVersion
+
     def get_link(self, obj):
-        return None #get rid of this line when uuid issue fixed
+        return None   # TODO: get rid of this line when uuid issue fixed
         link = obj.links.first()
         return link.url
 
@@ -340,7 +347,8 @@ class BillVersionInline(ReadOnlyTabularInline):
     get_link.allow_tags = True
 
     list_select_related = ('BillVersionLink',)
-    readonly_fields = ('note','date', 'get_link')
+    readonly_fields = ('note', 'date', 'get_link')
+
 
 class BillSourceInline(ReadOnlyTabularInline):
     fields = ('url', 'note')
@@ -352,7 +360,7 @@ class BillAdmin(ModelAdmin):
     readonly_fields = fields = (
         'identifier', 'legislative_session', 'bill_classifications',
         'from_organization', 'title', 'id', 'extras')
-    search_fields = ['identifier', 'title',]
+    search_fields = ['identifier', 'title']
     list_select_related = (
         'sources',
         'legislative_session',
@@ -370,8 +378,7 @@ class BillAdmin(ModelAdmin):
         BillDocumentInline,
     ]
 
-
-    def bill_classifications(self,obj):
+    def bill_classifications(self, obj):
         return ", ".join(obj.classification)
 
     def get_jurisdiction_name(self, obj):

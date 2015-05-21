@@ -17,7 +17,7 @@ class OCDIDField(models.CharField):
             #       = 4 + len(ocd_type) + 1 + 36
             #       = len(ocd_type) + 41
             kwargs['max_length'] = 41 + len(self.ocd_type)
-            regex = '^ocd-' + self.ocd_type  + '/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$'
+            regex = '^ocd-' + self.ocd_type + '/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$'
         else:
             kwargs['max_length'] = 300
             regex = common.JURISDICTION_ID_REGEX
@@ -36,7 +36,6 @@ class OCDIDField(models.CharField):
         kwargs.pop('primary_key')
         kwargs['ocd_type'] = self.ocd_type
         return (name, path, args, kwargs)
-
 
 
 class OCDBase(models.Model):

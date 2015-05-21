@@ -7,7 +7,7 @@ from . import base
 
 @admin.register(models.EventLocation)
 class EventLocationAdmin(admin.ModelAdmin):
-   pass
+    pass
 
 
 class EventLinkInline(base.LinkAdminInline):
@@ -49,6 +49,7 @@ class EventAdmin(admin.ModelAdmin):
         EventParticipantInline,
         ]
 
+
 @admin.register(models.EventMedia)
 class EventMediaAdmin(admin.ModelAdmin):
     pass
@@ -60,8 +61,8 @@ class EventDocumentAdmin(admin.ModelAdmin):
     list_display = ('event', 'date', 'note')
 
 
-#@admin.register(models.EventDocumentLink)
-#class EventDocumentLinkAdmin(base.MimetypeLinkAdmin):
+# @admin.register(models.EventDocumentLink)
+# class EventDocumentLinkAdmin(base.MimetypeLinkAdmin):
 #    readonly_fields = ('document',)
 #    list_display = ('document', 'media_type', 'url',)
 
@@ -105,4 +106,3 @@ class EventAgendaMediaAdmin(admin.ModelAdmin):
 @admin.register(models.EventAgendaMediaLink)
 class EventAgendaMediaLinkAdmin(admin.ModelAdmin):
     pass
-

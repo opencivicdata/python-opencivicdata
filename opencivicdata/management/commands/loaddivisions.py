@@ -1,12 +1,7 @@
 from __future__ import print_function
-import io
-import os
-import csv
-from subprocess import check_call
-from optparse import make_option
 
-from django.db import transaction, connection
-from django.core.management.base import BaseCommand, CommandError
+from django.db import transaction
+from django.core.management.base import BaseCommand
 
 from opencivicdata.divisions import Division as FileDivision
 from ...models import Division
