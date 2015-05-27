@@ -4,3 +4,6 @@ djorm-pgarray>=1.0
 jsonfield
 django-uuidfield
 opencivicdata-divisions
+
+#django/postgres object merging
+-e git://github.com/sunlightlabs/waterfall.git#egg=waterfall

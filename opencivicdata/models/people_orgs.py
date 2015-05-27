@@ -121,6 +121,12 @@ class Person(OCDBase):
     def __str__(self):
         return self.name
 
+    def add_other_name(self, name, note=""):
+        n = PersonName(name=name,
+                        note=note)
+        n.save()
+        self.add(n)
+
     class Meta:
         verbose_name_plural = "people"
 
