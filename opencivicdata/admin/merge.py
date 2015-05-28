@@ -2,13 +2,13 @@ from .. import models
 from django.db import connection
 from waterfall import CascadingUpdate
 
-def merge(obj_type, obj1, obj2, custom_merge):
+def merge(obj_type, obj1, obj2, custom_merge, force=False):
     #TODO: check for human_edited fields
     #do stuff that is common to everything
     new, old = set_up_merge(obj1, obj2, obj_type)
 
     #do stuff that is object-specific
-    keep_old, keep_new, custom_fields = custom_merge(new, old)
+    keep_old, keep_new, custom_fields = custom_merge(new, old, force)
     #do remaining stuff that is common to everything
 
     #if we add fields to the model, we catch it here
@@ -24,6 +24,9 @@ def merge(obj_type, obj1, obj2, custom_merge):
     for f in custom_fields:
         new_dict.pop(f)
 
+    setattr(old, "created_at", min(old.created_at, new.created_at))
+    new_dict.pop('created_at')
+    new_dict.pop('updated_at')
     new_dict.pop('_state')
     assert len(new_dict) == 0, \
         "Unexpected fields found: {}".format(', '.join(new_dict.keys()))
@@ -38,7 +41,7 @@ def merge(obj_type, obj1, obj2, custom_merge):
     new.delete()
     """
 
-def merge_people(person1, person2):
+def merge_people(person1, person2, force=False):
     merge('Person', person1, person2, custom_person_merge)
 
 def custom_person_merge(new, old, force=False):
@@ -59,7 +62,7 @@ def custom_person_merge(new, old, force=False):
         #we'll only get here if old.birth_date is empty
         setattr(old, "birth_date", new_birthday)
 
-    setattr(old, "created_at", min(old.created_at, new.created_at))
+    
     
 
     #TODO: uncomment when uuid gets fixed
@@ -83,9 +86,7 @@ def custom_person_merge(new, old, force=False):
     #memberships
 
     #if a membership with the same post and org exists in old:
-        #if one is a subset of the other, use the superset
-        #if one extends the other in either direction, modify old's start or end
-        #(possible the above 2 could be done in a merge_memberships method)
+        
         #if they don't overlap, keep them both
 
     #else transfer the new membership to old
@@ -95,7 +96,7 @@ def custom_person_merge(new, old, force=False):
                 'given_name', 'image', 'gender', 'summary',
                 'national_identity', 'biography',
                 'death_date', 'extras'],
-                ['birth_date', 'name', 'updated_at', 'created_at'])
+                ['birth_date', 'name'])
     
 
 def combine_contact_details(old, new):
@@ -124,7 +125,7 @@ def combine_links(old, new, link_name="links"):
             getattr(old, link_name).add(l)
 
 
-def merge_memberships(obj1, obj2, force=False):
+def custom_merge_memberships(obj1, obj2, force=False):
     #assuming we've already decided we want to merge them
     #we this will generally be called from person, org or post
     #and we should probably do some careful checking there
@@ -134,15 +135,69 @@ def merge_memberships(obj1, obj2, force=False):
     #for example, a membership with end date 2013-01-13 and
     #another with start date 2015-01-13 will fail unless force=True
 
+    #if one is a subset of the other, use the superset
+    #if one extends the other in either direction, modify old's start or end
+    #(possible the above 2 could be done in a merge_memberships method)
+
     new, old = self.set_up_merge(obj1, obj2, 'Membership')
 
     #TODO check for human edited fields
 
     keep_old = []
-    keep_new = ['sort_name' 'family_name',
-                'given_name', 'image', 'gender', 'summary',
-                'national_identity', 'biography',
-                'death_date']
+    keep_new = ['organization', 'person', 'post', 'on_behalf_of',
+                'label','role']
+    custom_fields = []
+
+    #deal with missing
+    if new.start_date is None and new.end_date is None:
+        keep_old.append('start_date')
+        keep_old.append('end_date')
+
+
+    elif new.start_date is None:
+        keep_old.append('start_date')
+        setattr(old, 'end_date', max(old.end_date, new.end_date))
+        custom_fields.append('start_date')
+
+    elif new.end_date is None:
+        keep_old.append('end_date')
+        setattr(old, 'start_date', min(old.start_date, new.start_date))
+        custom_fields.append('start_date')
+
+    elif new.start_date <= old.start_date <= new.end_date <= old.end_date:
+        setattr(old, 'start_date', new.start_date)
+        custom_fields.extend(['start_date','end_date'])
+
+    elif new.start_date <= old.start_date <= old.end_date <= new.end_date:
+        setattr(old, 'start_date', new.start_date)
+        setattr(old, 'end_date', new.end_date)
+        custom_fields.extend(['start_date','end_date'])
+
+    elif old.start_date <= new.start_date <= old.end_date <= new.end_date:
+        setattr(old, 'end_date', new.end_date)
+        custom_fields.extend(['start_date','end_date'])
+
+    elif old.start_date <= new.start_date <= new.end_date <= old.end_date:
+        custom_fields.extend(['start_date','end_date'])
+
+    elif force:
+        #ug, this is really terrible, we're merging two memberships
+        #that don't overlap with each other. We're setting the dates
+        #to the outer bounds for now but maybe we should set to None instead?
+        setattr(old, 'start_date', min(old.start_date, new.start_date))
+        setattr(old, 'end_date', max(old.end_date, new.end_date))
+        custom_fields.extend(['start_date','end_date'])
+
+    else:
+        raise AssertionError("Memberships do not overlap, will not merge unless forced.")
+
+
+
+    combine_contact_details(old, new)
+    combine_links(old, new, "links"
+
+    return (keep_old, keep_new, custom_fields)
+
 
 
 
