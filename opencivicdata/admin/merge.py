@@ -2,34 +2,17 @@ from .. import models
 from django.db import connection
 from waterfall import CascadingUpdate
 
-def merge_people(obj1, obj2, force=False):
-    #if force is true, we'll merge even if sanity checks fail
-    new, old = self.set_up_merge(obj1, obj2, "Person")
-    
-    keep_old = []
-    keep_new = ['sort_name' 'family_name',
-                'given_name', 'image', 'gender', 'summary',
-                'national_identity', 'biography',
-                'death_date']
-
-    #fields that require something more complicated:
-    #name (add to other names)
-    #birth_date (if they don't match, only merge if force=True)
-
+def merge(obj_type, obj1, obj2, custom_merge):
     #TODO: check for human_edited fields
+    #do stuff that is common to everything
+    new, old = set_up_merge(obj1, obj2, obj_type)
 
-    new_birthday = new.pop('birth_date')
-    if old.birth_date != ''
-        and new_birthday != ''
-        and old.birth_date != new_birthday
-        and not force:
-            raise AssertionError("Refusing to merge people with different birthdays.")
-    
-    if new_birthday:
-        #we'll only get here if old.birth_date is empty
-        setattr(old, "birth_date", new_birthday)
+    #do stuff that is object-specific
+    keep_old, keep_new, custom_fields = custom_merge(new, old)
+    #do remaining stuff that is common to everything
 
-    new_dict = new.__dict__
+    #if we add fields to the model, we catch it here
+    new_dict = new.__dict__.copy()
     new_dict.pop('id')
     for f in keep_old:
         new_dict.pop(f)
@@ -38,6 +21,46 @@ def merge_people(obj1, obj2, force=False):
         if new_field:
             #if new doesn't have a value, keep old.
             setattr(old, f, new_field)
+    for f in custom_fields:
+        new_dict.pop(f)
+
+    new_dict.pop('_state')
+    assert len(new_dict) == 0, \
+        "Unexpected fields found: {}".format(', '.join(new_dict.keys()))
+
+    """
+    #update foreign keys
+    c = CascadingUpdate()
+    c.merge_foreign_keys(new, old)
+
+    #save old, delete new    
+    old.save()
+    new.delete()
+    """
+
+def merge_people(person1, person2):
+    merge('Person', person1, person2, custom_person_merge)
+
+def custom_person_merge(new, old, force=False):
+    #if force is true, we'll merge even if sanity checks fail
+    
+    #fields that require some custom work:
+    #name (add to other names)
+    #birth_date (if they don't match, only merge if force=True)
+
+    new_birthday = new.birth_date
+    if (old.birth_date != '' 
+        and new_birthday != ''
+        and old.birth_date != new_birthday
+        and not force):
+            raise AssertionError("Refusing to merge people with different birthdays.")
+    
+    if new_birthday:
+        #we'll only get here if old.birth_date is empty
+        setattr(old, "birth_date", new_birthday)
+
+    setattr(old, "created_at", min(old.created_at, new.created_at))
+    
 
     #TODO: uncomment when uuid gets fixed
     '''
@@ -50,17 +73,11 @@ def merge_people(obj1, obj2, force=False):
         old.other_names.add(n)
     '''
 
-    old.name = new_dict.pop('name')
 
-    #if we add fields to the model, we catch it here
-    assert len(new_dict) == 0, \
-        "Unexpected fields found: {}".format(', '.join(new_dict.keys()))
-
-
-    self.combine_contact_details(old, new)
-    self.combine_identifiers(old, new)
-    self.combine_links(old, new, "links")
-    self.combine_links(old, new, "sources")
+    combine_contact_details(old, new)
+    combine_identifiers(old, new)
+    combine_links(old, new, "links")
+    combine_links(old, new, "sources")
 
 
     #memberships
@@ -73,45 +90,43 @@ def merge_people(obj1, obj2, force=False):
 
     #else transfer the new membership to old
 
-    """
-    #update foreign keys
-    c = CascadingUpdate()
-    c.merge_foreign_keys(new, old)
+    #return the lists of old and new items we want to keep
+    return ([], ['sort_name', 'family_name',
+                'given_name', 'image', 'gender', 'summary',
+                'national_identity', 'biography',
+                'death_date', 'extras'],
+                ['birth_date', 'name', 'updated_at', 'created_at'])
+    
 
-    #save old, delete new    
-    old.save()
-    new.delete()
-    """
-
-def combine_contact_details(self, old, new):
+def combine_contact_details(old, new):
     #add new's contact details to old
     #unless one exists with the same type and value
-    for contact in new.contact_details:
+    for contact in new.contact_details.all():
         old_matches = old.contact_details.filter(type=contact.type,
                         value=contact.value)
-        if len old_matches == 0:
+        if len(old_matches) == 0:
             old.contact_details.add(contact)
 
-def combine_identifiers(self, old, new):
+def combine_identifiers(old, new):
     #add new's identifiers to old unless one exists
     #with the same identifier and scheme
-    for i in new.identifiers:
+    for i in new.identifiers.all():
         old_matches = old.identifiers.filter(identifier = i.identifier,
                                 scheme = i.scheme)
         if len(old_matches) == 0:
             old.identifiers.add(i)
 
-def combine_links(self, old, new, link_name="links"):
+def combine_links(old, new, link_name="links"):
     #link_name is the related_name for the link we want to merge
-    for l in getattr(new, link_name):
-        old_matches = getattr(old, links_name).filter(url=l.url)
+    for l in getattr(new, link_name).all():
+        old_matches = getattr(old, link_name).filter(url=l.url)
         if len(old_matches) == 0:
-            getattr(old, links_name).add(l)
+            getattr(old, link_name).add(l)
 
 
-def merge_memberships(self, obj1, obj2, force=False):
+def merge_memberships(obj1, obj2, force=False):
     #assuming we've already decided we want to merge them
-    #we this will generally be called from person or post
+    #we this will generally be called from person, org or post
     #and we should probably do some careful checking there
     #to make sure we want to merge not reassign
 
@@ -120,13 +135,22 @@ def merge_memberships(self, obj1, obj2, force=False):
     #another with start date 2015-01-13 will fail unless force=True
 
     new, old = self.set_up_merge(obj1, obj2, 'Membership')
-    
+
+    #TODO check for human edited fields
+
+    keep_old = []
+    keep_new = ['sort_name' 'family_name',
+                'given_name', 'image', 'gender', 'summary',
+                'national_identity', 'biography',
+                'death_date']
 
 
 
-def set_up_merge(self, obj1, obj2, obj_type):
-    assert (obj1.__class__.__name__ == obj_type, \
-            obj2.__class__.__name__ == obj_type) \
+
+
+def set_up_merge(obj1, obj2, obj_type):
+    assert (obj1.__class__.__name__ == obj_type,
+            obj2.__class__.__name__ == obj_type), \
             "{0} merger needs two {0} objects".format(obj_type)
 
     #determine which was updated most recently
