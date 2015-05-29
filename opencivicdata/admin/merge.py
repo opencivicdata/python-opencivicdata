@@ -40,6 +40,7 @@ def merge(obj_type, obj1, obj2, custom_merge, force=False):
     old.save()
     new.delete()
     """
+    return new
 
 def merge_people(person1, person2, force=False):
     merge('Person', person1, person2, custom_person_merge)
@@ -62,9 +63,6 @@ def custom_person_merge(new, old, force=False):
         #we'll only get here if old.birth_date is empty
         setattr(old, "birth_date", new_birthday)
 
-    
-    
-
     #TODO: uncomment when uuid gets fixed
     '''
     if old.name not in old.other_names:
@@ -86,8 +84,23 @@ def custom_person_merge(new, old, force=False):
     #memberships
 
     #if a membership with the same post and org exists in old:
-        
-        #if they don't overlap, keep them both
+    for new_mem in new.memberships.all():
+        filter_keys = {'organization':mem.organization,
+                        'post':mem.post}
+        for old_mem in old.memberships.filter(**filter_keys):
+            #if they don't overlap, keep them both
+
+            if (new_mem.end_date and old_mem.end_date
+                    and new_mem.end_date < old_mem.start_date):
+                #the memberships don't overlap, don't merge
+                pass
+            elif (old_mem.end_date and new_mem.start_date
+                    and old_mem.end_date < new_mem.start_date):
+                #the memberships don't overlap, don't merge
+                pass
+            else:
+                persistent_mem = merge_memberships(old_mem, new_mem)
+                setattr(persistent_mem, 'person', old)
 
     #else transfer the new membership to old
 
@@ -124,8 +137,10 @@ def combine_links(old, new, link_name="links"):
         if len(old_matches) == 0:
             getattr(old, link_name).add(l)
 
+def merge_memberships(membership1, membership2, force=False):
+    merge('Membership', membership1, membership2, custom_membership_merge)
 
-def custom_merge_memberships(obj1, obj2, force=False):
+def custom_membership_merge(obj1, obj2, force=False):
     #assuming we've already decided we want to merge them
     #we this will generally be called from person, org or post
     #and we should probably do some careful checking there
@@ -143,12 +158,24 @@ def custom_merge_memberships(obj1, obj2, force=False):
 
     #TODO check for human edited fields
 
-    keep_old = []
-    keep_new = ['organization', 'person', 'post', 'on_behalf_of',
-                'label','role']
-    custom_fields = []
+    keep_old, keep_new, custom_fields = start_and_end_dates(old, new, force=force)
+    keep_new.extend(['organization', 'person', 'post', 'on_behalf_of',
+                'label','role'])
 
+    combine_contact_details(old, new)
+    combine_links(old, new, "links")
+
+    return (keep_old, keep_new, custom_fields)
+
+
+
+def start_and_end_dates(old, new, keep_old=[], keep_new=[],
+        custom_fields=[], force=False):
+    #if the objects overlap, take the earlier start date and later end date
+    #if dates are missing, fill in the valid date
+    #if the objects do not overlap, only merge if forced.
     #deal with missing
+
     if new.start_date is None and new.end_date is None:
         keep_old.append('start_date')
         keep_old.append('end_date')
@@ -189,18 +216,11 @@ def custom_merge_memberships(obj1, obj2, force=False):
         custom_fields.extend(['start_date','end_date'])
 
     else:
-        raise AssertionError("Memberships do not overlap, will not merge unless forced.")
-
-
-
-    combine_contact_details(old, new)
-    combine_links(old, new, "links"
+        raise AssertionError("Memberships do not overlap, will not merge "\
+            "unless forced. Please do not do this unless you are ABSOLUTELY "\
+            "sure you know what you're doing. You've been warned.")
 
     return (keep_old, keep_new, custom_fields)
-
-
-
-
 
 
 def set_up_merge(obj1, obj2, obj_type):
