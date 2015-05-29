@@ -164,6 +164,25 @@ def custom_membership_merge(obj1, obj2, force=False):
     # (possible the above 2 could be done in a merge_memberships method)
 
     new, old = set_up_merge(obj1, obj2, 'Membership')
+    
+    if (new.post and old.post and new.post != old.post):
+        msg = "Memberships have different posts. Refusing to merge "\
+              "without forcing. This is probably a bad idea. "\
+              "Consider yourself warned."
+        raise AssertionError(msg)
+
+    if (new.person and old.person and new.person != old.person):
+        msg = "Memberships have different people. Refusing to merge "\
+              "without forcing. This is probably a bad idea. "\
+              "Consider yourself warned."
+        raise AssertionError(msg)
+
+    if (new.organization and old.organization
+        and new.organization != old.organization):
+            msg = "Memberships have different organizations. Refusing "\
+                  "to merge without forcing. This is probably a bad idea. "\
+                  "Consider yourself warned."
+            raise AssertionError(msg)
 
     # TODO check for human edited fields
 
@@ -185,16 +204,16 @@ def start_and_end_dates(old, new, keep_old=[], keep_new=[],
     # if the objects do not overlap, only merge if forced.
     # deal with missing
 
-    if new.start_date is None and new.end_date is None:
+    if not new.start_date and not new.end_date:
         keep_old.append('start_date')
         keep_old.append('end_date')
 
-    elif new.start_date is None:
+    elif not new.start_date:
         keep_old.append('start_date')
         setattr(old, 'end_date', max(old.end_date, new.end_date))
         custom_fields.append('start_date')
 
-    elif new.end_date is None:
+    elif not new.end_date:
         keep_old.append('end_date')
         setattr(old, 'start_date', min(old.start_date, new.start_date))
         custom_fields.append('start_date')
@@ -224,9 +243,9 @@ def start_and_end_dates(old, new, keep_old=[], keep_new=[],
         custom_fields.extend(['start_date', 'end_date'])
 
     else:
-        msg = "Memberships do not overlap, will not merge ",\
-              "unless forced. Please do not do this unless you ",\
-              "are ABSOLUTELY sure you know what you're doing. ",\
+        msg = "Memberships do not overlap, will not merge "\
+              "unless forced. Please do not do this unless you "\
+              "are ABSOLUTELY sure you know what you're doing. "\
               "You've been warned."
         raise AssertionError(msg)
 
