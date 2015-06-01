@@ -46,7 +46,7 @@ class Organization(OCDBase):
     def __str__(self):
         return self.name
 
-    # Recursively access all "ancestor" organizations
+    # Access all "ancestor" organizations
     def get_parents(self):
         org = self
         while True:
