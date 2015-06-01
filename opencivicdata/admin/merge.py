@@ -67,16 +67,14 @@ def custom_person_merge(new, old, force=False):
         # we'll only get here if old.birth_date is empty
         setattr(old, "birth_date", new_birthday)
 
-    # TODO: uncomment when uuid gets fixed
-    '''
-    if old.name not in old.other_names:
+    if old.name not in old.other_names.all():
         old.add_other_name(old.name)
-    if new_fields.name not in old.other_names:
-        old.add_other_name(new_dict.name)
+    if new.name not in old.other_names.all():
+        old.add_other_name(new.name)
 
-    for n in new.other_names:
+    for n in new.other_names.all():
         old.other_names.add(n)
-    '''
+    
     combine_contact_details(old, new)
     combine_identifiers(old, new)
     combine_links(old, new, "links")
@@ -119,28 +117,41 @@ def combine_contact_details(old, new):
     for contact in new.contact_details.all():
         old_matches = old.contact_details.filter(type=contact.type,
                                                  value=contact.value)
-        if len(old_matches) == 0:
-            old.contact_details.add(contact)
+        for o in old_matches:
+            #get rid of old contact details that match a new one
+            o.delete()
+
+        old.contact_details.add(contact)
+        
+        
 
 
 def combine_identifiers(old, new):
 
     # add new's identifiers to old unless one exists
     # with the same identifier and scheme
+
     for i in new.identifiers.all():
         old_matches = old.identifiers.filter(identifier=i.identifier,
                                              scheme=i.scheme)
+
         if len(old_matches) == 0:
             old.identifiers.add(i)
+
+        else:
+            i.delete()
+
 
 
 def combine_links(old, new, link_name="links"):
 
     # link_name is the related_name for the link we want to merge
+
     for l in getattr(new, link_name).all():
         old_matches = getattr(old, link_name).filter(url=l.url)
-        if len(old_matches) == 0:
-            getattr(old, link_name).add(l)
+        for o in old_matches:
+            o.delete()
+        getattr(old, link_name).add(l)
 
 
 def merge_memberships(membership1, membership2, force=False):
@@ -187,11 +198,14 @@ def custom_membership_merge(obj1, obj2, force=False):
     # TODO check for human edited fields
 
     keep_old, keep_new, custom_fields = start_and_end_dates(old, new, force=force)
-    keep_new.extend(['organization', 'person', 'post', 'on_behalf_of',
+    keep_new.extend(['organization_id', 'person_id', 'post_id', 'on_behalf_of_id',
                     'label', 'role'])
 
     combine_contact_details(old, new)
     combine_links(old, new, "links")
+
+    custom_fields.extend(["_person_cache", "_post_cache", "extras",
+                          "_organization_cache"])
 
     return (keep_old, keep_new, custom_fields)
 
@@ -243,7 +257,7 @@ def start_and_end_dates(old, new, keep_old=[], keep_new=[],
         custom_fields.extend(['start_date', 'end_date'])
 
     else:
-        msg = "Memberships do not overlap, will not merge "\
+        msg = "Time ranges do not overlap, will not merge "\
               "unless forced. Please do not do this unless you "\
               "are ABSOLUTELY sure you know what you're doing. "\
               "You've been warned."
