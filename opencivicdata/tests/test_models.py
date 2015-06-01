@@ -1,10 +1,12 @@
 import pytest
-from opencivicdata.models import (Jurisdiction, LegislativeSession, Division,
-                                  Organization, OrganizationIdentifier, OrganizationName,
-                                  OrganizationContactDetail, OrganizationSource,
-                                  Person, PersonIdentifier, PersonName, PersonContactDetail,
-                                  PersonLink, PersonSource, Post, PostContactDetail, PostLink,
-                                  Membership, MembershipContactDetail, MembershipLink)
+from opencivicdata.models import (Jurisdiction, LegislativeSession,                 # noqa
+                                  Division, Organization,                           # noqa
+                                  OrganizationIdentifier, OrganizationName,         # noqa
+                                  OrganizationContactDetail, OrganizationSource,    # noqa
+                                  Person, PersonIdentifier, PersonName,             # noqa
+                                  PersonContactDetail, PersonLink, PersonSource,    # noqa
+                                  Post, PostContactDetail, PostLink, Membership,    # noqa
+                                  MembershipContactDetail, MembershipLink)          # noqa
 from django.core.exceptions import ValidationError
 
 
@@ -37,20 +39,15 @@ def test_division_create():
 
 @pytest.mark.django_db
 def test_division_children_of():
-    us = Division.objects.create('ocd-division/country:us', name='US')
+    Division.objects.create('ocd-division/country:us', name='US')
     ak = Division.objects.create('ocd-division/country:us/state:ak', name='Alaska')
-    wild = Division.objects.create('ocd-division/country:us/state:ak/county:wild', name='Wild')
-    mild = Division.objects.create('ocd-division/country:us/state:ak/county:mild', name='Mild')
-    wild_a = Division.objects.create('ocd-division/country:us/state:ak/county:wild/place:a',
-                                     name='A')
-    wild_b = Division.objects.create('ocd-division/country:us/state:ak/county:wild/place:b',
-                                     name='B')
-    school = Division.objects.create('ocd-division/country:us/state:ak/county:wild/school:a',
-                                     name='A')
-    mild_a = Division.objects.create('ocd-division/country:us/state:ak/county:mild/place:a',
-                                     name='A')
-    mild_a = Division.objects.create('ocd-division/country:us/state:ak/county:mild/place:a/x:y',
-                                     name='A')
+    Division.objects.create('ocd-division/country:us/state:ak/county:wild', name='Wild')
+    Division.objects.create('ocd-division/country:us/state:ak/county:mild', name='Mild')
+    Division.objects.create('ocd-division/country:us/state:ak/county:wild/place:a', name='A')
+    Division.objects.create('ocd-division/country:us/state:ak/county:wild/place:b', name='B')
+    Division.objects.create('ocd-division/country:us/state:ak/county:wild/school:a', name='A')
+    Division.objects.create('ocd-division/country:us/state:ak/county:mild/place:a', name='A')
+    Division.objects.create('ocd-division/country:us/state:ak/county:mild/place:a/x:y', name='A')
 
     # simplest ==
     assert Division.objects.children_of('ocd-division/country:us')[0].id == ak.id

@@ -2,8 +2,6 @@
 Module for declaration of common constants available throughout Open Civic Data code.
 """
 
-import re
-
 DIVISION_ID_REGEX = r'^ocd-division/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*$'
 JURISDICTION_ID_REGEX = r'^ocd-jurisdiction/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*/\w+$'
 
@@ -25,6 +23,9 @@ The only exception to this would be translations, which should simply exist as t
 the display name (2nd attribute).
 """
 
+# NOTE: this list explicitly does not include RFC 6350s 'cell' as that is redundant with
+# voice and the distinction will only lead to confusion.  contact_detail.note can be
+# used to indicate if something is a home, work, cell, etc.
 CONTACT_TYPE_CHOICES = (
     ('address', 'Postal Address'),
     ('email', 'Email'),
@@ -35,9 +36,6 @@ CONTACT_TYPE_CHOICES = (
     ('video', 'Video Phone'),
     ('pager', 'Pager'),
     ('textphone', 'Device for people with hearing impairment'),
-# NOTE: this list explicitly does not include RFC 6350s 'cell' as that is redundant with
-# voice and the distinction will only lead to confusion.  contact_detail.note can be
-# used to indicate if something is a home, work, cell, etc.
 )
 CONTACT_TYPES = _keys(CONTACT_TYPE_CHOICES)
 
