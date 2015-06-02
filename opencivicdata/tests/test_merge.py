@@ -26,7 +26,7 @@ class MembershipTestCase(TestCase):
         self.oid1 = self.organization1.id
         self.oid2 = self.organization2.id
 
-    def test_membership_people_merge(self):
+    def test_membership_people_org_merge(self):
         membership1 = Membership.objects.create(person_id=self.pid1,
                                                 organization_id=self.oid1)
         membership2 = Membership.objects.create(person_id=self.pid1,
@@ -35,7 +35,90 @@ class MembershipTestCase(TestCase):
         self.assertEqual(Membership.objects.count(), 1,
                          "Merge memberships with same person & org.")
 
+    def test_membership_wrong_people(self):
+        membership1 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1)
+        membership2 = Membership.objects.create(person_id=self.pid2,
+                                                organization_id=self.oid1)
+        with self.assertRaises(AssertionError):
+            merge.merge_memberships(membership1, membership2)
+        self.assertEqual(Membership.objects.count(), 2,
+                         "Memberships w different people should not merge")
+        merge.merge_memberships(membership1, membership2, force=True)
+        self.assertEqual(Membership.objects.count(), 1,
+                         "Memberships w different people should merge if forced")
+        self.assertEqual(Membership.objects.first().person_id, self.pid2,
+                         "Force-merged memberships should retain person from newer membership")
 
+    def test_membership_wrong_org(self):
+        membership1 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1)
+        membership2 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid2)
+        with self.assertRaises(AssertionError):
+            merge.merge_memberships(membership1, membership2)
+        self.assertEqual(Membership.objects.count(), 2,
+                         "Memberships w different orgs should not merge")
+        merge.merge_memberships(membership1, membership2, force=True)
+        self.assertEqual(Membership.objects.count(), 1,
+                         "Memberships w different orgs should merge if forced")
+        self.assertEqual(Membership.objects.first().organization_id, self.oid2,
+                         "Force-merged memberships should retain org from newer membership")
+
+    def test_memberships_subset_dates(self):
+        membership1 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1,
+                                                start_date='2014-01-01',
+                                                end_date='2015-01-01')
+        membership2 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1,
+                                                start_date='2014-02-01',
+                                                end_date='2014-03-01')
+        merge.merge_memberships(membership1, membership2)
+        self.assertEqual(Membership.objects.count(), 1,
+                         "Memberships w subsetted starts and ends should merge")
+        self.assertEqual(Membership.objects.first().start_date, '2014-01-01',
+                        "Resulting membership start date should be earliest")
+        self.assertEqual(Membership.objects.first().end_date, '2015-01-01',
+                        "Resulting membership end date should be latest")
+
+    def test_memberships_overlapping_dates(self):
+        membership1 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1,
+                                                start_date='2014-01-01',
+                                                end_date='2015-01-01')
+        membership2 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1,
+                                                start_date='2014-02-01',
+                                                end_date='2015-03-01')
+        merge.merge_memberships(membership1, membership2)
+        self.assertEqual(Membership.objects.count(), 1,
+                         "Memberships w subsetted starts and ends should merge")
+        self.assertEqual(Membership.objects.first().start_date, '2014-01-01',
+                        "Resulting membership start date should be earliest")
+        self.assertEqual(Membership.objects.first().end_date, '2015-03-01',
+                        "Resulting membership end date should be latest")
+
+    def test_memberships_nonoverlapping_dates(self):
+        membership1 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1,
+                                                start_date='2014-01-01',
+                                                end_date='2014-02-01')
+        membership2 = Membership.objects.create(person_id=self.pid1,
+                                                organization_id=self.oid1,
+                                                start_date='2014-03-01',
+                                                end_date='2014-04-01')
+        with self.assertRaises(AssertionError):
+            merge.merge_memberships(membership1, membership2)
+        self.assertEqual(Membership.objects.count(), 2,
+                         "Memberships w non-overlapping dates should not merge")
+        merge.merge_memberships(membership1, membership2, force=True)
+        self.assertEqual(Membership.objects.count(), 1,
+                         "Memberships w different non-overlapping dates should merge if forced")
+        self.assertEqual(Membership.objects.first().start_date, '2014-01-01',
+                         "Force-merged memberships should get earliest start date")
+        self.assertEqual(Membership.objects.first().end_date, '2014-04-01',
+                         "Force-merged memberships should get latest end date")
 
 class PersonTestCase(TestCase):
     def setUp(self):

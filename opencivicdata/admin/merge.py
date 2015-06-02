@@ -28,7 +28,13 @@ def merge(obj_type, obj1, obj2, custom_merge, force=False):
     setattr(old, "created_at", min(old.created_at, new.created_at))
     new_dict.pop('created_at')
     new_dict.pop('updated_at')
-    new_dict.pop('_state')
+    bad_keys = []
+    for k in new_dict:
+        if k.startswith("_"):
+            bad_keys.append(k)
+    for k in bad_keys:
+        new_dict.pop(k)
+
     assert len(new_dict) == 0, \
         "Unexpected fields found: {}".format(', '.join(new_dict.keys()))
 
@@ -40,12 +46,12 @@ def merge(obj_type, obj1, obj2, custom_merge, force=False):
     old.save()
     new.delete()
 
-    return new
+    return old
 
 
 def merge_people(person1, person2, force=False):
 
-    merge('Person', person1, person2, custom_person_merge)
+    merge('Person', person1, person2, custom_person_merge, force)
 
 
 def custom_person_merge(new, old, force=False):
@@ -156,7 +162,7 @@ def combine_links(old, new, link_name="links"):
 
 def merge_memberships(membership1, membership2, force=False):
 
-    merge('Membership', membership1, membership2, custom_membership_merge)
+    merge('Membership', membership1, membership2, custom_membership_merge, force)
 
 
 def custom_membership_merge(obj1, obj2, force=False):
@@ -175,37 +181,40 @@ def custom_membership_merge(obj1, obj2, force=False):
     # (possible the above 2 could be done in a merge_memberships method)
 
     new, old = set_up_merge(obj1, obj2, 'Membership')
-    
-    if (new.post and old.post and new.post != old.post):
-        msg = "Memberships have different posts. Refusing to merge "\
-              "without forcing. This is probably a bad idea. "\
-              "Consider yourself warned."
-        raise AssertionError(msg)
+    if force == False:
 
-    if (new.person and old.person and new.person != old.person):
-        msg = "Memberships have different people. Refusing to merge "\
-              "without forcing. This is probably a bad idea. "\
-              "Consider yourself warned."
-        raise AssertionError(msg)
-
-    if (new.organization and old.organization
-        and new.organization != old.organization):
-            msg = "Memberships have different organizations. Refusing "\
-                  "to merge without forcing. This is probably a bad idea. "\
+        if (new.post and old.post and new.post != old.post):
+            msg = "Memberships have different posts. Refusing to merge "\
+                  "without forcing. This is probably a bad idea. "\
                   "Consider yourself warned."
             raise AssertionError(msg)
 
+        if (new.person and old.person and new.person != old.person and not force):
+            msg = "Memberships have different people. Refusing to merge "\
+                  "without forcing. This is probably a bad idea. "\
+                  "Consider yourself warned."
+            raise AssertionError(msg)
+
+        if (new.organization and old.organization
+            and new.organization != old.organization and not force):
+                msg = "Memberships have different organizations. Refusing "\
+                      "to merge without forcing. This is probably a bad idea. "\
+                      "Consider yourself warned."
+                raise AssertionError(msg)
+
     # TODO check for human edited fields
 
-    keep_old, keep_new, custom_fields = start_and_end_dates(old, new, force=force)
+    keep_old, keep_new, custom_fields = start_and_end_dates(old, new, force=force,
+                                                            keep_old=[],
+                                                            keep_new=[],
+                                                            custom_fields=[])
     keep_new.extend(['organization_id', 'person_id', 'post_id', 'on_behalf_of_id',
                     'label', 'role'])
 
     combine_contact_details(old, new)
     combine_links(old, new, "links")
 
-    custom_fields.extend(["_person_cache", "_post_cache", "extras",
-                          "_organization_cache"])
+    custom_fields.append('extras')
 
     return (keep_old, keep_new, custom_fields)
 
