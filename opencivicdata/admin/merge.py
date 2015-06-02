@@ -103,10 +103,9 @@ def custom_person_merge(new, old, force=False):
                 # the memberships don't overlap, don't merge
                 pass
             else:
+                new_mem.person = old_mem.person
+                new_mem.save()
                 persistent_mem = merge_memberships(old_mem, new_mem)
-                setattr(persistent_mem, 'person', old)
-
-    # else transfer the new membership to old
 
     # return the lists of old and new items we want to keep
     return ([], ['sort_name', 'family_name',
@@ -214,7 +213,7 @@ def custom_membership_merge(obj1, obj2, force=False):
     combine_contact_details(old, new)
     combine_links(old, new, "links")
 
-    custom_fields.append('extras')
+    keep_new.append('extras')
 
     return (keep_old, keep_new, custom_fields)
 
@@ -238,6 +237,20 @@ def start_and_end_dates(old, new, keep_old=[], keep_new=[],
 
     elif not new.end_date:
         keep_old.append('end_date')
+        setattr(old, 'start_date', min(old.start_date, new.start_date))
+        custom_fields.append('start_date')
+
+    elif not old.start_date and not old.end_date:
+        keep_new.append('start_date')
+        keep_new.append('end_date')
+
+    elif not old.start_date:
+        keep_new.append('start_date')
+        setattr(old, 'end_date', max(old.end_date, new.end_date))
+        custom_fields.append('start_date')
+
+    elif not old.end_date:
+        keep_new.append('end_date')
         setattr(old, 'start_date', min(old.start_date, new.start_date))
         custom_fields.append('start_date')
 

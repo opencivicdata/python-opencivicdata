@@ -168,6 +168,7 @@ class PersonTestCase(TestCase):
                                   note='whitehouse',
                                   person_id=id1)
 
+
     def test_simple_merge(self):
         merge.merge_people(self.person1, self.person2)
         obama_set = Person.objects.filter(name='Barack Obama')
@@ -210,3 +211,82 @@ class PersonTestCase(TestCase):
                          "New person object retains all non-duplicate identifiers")
         self.assertEqual(obama.links.first().note, 'official',
                          "Link attached to newer person retained when conflict")
+
+    def test_merge_with_memberships(self):
+        org1 = Organization.objects.create(name="Org1")
+        org2 = Organization.objects.create(name="Org2")
+        org3 = Organization.objects.create(name="Org3")
+        org4 = Organization.objects.create(name="Org4")
+        org5 = Organization.objects.create(name="Org5")
+
+        #these two should merge:
+
+        Membership.objects.create(person_id=self.person1.id,
+                                  organization_id=org1.id)
+        Membership.objects.create(person_id=self.person2.id,
+                                  organization_id=org1.id)
+
+        #these two should merge, and have start/end dates
+        Membership.objects.create(person_id=self.person1.id,
+                                  organization_id=org2.id)
+        Membership.objects.create(person_id=self.person2.id,
+                                  organization_id=org2.id,
+                                  start_date='2015-01-02',
+                                  end_date='2016-01-02')
+
+        #these two should merge
+        Membership.objects.create(person_id=self.person1.id,
+                                  organization_id=org3.id,
+                                  start_date='2015-02-03',
+                                  end_date='2015-03-03')
+        Membership.objects.create(person_id=self.person2.id,
+                                  organization_id=org3.id,
+                                  start_date='2015-01-03',
+                                  end_date='2016-01-03')
+
+        #these two should merge
+        Membership.objects.create(person_id=self.person1.id,
+                                  organization_id=org4.id,
+                                  start_date='2015-01-04',
+                                  end_date='2015-03-04')
+        Membership.objects.create(person_id=self.person2.id,
+                                  organization_id=org4.id,
+                                  start_date='2015-02-15',
+                                  end_date='2016-03-04')
+        #these two should not merge
+        Membership.objects.create(person_id=self.person1.id,
+                                  organization_id=org5.id,
+                                  start_date='2015-02-05',
+                                  end_date='2015-03-05')
+        Membership.objects.create(person_id=self.person2.id,
+                                  organization_id=org5.id,
+                                  start_date='2015-04-15',
+                                  end_date='2016-03-05')
+
+        merge.merge_people(self.person1, self.person2)
+        
+        obama = Person.objects.filter(name='Barack Obama').first()
+        self.assertEqual(obama.memberships.count(), 6,
+                         "right number of merges need to happen.")
+
+        org2_mem = obama.memberships.filter(organization_id=org2.id).first()
+        self.assertEqual(org2_mem.start_date,'2015-01-02',
+                         "start date for org2 memberships is earliest")
+        self.assertEqual(org2_mem.end_date,'2016-01-02',
+                         "end date for org2 memberships is latest")
+
+        org3_mem = obama.memberships.filter(organization_id=org3.id).first()
+        self.assertEqual(org3_mem.start_date,'2015-01-03',
+                         "start date for org3 memberships is earliest")
+        self.assertEqual(org3_mem.end_date,'2016-01-03',
+                         "end date for org3 memberships is latest")
+
+        org4_mem = obama.memberships.filter(organization_id=org4.id).first()
+        self.assertEqual(org4_mem.start_date,'2015-01-04',
+                         "start date for org4 memberships is latest")
+        self.assertEqual(org4_mem.end_date,'2016-03-04',
+                         "end date for org4 memberships is latest")
+
+        org5_mems = obama.memberships.filter(organization_id=org5.id)
+        self.assertEqual(len(org5_mems), 2,
+                         "org5 memberships don't merge")
