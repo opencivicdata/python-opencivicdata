@@ -1,5 +1,5 @@
 from django.test import TestCase
-from opencivicdata.admin import merge
+from opencivicdata.models import merge
 from opencivicdata.models import (Jurisdiction, LegislativeSession,                 # noqa
                                   Division, Organization,                           # noqa
                                   OrganizationIdentifier, OrganizationName,         # noqa
@@ -8,6 +8,18 @@ from opencivicdata.models import (Jurisdiction, LegislativeSession,             
                                   PersonContactDetail, PersonLink, PersonSource,    # noqa
                                   Post, PostContactDetail, PostLink, Membership,    # noqa
                                   MembershipContactDetail, MembershipLink)          # noqa
+
+class MergeTestCase(TestCase):
+    def setUp(self):
+        self.person1 = Person.objects.create(name='Barack Obama',
+                                            image='example.com',
+                                            sort_name='Obama')
+        self.organization1 = Organization.objects.create(name="House")
+    def test_merge_of_different_classes(self):
+        with self.assertRaises(AssertionError):
+            merge.merge_people(self.person1, self.organization1)
+        self.assertEquals(Person.objects.count(), 1)
+        self.assertEquals(Organization.objects.count(), 1)
 
 class MembershipTestCase(TestCase):
     def setUp(self):

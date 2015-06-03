@@ -290,7 +290,7 @@ def start_and_end_dates(old, new, keep_old=[], keep_new=[],
 
 def set_up_merge(obj1, obj2, obj_type):
 
-    assert (obj1.__class__.__name__ == obj_type,
+    assert (obj1.__class__.__name__ == obj_type and
             obj2.__class__.__name__ == obj_type), \
         "{0} merger needs two {0} objects".format(obj_type)
 
