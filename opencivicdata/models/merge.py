@@ -1,4 +1,6 @@
 from waterfall import CascadingUpdate
+from .base import IdentifierBase, LinkBase
+from .people_orgs import ContactDetailBase
 
 
 def merge(obj_type, obj1, obj2, custom_merge, force=False):
@@ -81,10 +83,10 @@ def custom_person_merge(new, old, force=False):
     for n in new.other_names.all():
         old.other_names.add(n)
     
-    combine_contact_details(old, new)
-    combine_identifiers(old, new)
-    combine_links(old, new, "links")
-    combine_links(old, new, "sources")
+    ContactDetailBase.transfer_contact_details(old, new)
+    IdentifierBase.transfer_identifiers(old, new)
+    LinkBase.transfer_links(old, new, "links")
+    LinkBase.transfer_links(old, new, "sources")
 
     # memberships
     # if a membership with the same post and org exists in old:
@@ -113,50 +115,6 @@ def custom_person_merge(new, old, force=False):
                  'national_identity', 'biography',
                  'death_date', 'extras'],
                 ['birth_date', 'name'])
-
-
-def combine_contact_details(old, new):
-
-    # add new's contact details to old
-    # unless one exists with the same type and value
-    for contact in new.contact_details.all():
-        old_matches = old.contact_details.filter(type=contact.type,
-                                                 value=contact.value)
-        for o in old_matches:
-            #get rid of old contact details that match a new one
-            o.delete()
-
-        old.contact_details.add(contact)
-        
-        
-
-
-def combine_identifiers(old, new):
-
-    # add new's identifiers to old unless one exists
-    # with the same identifier and scheme
-
-    for i in new.identifiers.all():
-        old_matches = old.identifiers.filter(identifier=i.identifier,
-                                             scheme=i.scheme)
-
-        if len(old_matches) == 0:
-            old.identifiers.add(i)
-
-        else:
-            i.delete()
-
-
-
-def combine_links(old, new, link_name="links"):
-
-    # link_name is the related_name for the link we want to merge
-
-    for l in getattr(new, link_name).all():
-        old_matches = getattr(old, link_name).filter(url=l.url)
-        for o in old_matches:
-            o.delete()
-        getattr(old, link_name).add(l)
 
 
 def merge_memberships(membership1, membership2, force=False):
@@ -210,8 +168,8 @@ def custom_membership_merge(obj1, obj2, force=False):
     keep_new.extend(['organization_id', 'person_id', 'post_id', 'on_behalf_of_id',
                     'label', 'role'])
 
-    combine_contact_details(old, new)
-    combine_links(old, new, "links")
+    ContactDetailBase.transfer_contact_details(old, new)
+    LinkBase.transfer_links(old, new, "links")
 
     keep_new.append('extras')
 

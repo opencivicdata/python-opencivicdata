@@ -13,6 +13,16 @@ class ContactDetailBase(RelatedBase):
     note = models.CharField(max_length=300, blank=True)
     label = models.CharField(max_length=300, blank=True)
 
+    def transfer_contact_details(persistent, obsolete):
+        for contact in obsolete.contact_details.all():
+            matches = persistent.contact_details.filter(type=contact.type,
+                                                                   value=contact.value)
+            for m in matches:
+                #get rid of old contact details that match a new one
+                m.delete()
+
+            persistent.contact_details.add(contact)
+
     class Meta:
         abstract = True
 
@@ -169,7 +179,6 @@ class Membership(OCDBase):
 
     def __str__(self):
         return '{} in {} ({})'.format(self.person, self.organization, self.role)
-
 
 class MembershipContactDetail(ContactDetailBase):
     membership = models.ForeignKey(Membership, related_name='contact_details')
