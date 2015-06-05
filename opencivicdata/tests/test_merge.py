@@ -17,7 +17,7 @@ class MergeTestCase(TestCase):
         self.organization1 = Organization.objects.create(name="House")
     def test_merge_of_different_classes(self):
         with self.assertRaises(AssertionError):
-            merge.merge_people(self.person1, self.organization1)
+            merge.set_up_merge(self.person1, self.organization1, 'Person')
         self.assertEquals(Person.objects.count(), 1)
         self.assertEquals(Organization.objects.count(), 1)
 
@@ -43,7 +43,7 @@ class MembershipTestCase(TestCase):
                                                 organization_id=self.oid1)
         membership2 = Membership.objects.create(person_id=self.pid1,
                                                 organization_id=self.oid1)
-        merge.merge_memberships(membership1, membership2)
+        membership1.merge(membership2)
         self.assertEqual(Membership.objects.count(), 1,
                          "Merge memberships with same person & org.")
 
@@ -53,10 +53,10 @@ class MembershipTestCase(TestCase):
         membership2 = Membership.objects.create(person_id=self.pid2,
                                                 organization_id=self.oid1)
         with self.assertRaises(AssertionError):
-            merge.merge_memberships(membership1, membership2)
+            membership1.merge(membership2)
         self.assertEqual(Membership.objects.count(), 2,
                          "Memberships w different people should not merge")
-        merge.merge_memberships(membership1, membership2, force=True)
+        membership1.merge(membership2, force=True)
         self.assertEqual(Membership.objects.count(), 1,
                          "Memberships w different people should merge if forced")
         self.assertEqual(Membership.objects.first().person_id, self.pid2,
@@ -68,10 +68,10 @@ class MembershipTestCase(TestCase):
         membership2 = Membership.objects.create(person_id=self.pid1,
                                                 organization_id=self.oid2)
         with self.assertRaises(AssertionError):
-            merge.merge_memberships(membership1, membership2)
+            membership1.merge(membership2)
         self.assertEqual(Membership.objects.count(), 2,
                          "Memberships w different orgs should not merge")
-        merge.merge_memberships(membership1, membership2, force=True)
+        membership1.merge(membership2, force=True)
         self.assertEqual(Membership.objects.count(), 1,
                          "Memberships w different orgs should merge if forced")
         self.assertEqual(Membership.objects.first().organization_id, self.oid2,
@@ -86,7 +86,7 @@ class MembershipTestCase(TestCase):
                                                 organization_id=self.oid1,
                                                 start_date='2014-02-01',
                                                 end_date='2014-03-01')
-        merge.merge_memberships(membership1, membership2)
+        membership1.merge(membership2)
         self.assertEqual(Membership.objects.count(), 1,
                          "Memberships w subsetted starts and ends should merge")
         self.assertEqual(Membership.objects.first().start_date, '2014-01-01',
@@ -103,7 +103,7 @@ class MembershipTestCase(TestCase):
                                                 organization_id=self.oid1,
                                                 start_date='2014-02-01',
                                                 end_date='2015-03-01')
-        merge.merge_memberships(membership1, membership2)
+        membership1.merge(membership2)
         self.assertEqual(Membership.objects.count(), 1,
                          "Memberships w subsetted starts and ends should merge")
         self.assertEqual(Membership.objects.first().start_date, '2014-01-01',
@@ -121,10 +121,10 @@ class MembershipTestCase(TestCase):
                                                 start_date='2014-03-01',
                                                 end_date='2014-04-01')
         with self.assertRaises(AssertionError):
-            merge.merge_memberships(membership1, membership2)
+            membership1.merge(membership2)
         self.assertEqual(Membership.objects.count(), 2,
                          "Memberships w non-overlapping dates should not merge")
-        merge.merge_memberships(membership1, membership2, force=True)
+        membership1.merge(membership2, force=True)
         self.assertEqual(Membership.objects.count(), 1,
                          "Memberships w different non-overlapping dates should merge if forced")
         self.assertEqual(Membership.objects.first().start_date, '2014-01-01',
@@ -182,7 +182,7 @@ class PersonTestCase(TestCase):
 
 
     def test_simple_merge(self):
-        merge.merge_people(self.person1, self.person2)
+        self.person1.merge(self.person2)
         obama_set = Person.objects.filter(name='Barack Obama')
         obama = obama_set.first()
         self.assertEqual(len(obama_set), 1,
@@ -194,7 +194,7 @@ class PersonTestCase(TestCase):
 
 
     def test_merge_with_contact_details(self):
-        merge.merge_people(self.person1, self.person2)
+        self.person1.merge(self.person2)
         obama = Person.objects.filter(name='Barack Obama').first()
         self.assertEqual(len(obama.contact_details.all()),3,
                          "New person retains all non-duplicate contact details")
@@ -207,7 +207,7 @@ class PersonTestCase(TestCase):
                          "Newer person's contact detail retained when conflict")
 
     def test_merge_with_identifiers(self):
-        merge.merge_people(self.person1, self.person2)
+        self.person1.merge(self.person2)
         obama = Person.objects.filter(name='Barack Obama').first()
         self.assertEqual(len(obama.identifiers.all()), 3,
                          "New person object retains all non-duplicate identifiers")
@@ -217,7 +217,7 @@ class PersonTestCase(TestCase):
                          "If identifiers have same identifier&scheme, only one is kept")
 
     def test_merge_with_links(self):
-        merge.merge_people(self.person1, self.person2)
+        self.person1.merge(self.person2)
         obama = Person.objects.filter(name='Barack Obama').first()
         self.assertEqual(len(obama.links.all()), 1,
                          "New person object retains all non-duplicate identifiers")
@@ -275,7 +275,7 @@ class PersonTestCase(TestCase):
                                   start_date='2015-04-15',
                                   end_date='2016-03-05')
 
-        merge.merge_people(self.person1, self.person2)
+        self.person1.merge(self.person2)
         
         obama = Person.objects.filter(name='Barack Obama').first()
         self.assertEqual(obama.memberships.count(), 6,

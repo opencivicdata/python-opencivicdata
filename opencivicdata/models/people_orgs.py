@@ -3,6 +3,8 @@ from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
 from .. import common
+from .merge import start_and_end_dates, common_merge, set_up_merge
+#from .merge import common_merge, start_and_end_dates
 
 # abstract models
 
@@ -139,6 +141,62 @@ class Person(OCDBase):
     class Meta:
         verbose_name_plural = "people"
 
+    def merge(self, obsolete_obj, force=False):
+        persistent_obj = self
+        new, old = set_up_merge(persistent_obj, obsolete_obj, 'Person')
+
+        if (old.birth_date != ''
+                and new.birth_date != ''
+                and old.birth_date != new.birth_date
+                and not force):
+            raise AssertionError("Refusing to merge people with different birthdays.")
+
+        valid_birthdate = new.birth_date or old.birth_date
+        setattr(persistent_obj, "birth_date", valid_birthdate)
+
+        if persistent_obj.name not in persistent_obj.other_names.all():
+            persistent_obj.add_other_name(persistent_obj.name)
+        if obsolete_obj.name not in persistent_obj.other_names.all():
+            persistent_obj.add_other_name(obsolete_obj.name)
+
+        for n in obsolete_obj.other_names.all():
+            persistent_obj.other_names.add(n)
+        
+        ContactDetailBase.transfer_contact_details(persistent_obj, obsolete_obj)
+        IdentifierBase.transfer_identifiers(persistent_obj, obsolete_obj)
+        LinkBase.transfer_links(persistent_obj, obsolete_obj, "links")
+        LinkBase.transfer_links(persistent_obj, obsolete_obj, "sources")
+
+        # memberships
+        # if a membership with the same post and org exists in old:
+        for new_mem in new.memberships.all():
+            filter_keys = {'organization': new_mem.organization,
+                           'post': new_mem.post}
+            for old_mem in old.memberships.filter(**filter_keys):
+                # if they don't overlap, keep them both
+
+                if (new_mem.end_date and old_mem.end_date
+                        and new_mem.end_date < old_mem.start_date):
+                    # the memberships don't overlap, don't merge
+                    pass
+                elif (old_mem.end_date and new_mem.start_date
+                        and old_mem.end_date < new_mem.start_date):
+                    # the memberships don't overlap, don't merge
+                    pass
+                else:
+                    new_mem.person = persistent_obj
+                    new_mem.save()
+                    old_mem.person = persistent_obj
+                    old_mem.save()
+                    old_mem.merge(new_mem)
+
+
+        common_merge(persistent_obj, obsolete_obj, new, old, [], ['sort_name', 'family_name',
+                     'given_name', 'image', 'gender', 'summary',
+                     'national_identity', 'biography',
+                     'death_date', 'extras'],
+                    ['birth_date', 'name'], False)
+
 
 class PersonIdentifier(IdentifierBase):
     person = models.ForeignKey(Person, related_name='identifiers')
@@ -179,6 +237,51 @@ class Membership(OCDBase):
 
     def __str__(self):
         return '{} in {} ({})'.format(self.person, self.organization, self.role)
+
+    def merge(self, obsolete_obj, force=False):
+        #current obj persists, keeping newer fields when they conflict
+        persistent_obj = self
+        new, old = set_up_merge(persistent_obj, obsolete_obj, 'Membership')
+        if force == False:
+
+            if (new.post and old.post and new.post != old.post):
+                msg = "Memberships have different posts. Refusing to merge "\
+                      "without forcing. This is probably a bad idea. "\
+                      "Consider yourself warned."
+                raise AssertionError(msg)
+
+            if (new.person and old.person and new.person != old.person and not force):
+                msg = "Memberships have different people. Refusing to merge "\
+                      "without forcing. This is probably a bad idea. "\
+                      "Consider yourself warned."
+                raise AssertionError(msg)
+
+            if (new.organization and old.organization
+                and new.organization != old.organization and not force):
+                    msg = "Memberships have different organizations. Refusing "\
+                          "to merge without forcing. This is probably a bad idea. "\
+                          "Consider yourself warned."
+                    raise AssertionError(msg)
+
+        # TODO check for human edited fields
+
+        keep_old, keep_new, custom_fields = start_and_end_dates(old, new,
+                                                                persistent_obj,
+                                                                force=force,
+                                                                keep_old=[],
+                                                                keep_new=[],
+                                                                custom_fields=[])
+        keep_new.extend(['organization_id', 'person_id', 'post_id', 'on_behalf_of_id',
+                        'label', 'role'])
+
+        ContactDetailBase.transfer_contact_details(old, new)
+        LinkBase.transfer_links(old, new, "links")
+
+        keep_new.append('extras')
+
+        common_merge(persistent_obj, obsolete_obj, new, old,
+                     keep_new, keep_old, custom_fields, False)
+
 
 class MembershipContactDetail(ContactDetailBase):
     membership = models.ForeignKey(Membership, related_name='contact_details')
