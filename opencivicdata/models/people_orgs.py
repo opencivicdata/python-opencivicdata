@@ -265,8 +265,8 @@ class Membership(OCDBase):
 
         # TODO check for human edited fields
 
-        keep_old, keep_new, custom_fields = start_and_end_dates(old, new,
-                                                                persistent_obj,
+        keep_old, keep_new, custom_fields = start_and_end_dates(persistent_obj,
+                                                                obsolete_obj,
                                                                 force=force,
                                                                 keep_old=[],
                                                                 keep_new=[],

@@ -55,74 +55,27 @@ def common_merge(persistent_obj, obsolete_obj,
 
 
 
-def start_and_end_dates(old, new, persistent, keep_old=[], keep_new=[],
+def start_and_end_dates(persistent_obj, obsolete_obj, keep_old=[], keep_new=[],
                         custom_fields=[], force=False):
+    if not force:
+        if ((persistent_obj.end_date and obsolete_obj.start_date
+            and persistent_obj.end_date < obsolete_obj.start_date)
+            or (obsolete_obj.end_date and persistent_obj.start_date
+            and obsolete_obj.end_date < persistent_obj.start_date)):
 
-    # if the objects overlap, take the earlier start date and later end date
-    # if dates are missing, fill in the valid date
-    # if the objects do not overlap, only merge if forced.
-    # deal with missing
+                msg = "Time ranges do not overlap, will not merge "\
+                      "unless forced. Please do not do this unless you "\
+                      "are ABSOLUTELY sure you know what you're doing. "\
+                      "You've been warned."
+                raise AssertionError(msg)
 
-    if not new.start_date and not new.end_date:
-        keep_old.append('start_date')
-        keep_old.append('end_date')
+    start_date = (min(persistent_obj.start_date, obsolete_obj.start_date)
+                  or persistent_obj.start_date or obsolete_obj.start_date)
+    end_date = max(persistent_obj.end_date, obsolete_obj.end_date)
+    setattr(persistent_obj, 'start_date', start_date)
+    setattr(persistent_obj, 'end_date', end_date)
 
-    elif not new.start_date:
-        keep_old.append('start_date')
-        setattr(persistent, 'end_date', max(old.end_date, new.end_date))
-        custom_fields.append('start_date')
-
-    elif not new.end_date:
-        keep_old.append('end_date')
-        setattr(persistent, 'start_date', min(old.start_date, new.start_date))
-        custom_fields.append('start_date')
-
-    elif not old.start_date and not old.end_date:
-        keep_new.append('start_date')
-        keep_new.append('end_date')
-
-    elif not old.start_date:
-        keep_new.append('start_date')
-        setattr(persistent, 'end_date', max(old.end_date, new.end_date))
-        custom_fields.append('start_date')
-
-    elif not old.end_date:
-        keep_new.append('end_date')
-        setattr(persistent, 'start_date', min(old.start_date, new.start_date))
-        custom_fields.append('start_date')
-
-    elif new.start_date <= old.start_date <= new.end_date <= old.end_date:
-        setattr(persistent, 'start_date', new.start_date)
-        custom_fields.extend(['start_date', 'end_date'])
-
-    elif new.start_date <= old.start_date <= old.end_date <= new.end_date:
-        setattr(persistent, 'start_date', new.start_date)
-        setattr(persistent, 'end_date', new.end_date)
-        custom_fields.extend(['start_date', 'end_date'])
-
-    elif old.start_date <= new.start_date <= old.end_date <= new.end_date:
-        setattr(persistent, 'end_date', new.end_date)
-        custom_fields.extend(['start_date', 'end_date'])
-
-    elif old.start_date <= new.start_date <= new.end_date <= old.end_date:
-        custom_fields.extend(['start_date', 'end_date'])
-
-    elif force:
-        # ug, this is really terrible, we're merging two memberships
-        # that don't overlap with each other. We're setting the dates
-        # to the outer bounds for now but maybe we should set to None instead?
-        setattr(persistent, 'start_date', min(old.start_date, new.start_date))
-        setattr(persistent, 'end_date', max(old.end_date, new.end_date))
-        custom_fields.extend(['start_date', 'end_date'])
-
-    else:
-        msg = "Time ranges do not overlap, will not merge "\
-              "unless forced. Please do not do this unless you "\
-              "are ABSOLUTELY sure you know what you're doing. "\
-              "You've been warned."
-        raise AssertionError(msg)
-
-    return (keep_old, keep_new, custom_fields)
+    return (keep_old, keep_new, ['start_date', 'end_date'])
 
 
 def set_up_merge(obj1, obj2, obj_type):
