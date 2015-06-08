@@ -58,6 +58,17 @@ class Organization(OCDBase):
     def __str__(self):
         return self.name
 
+    # Access all "ancestor" organizations
+    def get_parents(self):
+        org = self
+        while True:
+            org = org.parent
+            # Django accesses parents lazily, so have to check if one actually exists
+            if org:
+                yield org
+            else:
+                break
+
     class Meta:
         index_together = [
             ['jurisdiction', 'classification', 'name'],
