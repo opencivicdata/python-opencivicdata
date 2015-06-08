@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
@@ -68,6 +68,58 @@ class Organization(OCDBase):
                 yield org
             else:
                 break
+
+    @transaction.atomic
+    def merge(self, obsolete_obj, force=False):
+        persistent_obj = self
+        new, old = set_up_merge(persistent_obj, obsolete_obj, 'Organization')
+
+        #don't merge if they have different jurisdictions
+        if (old.jurisdiction_id != ''
+                and new.jurisdiction_id != ''
+                and old.jurisdiction_id != new.jurisdiction_id
+                and not force):
+            raise AssertionError("Refusing to merge orgs from different jurisdictions.")
+
+        valid_jurisdiction = new.jurisdiction or old.jurisdiction
+        setattr(persistent_obj, "jurisdiction", valid_jurisdiction)
+
+        
+        ContactDetailBase.transfer_contact_details(persistent_obj, obsolete_obj)
+        IdentifierBase.transfer_identifiers(persistent_obj, obsolete_obj)
+        LinkBase.transfer_links(persistent_obj, obsolete_obj, "links")
+        LinkBase.transfer_links(persistent_obj, obsolete_obj, "sources")
+
+        # memberships
+        # if a membership with the same post and org exists in old:
+        for new_mem in new.memberships.all():
+            filter_keys = {'person': new_mem.person,
+                           'post': new_mem.post}
+            for old_mem in old.memberships.filter(**filter_keys):
+                # if they don't overlap, keep them both
+
+                if (new_mem.end_date and old_mem.end_date
+                        and new_mem.end_date < old_mem.start_date):
+                    # the memberships don't overlap, don't merge
+                    pass
+                elif (old_mem.end_date and new_mem.start_date
+                        and old_mem.end_date < new_mem.start_date):
+                    # the memberships don't overlap, don't merge
+                    pass
+                else:
+                    new_mem.organization = persistent_obj
+                    old_mem.merge(new_mem)
+
+        #transfer all orgs that have obselete as a parent
+        for child in obsolete_obj.children.all():
+            child.parent = persistent_obj
+            child.save()
+
+
+        common_merge(persistent_obj, obsolete_obj, new, old, [], ['name',
+                     'image', 'classification', 'extras',
+                     'founding_date', 'dissolution_date', 'parent_id'],
+                    ['jurisdiction_id'], False)
 
     class Meta:
         index_together = [
@@ -152,6 +204,7 @@ class Person(OCDBase):
     class Meta:
         verbose_name_plural = "people"
 
+    @transaction.atomic
     def merge(self, obsolete_obj, force=False):
         persistent_obj = self
         new, old = set_up_merge(persistent_obj, obsolete_obj, 'Person')
@@ -196,9 +249,6 @@ class Person(OCDBase):
                     pass
                 else:
                     new_mem.person = persistent_obj
-                    new_mem.save()
-                    old_mem.person = persistent_obj
-                    old_mem.save()
                     old_mem.merge(new_mem)
 
 
@@ -249,6 +299,7 @@ class Membership(OCDBase):
     def __str__(self):
         return '{} in {} ({})'.format(self.person, self.organization, self.role)
 
+    @transaction.atomic
     def merge(self, obsolete_obj, force=False):
         #current obj persists, keeping newer fields when they conflict
         persistent_obj = self

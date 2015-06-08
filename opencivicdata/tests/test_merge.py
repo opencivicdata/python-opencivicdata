@@ -302,3 +302,77 @@ class PersonTestCase(TestCase):
         org5_mems = obama.memberships.filter(organization_id=org5.id)
         self.assertEqual(len(org5_mems), 2,
                          "org5 memberships don't merge")
+
+
+class OrgTestCase(TestCase):
+    def setUp(self):
+      self.org1 = Organization.objects.create(name="Org1",
+                                              classification='legislature',
+                                              founding_date='1776-07-04')
+      self.org2 = Organization.objects.create(name="Org2",
+                                              classification='government',
+                                              dissolution_date='2012-12-21')
+      d1 = Division.objects.create(id='ocd-division/country:us',
+                                   name='America Online')
+      j1 = Jurisdiction.objects.create(name="j1",
+                                       url='example.com',
+                                       division=d1,
+                                       classification='committee',
+                                       id='ocd-jurisdiction/country:us/committee')
+      j2 = Jurisdiction.objects.create(name="j2",
+                                       url='example.com',
+                                       division=d1,
+                                       id='ocd-jurisdiction/country:us/government')
+      self.org3 = Organization.objects.create(name="Org3")
+      self.org4 = Organization.objects.create(name="Org4",
+                                              jurisdiction_id = j1.id)
+      self.org5 = Organization.objects.create(name="Org5",
+                                              jurisdiction_id = j1.id)
+      self.org6 = Organization.objects.create(name="Org6",
+                                              jurisdiction_id = j2.id)
+
+    def test_merge_orgs_simple(self):
+        org_id = self.org1.id
+        self.org1.merge(self.org2)
+        orgs = Organization.objects.all()
+        self.assertEqual(len(orgs), 5, "Orgs should merge")
+        new_org = Organization.objects.filter(name='Org2').first()
+        self.assertEqual(new_org.id, org_id,
+                         'Keep persistent org\'s id')
+        self.assertEqual(new_org.classification, 'government',
+                         'Keep newer org\'s classification')
+        self.assertEqual(new_org.founding_date, '1776-07-04',
+                         'Data trumps no-data')
+        self.assertEqual(new_org.dissolution_date, '2012-12-21',
+                         'Data trumps no-data')
+
+    def test_merge_orgs_with_parents(self):
+        self.org1.parent_id = self.org3.id
+        self.org2.parent_id = self.org4.id
+        self.org5.parent_id = self.org3.id
+        self.org6.parent_id = self.org4.id
+        self.org1.save()
+        self.org2.save()
+        self.org5.save()
+        self.org6.save()
+        self.org1.merge(self.org2)
+        merged_org = Organization.objects.filter(name='Org2').first()
+        two_org_parent = Organization.objects.filter(name='Org4').first()
+        one_org_parent = Organization.objects.filter(name='Org3').first()
+        self.assertEqual(Organization.objects.count(), 5,
+                         'two orgs merged')
+        self.assertEqual(merged_org.parent_id, self.org4.id,
+                         'merged org gets newer org\'s parent')
+        self.assertEqual(two_org_parent.children.count(), 2,
+                         'merging doesn\'t impact other parent-child rlns')
+        self.assertEqual(one_org_parent.children.count(), 1,
+                         'merging removes obsolete org from parent')
+
+    def test_org_merge_with_jurisdictions(self):
+        with self.assertRaises(AssertionError):
+            self.org4.merge(self.org6)
+        self.assertEqual(Organization.objects.count(), 6,
+                         'Orgs with different jurisdictions don\'t merge')
+        self.org4.merge(self.org5)
+        self.assertEqual(Organization.objects.count(), 5,
+                         'Orgs w same jurisdiction merge')
