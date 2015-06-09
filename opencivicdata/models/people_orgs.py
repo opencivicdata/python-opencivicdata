@@ -116,10 +116,10 @@ class Organization(OCDBase):
             child.save()
 
 
-        common_merge(persistent_obj, obsolete_obj, new, old, [], ['name',
+        common_merge(persistent_obj, obsolete_obj, new, old, ['name',
                      'image', 'classification', 'extras',
                      'founding_date', 'dissolution_date', 'parent_id'],
-                    ['jurisdiction_id'], False)
+                     [], ['jurisdiction_id'], False)
 
     class Meta:
         index_together = [
@@ -252,10 +252,10 @@ class Person(OCDBase):
                     old_mem.merge(new_mem)
 
 
-        common_merge(persistent_obj, obsolete_obj, new, old, [], ['sort_name', 'family_name',
+        common_merge(persistent_obj, obsolete_obj, new, old, ['sort_name', 'family_name',
                      'given_name', 'image', 'gender', 'summary',
                      'national_identity', 'biography',
-                     'death_date', 'extras'],
+                     'death_date', 'extras'], [],
                     ['birth_date', 'name'], False)
 
 

@@ -19,7 +19,8 @@ def common_merge(persistent_obj, obsolete_obj,
     new_dict = new.__dict__.copy()
     new_dict.pop('id')
     for f in keep_old:
-        old_field = new_dict.pop(f)
+        old_field = getattr(old, f)
+        new_dict.pop(f)
         if old_field:
             setattr(persistent_obj, f, old_field)
 
