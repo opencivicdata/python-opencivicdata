@@ -1,4 +1,4 @@
-Django==1.8.0
+Django>=1.8
 psycopg2
 djorm-pgarray>=1.0
 jsonfield
