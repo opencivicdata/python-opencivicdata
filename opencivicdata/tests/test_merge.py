@@ -306,30 +306,30 @@ class PersonTestCase(TestCase):
 
 class OrgTestCase(TestCase):
     def setUp(self):
-      self.org1 = Organization.objects.create(name="Org1",
-                                              classification='legislature',
-                                              founding_date='1776-07-04')
-      self.org2 = Organization.objects.create(name="Org2",
-                                              classification='government',
-                                              dissolution_date='2012-12-21')
-      d1 = Division.objects.create(id='ocd-division/country:us',
-                                   name='America Online')
-      j1 = Jurisdiction.objects.create(name="j1",
-                                       url='example.com',
-                                       division=d1,
-                                       classification='committee',
-                                       id='ocd-jurisdiction/country:us/committee')
-      j2 = Jurisdiction.objects.create(name="j2",
-                                       url='example.com',
-                                       division=d1,
-                                       id='ocd-jurisdiction/country:us/government')
-      self.org3 = Organization.objects.create(name="Org3")
-      self.org4 = Organization.objects.create(name="Org4",
-                                              jurisdiction_id = j1.id)
-      self.org5 = Organization.objects.create(name="Org5",
-                                              jurisdiction_id = j1.id)
-      self.org6 = Organization.objects.create(name="Org6",
-                                              jurisdiction_id = j2.id)
+        self.org1 = Organization.objects.create(name="Org1",
+                                                classification='legislature',
+                                                founding_date='1776-07-04')
+        self.org2 = Organization.objects.create(name="Org2",
+                                                classification='government',
+                                                dissolution_date='2012-12-21')
+        d1 = Division.objects.create(id='ocd-division/country:us',
+                                     name='America Online')
+        j1 = Jurisdiction.objects.create(name="j1",
+                                         url='example.com',
+                                         division=d1,
+                                         classification='committee',
+                                         id='ocd-jurisdiction/country:us/committee')
+        j2 = Jurisdiction.objects.create(name="j2",
+                                         url='example.com',
+                                         division=d1,
+                                         id='ocd-jurisdiction/country:us/government')
+        self.org3 = Organization.objects.create(name="Org3")
+        self.org4 = Organization.objects.create(name="Org4",
+                                                jurisdiction_id = j1.id)
+        self.org5 = Organization.objects.create(name="Org5",
+                                                jurisdiction_id = j1.id)
+        self.org6 = Organization.objects.create(name="Org6",
+                                                jurisdiction_id = j2.id)
 
     def test_merge_orgs_simple(self):
         org_id = self.org1.id
@@ -376,3 +376,23 @@ class OrgTestCase(TestCase):
         self.org4.merge(self.org5)
         self.assertEqual(Organization.objects.count(), 5,
                          'Orgs w same jurisdiction merge')
+
+class LockedFieldsTestCase(TestCase):
+    def setUp(self):
+        self.org1 = Organization.objects.create(name="Org1",
+                                                image="org1.jpg",
+                                                locked_fields=['image'])
+        self.org2 = Organization.objects.create(name="Org2",
+                                                image="org2.jpg",
+                                                locked_fields=['founding_date'])  
+    def test_org_merge_with_locked_fields(self):
+        self.org1.merge(self.org2)
+        self.assertEqual(Organization.objects.count(), 1,
+                         'Orgs locked fields merge')
+        merged_org = Organization.objects.first()
+        self.assertEqual(merged_org.name, 'Org2',
+                         'Keeps newer org\'s name')
+        self.assertEqual(merged_org.image, 'org1.jpg',
+                         'Keeps locked fields where relevant')
+        self.assertEqual(merged_org.locked_fields, ['image', 'founding_date'],
+                         'Keeps locked fields where relevant')

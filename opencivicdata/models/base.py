@@ -4,6 +4,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from jsonfield import JSONField
 from uuidfield import UUIDField
+from djorm_pgarray.fields import ArrayField
 from .. import common
 
 
@@ -43,6 +44,7 @@ class OCDBase(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     extras = JSONField(default='{}', blank=True)
+    locked_fields = ArrayField(dbtype="text", default=[])
 
     class Meta:
         abstract = True

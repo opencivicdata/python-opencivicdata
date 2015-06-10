@@ -19,17 +19,28 @@ def common_merge(persistent_obj, obsolete_obj,
     new_dict = new.__dict__.copy()
     new_dict.pop('id')
     for f in keep_old:
-        old_field = getattr(old, f)
+        if f in new.locked_fields and f not in old.locked_fields:
+            field_val = getattr(new, f)
+        else:
+            field_val = getattr(old, f)
         new_dict.pop(f)
-        if old_field:
-            setattr(persistent_obj, f, old_field)
+        if field_val:
+            setattr(persistent_obj, f, field_val)
 
     for f in keep_new:
-        new_field = new_dict.pop(f)
-        if new_field:
-            setattr(persistent_obj, f, new_field)
+        field_val = new_dict.pop(f)
+        if f in old.locked_fields and f not in new.locked_fields:
+            field_val = getattr(old, f)
+        if field_val:
+            setattr(persistent_obj, f, field_val)
     for f in custom_fields:
         new_dict.pop(f)
+
+    for f in obsolete_obj.locked_fields:
+        if f not in persistent_obj.locked_fields:
+            persistent_obj.locked_fields.append(f)
+
+    new_dict.pop('locked_fields')
 
     setattr(persistent_obj, "created_at", min(old.created_at, new.created_at))
     new_dict.pop('created_at')
