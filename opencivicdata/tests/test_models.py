@@ -110,3 +110,12 @@ def test_ocdid_validation_other():
     with pytest.raises(ValidationError):
         o = Organization(name='this is a test', id='ocd-organization/3')
         o.full_clean(exclude=['parent', 'jurisdiction'])
+
+
+@pytest.mark.django_db
+def test_organization_get_parents():
+    o1 = Organization.objects.create(name='National Organization on Bread-and-Cheese Products')
+    o2 = Organization.objects.create(name='Committee on Pizza', parent=o1)
+    o3 = Organization.objects.create(name='Subcommittee on Sicilian Pizza', parent=o2)
+
+    assert list(o3.get_parents()) == [o2, o1]
