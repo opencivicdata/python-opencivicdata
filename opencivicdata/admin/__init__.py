@@ -28,6 +28,8 @@ class IdentifierInline(admin.TabularInline):
     can_delete = False
     verbose_name = "ID from another system"
     verbose_name_plural = "IDs from other systems"
+    def has_add_permission(self, request):
+        return False
 
 
 class LinkInline(admin.TabularInline):
@@ -43,7 +45,7 @@ class ContactDetailInline(admin.TabularInline):
 
 
 class OtherNameInline(admin.TabularInline):
-    fields = ('name', 'note', 'start_date', 'end_date')
+    #fields = ('name', 'note', 'start_date', 'end_date')
     extra = 0
     verbose_name = "Alternate name"
     verbose_name_plural = "Alternate names"
@@ -110,6 +112,9 @@ class PostInline(admin.TabularInline):
     ordering = ('label',)
     can_delete = False
     show_change_link = True
+    
+    def has_add_permission(self, request):
+        return False
 
 
 class OrgMembershipInline(ReadOnlyTabularInline):
@@ -267,7 +272,7 @@ class PersonAdmin(ModelAdmin):
     get_memberships.short_description = 'Memberships'
     get_memberships.allow_tags = True
 
-    list_select_related = ('memberships',)
+    #list_select_related = ('memberships',)
     list_display = ('name', 'id', 'get_memberships')
 
 # Bills ################
@@ -351,7 +356,7 @@ class BillVersionInline(ReadOnlyTabularInline):
 
 
 class BillSourceInline(ReadOnlyTabularInline):
-    fields = ('url', 'note')
+    readonly_fields = ('url', 'note')
     model = models.BillSource
 
 
@@ -362,7 +367,7 @@ class BillAdmin(ModelAdmin):
         'from_organization', 'title', 'id', 'extras')
     search_fields = ['identifier', 'title']
     list_select_related = (
-        'sources',
+        #'sources',
         'legislative_session',
         'legislative_session__jurisdiction',
     )
