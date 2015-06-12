@@ -8,6 +8,7 @@ from .. import models
 
 class ModelAdmin(admin.ModelAdmin):
     """ deletion of top level objects is evil """
+    actions = None
     def has_delete_permission(self, request, obj=None):
         return False
 
