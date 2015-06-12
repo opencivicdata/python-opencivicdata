@@ -8,7 +8,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opencivicdata', '0003_auto_20150507_1554.py'),
+        ('opencivicdata', '0003_auto_20150507_1554'),
     ]
 
     operations = [
