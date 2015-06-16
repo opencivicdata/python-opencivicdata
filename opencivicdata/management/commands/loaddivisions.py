@@ -12,10 +12,12 @@ def to_db(fd):
     args, _ = Division.subtypes_from_id(fd.id)
     if fd.sameAs:
         args['redirect_id'] = fd.sameAs
+    if fd.valid_through:
+        args['valid_through'] = fd.valid_through
     return Division(id=fd.id, name=fd.name, **args)
 
 
-def load_divisions(country):
+def load_divisions(country, reset):
     existing_divisions = Division.objects.filter(country=country).count()
 
     country = FileDivision.get('ocd-division/country:' + country)
@@ -26,7 +28,7 @@ def load_divisions(country):
 
     print(len(objects), 'divisions loaded from CSV and ', existing_divisions, 'already in DB')
 
-    if len(objects) == existing_divisions:
+    if len(objects) == existing_divisions and not reset:
         print('no work to be done!')
     else:
         # delete old ids and add new ones all at once
@@ -46,6 +48,10 @@ def load_divisions(country):
 class Command(BaseCommand):
     help = 'initialize a pupa database'
 
+    def add_arguments(self, parser):
+        parser.add_argument('countries', nargs='+', type=str)
+        parser.add_argument('--reset', action='store_true')
+
     def handle(self, *args, **options):
-        for country in args:
-            load_divisions(country)
+        for country in options['countries']:
+            load_divisions(country, options['reset'])

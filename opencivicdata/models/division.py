@@ -35,6 +35,7 @@ class Division(models.Model):
     name = models.CharField(max_length=300)
     redirect = models.ForeignKey('self', null=True)
     country = models.CharField(max_length=2)
+    valid_through = models.CharField(max_length=10, null=True) #YYYY-MM-DD
 
     # up to 7 pieces of the id that are searchable
     subtype1 = models.CharField(max_length=50, blank=True)
