@@ -3,7 +3,6 @@ import uuid
 from django.db import models
 from django.core.validators import RegexValidator
 from jsonfield import JSONField
-from uuidfield import UUIDField
 from .. import common
 
 
@@ -49,7 +48,7 @@ class OCDBase(models.Model):
 
 
 class RelatedBase(models.Model):
-    id = UUIDField(auto=True, primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
         abstract = True
