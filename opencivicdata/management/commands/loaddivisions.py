@@ -16,18 +16,19 @@ def to_db(fd):
 
 
 def load_divisions(country):
-    existing_divisions = Division.objects.filter(country=country).count()
+    existing_divisions = Division.objects.filter(country=country)
 
-    country = FileDivision.get('ocd-division/country:' + country)
+    country = FileDivision.get('ocd-division/country:{}'.format(country))
     objects = [to_db(country)]
 
     for child in country.children(levels=100):
         objects.append(to_db(child))
 
-    print(len(objects), 'divisions loaded from CSV and ', existing_divisions, 'already in DB')
+    print('{} divisions found in the CSV, and {} already in the DB'.
+          format(len(objects), existing_divisions.count()))
 
-    if len(objects) == existing_divisions:
-        print('no work to be done!')
+    if set(objects) == set(existing_divisions):
+        print('The CSV and the DB contents are exactly the same; no work to be done!')
     else:
         # delete old ids and add new ones all at once
         with transaction.atomic():
@@ -40,7 +41,7 @@ def load_divisions(country):
             #      and the PK is clear. The .save() on each shockingly
             #      works. I'm switching this until this is entirely
             #      understood.
-        print(len(objects), 'divisions created')
+        print('{} divisions created'.format(len(objects)))
 
 
 class Command(BaseCommand):
