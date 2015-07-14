@@ -377,6 +377,28 @@ class OrgTestCase(TestCase):
         self.assertEqual(Organization.objects.count(), 5,
                          'Orgs w same jurisdiction merge')
 
+
+class OrgMembershipTestCase(TestCase):
+    def setUp(self):
+        self.org1 = Organization.objects.create(name="Org1",
+                                                classification='legislature',
+                                                founding_date='1776-07-04')
+        self.org2 = Organization.objects.create(name="Org2",
+                                                classification='government',
+                                                dissolution_date='2012-12-21')
+        person1 = Person.objects.create(name="a")
+        person2 = Person.objects.create(name="b")
+        Membership.objects.create(person_id=person1.id, organization_id=self.org1.id)
+        Membership.objects.create(person_id=person2.id, organization_id=self.org2.id)
+        Membership.objects.create(person_id=person1.id, organization_id=self.org2.id)
+
+    def test_merge_orgs_simple(self):
+        self.org1.merge(self.org2)
+        orgs = Organization.objects.all()
+        self.assertEqual(len(orgs), 1, "Orgs should merge")
+        new_org = orgs[0]
+        self.assertEqual(len(new_org.memberships.all()), 2, "Memberships merge")        
+
 class LockedFieldsTestCase(TestCase):
     def setUp(self):
         self.org1 = Organization.objects.create(name="Org1",
