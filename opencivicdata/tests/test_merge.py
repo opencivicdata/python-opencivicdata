@@ -411,6 +411,15 @@ class OrgMembershipTestCase(TestCase):
         new_org = orgs[0]
         self.assertEqual(len(new_org.memberships.all()), 2, "Memberships merge")        
 
+class PersonBirthdayTestCase(TestCase):
+  def setUp(self):
+    self.p1 = Person.objects.create(name="George", birth_date='17760704')
+    self.p2 = Person.objects.create(name="Thomas", birth_date='17760705')
+
+  def test_birthday_mismatch(self):
+      with self.assertRaises(AssertionError):
+          self.p1.merge(self.p2)
+
 class LockedFieldsTestCase(TestCase):
     def setUp(self):
         self.org1 = Organization.objects.create(name="Org1",
