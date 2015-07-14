@@ -132,6 +132,18 @@ class MembershipTestCase(TestCase):
         self.assertEqual(Membership.objects.first().end_date, '2014-04-01',
                          "Force-merged memberships should get latest end date")
 
+    def test_memberships_different_posts(self):
+        post1 = Post.objects.create(label="post1", organization_id=self.oid1)
+        post2 = Post.objects.create(label="post2", organization_id=self.oid1)
+        mem1 = Membership.objects.create(post_id=post1.id,
+                                         person_id=self.pid1,
+                                         organization_id=self.oid1)
+        mem2 = Membership.objects.create(post_id=post2.id,
+                                         person_id=self.pid1,
+                                         organization_id=self.oid1)
+        with self.assertRaises(AssertionError):
+            mem1.merge(mem2)
+
 class PersonTestCase(TestCase):
     def setUp(self):
         self.person1 = Person.objects.create(name='Barack Obama',
