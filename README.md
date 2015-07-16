@@ -9,3 +9,5 @@ python-opencivicdata-django
 This package is part of the opencivicdata namespace package containing the utilities for using Open Civic Data data models in Django.
 
 Its Organization, Person, Membership, Post, and VoteEvent models and related models are based on the [Popolo specification](http://popoloproject.com/).
+
+To run tests on this project: ./run-tests.sh
