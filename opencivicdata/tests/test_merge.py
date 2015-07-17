@@ -389,6 +389,22 @@ class OrgTestCase(TestCase):
         self.assertEqual(Organization.objects.count(), 5,
                          'Orgs w same jurisdiction merge')
 
+class OrgWithParentsTestCase(TestCase):
+    def setUp(self):
+        self.org1 = Organization.objects.create(name="Org1")
+        self.org2 = Organization.objects.create(name="Org2")
+        self.org3 = Organization.objects.create(name="Org3",
+                                                parent=self.org1)
+        self.org4 = Organization.objects.create(name="Org4",
+                                                parent=self.org2)
+
+    def test_org_merge_with_parents(self):
+        self.org1.merge(self.org2)
+        org3 = Organization.objects.filter(name="Org3").first()
+        org4 = Organization.objects.filter(name="Org4").first()
+        self.assertEqual(org3.parent.name, "Org2")
+        self.assertEqual(org4.parent.name, "Org2")
+        self.assertEqual(Organization.objects.count(), 3)
 
 class OrgMembershipTestCase(TestCase):
     def setUp(self):
@@ -419,6 +435,7 @@ class PersonBirthdayTestCase(TestCase):
   def test_birthday_mismatch(self):
       with self.assertRaises(AssertionError):
           self.p1.merge(self.p2)
+
 
 class LockedFieldsTestCase(TestCase):
     def setUp(self):
