@@ -3,6 +3,9 @@ import uuid
 from django.db import models
 from django.core.validators import RegexValidator
 from jsonfield import JSONField
+from uuidfield import UUIDField
+from djorm_pgarray.fields import ArrayField
+
 from .. import common
 
 
@@ -42,6 +45,7 @@ class OCDBase(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     extras = JSONField(default='{}', blank=True)
+    locked_fields = ArrayField(dbtype="text", default=[])
 
     class Meta:
         abstract = True
@@ -58,6 +62,13 @@ class LinkBase(RelatedBase):
     note = models.CharField(max_length=300, blank=True)
     url = models.URLField(max_length=2000)
 
+    def transfer_links(persistent, obsolete, link_name="links"):
+        for l in getattr(obsolete, link_name).all():
+            matches = getattr(persistent, link_name).filter(url=l.url)
+            for m in matches:
+                m.delete()
+            getattr(persistent, link_name).add(l)
+
     class Meta:
         abstract = True
 
@@ -73,6 +84,19 @@ class MimetypeLinkBase(RelatedBase):
 class IdentifierBase(RelatedBase):
     identifier = models.CharField(max_length=300)
     scheme = models.CharField(max_length=300)
+
+    def transfer_identifiers(persistent, obsolete):
+        #pass 2 objects with related identifiers, this will combine them
+        for i in obsolete.identifiers.all():
+            persistent_matches = persistent.identifiers.filter(identifier=i.identifier,
+                                                               scheme=i.scheme)
+
+            if len(persistent_matches) == 0:
+                persistent.identifiers.add(i)
+            else:
+                i.delete()
+
+
 
     class Meta:
         abstract = True
