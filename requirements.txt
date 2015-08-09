@@ -1,6 +1,5 @@
-Django>=1.8
+-e git://github.com/django/django.git#egg=Django
 psycopg2
-jsonfield
 opencivicdata-divisions
 
 #django/postgres object merging
