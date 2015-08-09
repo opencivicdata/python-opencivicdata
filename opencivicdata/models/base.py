@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import RegexValidator
 from jsonfield import JSONField
-from uuidfield import UUIDField
 
 from .. import common
 

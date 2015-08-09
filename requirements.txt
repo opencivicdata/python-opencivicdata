@@ -1,8 +1,6 @@
 Django>=1.8
 psycopg2
-djorm-pgarray>=1.0
 jsonfield
-django-uuidfield
 opencivicdata-divisions
 
 #django/postgres object merging
