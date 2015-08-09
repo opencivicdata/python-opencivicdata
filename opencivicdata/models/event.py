@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from djorm_pgarray.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, MimetypeLinkBase, RelatedEntityBase
 from .jurisdiction import Jurisdiction
 from .bill import Bill
@@ -102,8 +102,8 @@ class EventParticipant(RelatedEntityBase):
 class EventAgendaItem(RelatedBase):
     description = models.TextField()
     order = models.CharField(max_length=100, blank=True)
-    subjects = ArrayField(dbtype='text')
-    notes = ArrayField(dbtype='text')
+    subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
+    notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
     event = models.ForeignKey(Event, related_name='agenda')
 
 
