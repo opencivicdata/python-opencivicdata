@@ -48,6 +48,7 @@ class Organization(OCDBase):
     id = OCDIDField(ocd_type='organization')
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True, max_length=2000)
+    source_identified = models.NullBooleanField(default=False)
     parent = models.ForeignKey('self', related_name='children', null=True)
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations', null=True)
     classification = models.CharField(max_length=100, blank=True,
@@ -182,6 +183,7 @@ class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300, db_index=True)
     sort_name = models.CharField(max_length=100, default='')
+    source_identified = models.NullBooleanField(default=False)
     family_name = models.CharField(max_length=100, blank=True)
     given_name = models.CharField(max_length=100, blank=True)
 

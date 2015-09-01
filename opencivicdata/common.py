@@ -64,6 +64,10 @@ ORGANIZATION_CLASSIFICATION_CHOICES = (
     ('party', 'Party'),
     ('committee', 'Committee'),
     ('commission', 'Commission'),
+    ('department', 'Department'),
+    ('office', 'Office'),
+    ('company', 'Company'),
+    ('political action committee', 'Political Action Committee (PAC)')
 )
 ORGANIZATION_CLASSIFICATIONS = _keys(ORGANIZATION_CLASSIFICATION_CHOICES)
 
@@ -155,3 +159,11 @@ VOTE_RESULT_CHOICES = (
     ('fail', 'Fail'),
 )
 VOTE_RESULTS = _keys(VOTE_RESULT_CHOICES)
+
+DISCLOSURE_CLASSIFICATION_CHOICES = (
+    ('lobbying', 'Lobbying'),
+    ('contributions', 'Contributions'),
+    ('post_employment', 'Post Employment')
+)
+
+DISCLOSURE_CLASSIFICATIONS = _keys(DISCLOSURE_CLASSIFICATION_CHOICES)
