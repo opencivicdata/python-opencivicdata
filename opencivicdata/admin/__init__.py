@@ -69,7 +69,7 @@ class DivisionAdmin(ModelAdmin):
 
 class LegislativeSessionInline(ReadOnlyTabularInline):
     model = models.LegislativeSession
-    readonly_fields = ('identifier', 'name')
+    readonly_fields = ('identifier', 'name', 'classification', 'start_date', 'end_date')
     ordering = ('-identifier',)
 
 
@@ -113,7 +113,7 @@ class PostInline(admin.TabularInline):
     ordering = ('label',)
     can_delete = False
     show_change_link = True
-    
+
     def has_add_permission(self, request):
         return False
 
