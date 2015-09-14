@@ -326,34 +326,25 @@ class BillSponsorshipInline(ReadOnlyTabularInline):
     extra = 0
 
 
-class BillDocumentInline(ReadOnlyTabularInline):
-    model = models.BillDocument
-
-    def get_link(self, obj):
-        return None  # TODO: get rid of this line when uuid issue fixed
-        link = obj.links.first()
-        return link.url
-
-    get_link.short_description = 'Link'
-    get_link.allow_tags = True
-
-    list_select_related = ('BillDocumentLink',)
-    readonly_fields = ('note', 'date', 'get_link')
-
-
-class BillVersionInline(ReadOnlyTabularInline):
+class DocVersionInline(ReadOnlyTabularInline):
     model = models.BillVersion
 
-    def get_link(self, obj):
-        return None   # TODO: get rid of this line when uuid issue fixed
-        link = obj.links.first()
-        return link.url
+    def get_links(self, obj):
+        return '<br />'.join('<a href="{0}">{0}</a>'.format(link.url) for link in obj.links.all())
 
-    get_link.short_description = 'Link'
-    get_link.allow_tags = True
+    get_links.short_description = 'Links'
+    get_links.allow_tags = True
 
     list_select_related = ('BillVersionLink',)
-    readonly_fields = ('note', 'date', 'get_link')
+    readonly_fields = ('note', 'date', 'get_links')
+
+
+class BillVersionInline(DocVersionInline):
+    model = models.BillVersion
+
+
+class BillDocumentInline(DocVersionInline):
+    model = models.BillDocument
 
 
 class BillSourceInline(ReadOnlyTabularInline):
