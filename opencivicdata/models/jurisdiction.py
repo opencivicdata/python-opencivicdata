@@ -29,4 +29,4 @@ class LegislativeSession(RelatedBase):
     end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
     def __str__(self):
-        return '{} {} Session'.format(self.jurisdiction, self.name)
+        return '{} {}'.format(self.jurisdiction, self.name)

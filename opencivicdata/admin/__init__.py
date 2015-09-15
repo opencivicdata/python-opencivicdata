@@ -408,4 +408,6 @@ class BillAdmin(ModelAdmin):
         'get_session_name', 'get_truncated_sponsors',
         'get_truncated_title', 'source_link')
 
-    list_filter = ('legislative_session__jurisdiction__name',)
+    list_filter = ('legislative_session__jurisdiction__name',
+                   'legislative_session__name',
+                   )
