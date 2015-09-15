@@ -1,28 +1,26 @@
 from django.contrib import admin
-from opencivicdata.models import vote as models
+from .. import models
+from .base import (ModelAdmin, ReadOnlyTabularInline, IdentifierInline, LinkInline,
+                   ContactDetailInline, OtherNameInline)
 
 
-class VoteCountInline(admin.TabularInline):
+class VoteCountInline(ReadOnlyTabularInline):
     model = models.VoteCount
     fields = readonly_fields = ('option', 'value')
-    extra = 0
 
 
-class PersonVoteInline(admin.TabularInline):
+class PersonVoteInline(ReadOnlyTabularInline):
     model = models.PersonVote
-    fields = readonly_fields = (
-        'voter', 'voter_name', 'option')
-    extra = 0
+    fields = readonly_fields = ('voter', 'voter_name', 'option')
 
 
-class VoteSourceInline(admin.TabularInline):
+class VoteSourceInline(ReadOnlyTabularInline):
     model = models.VoteSource
     fields = readonly_fields = ('url', 'note')
-    extra = 0
 
 
 @admin.register(models.VoteEvent)
-class VoteEventAdmin(admin.ModelAdmin):
+class VoteEventAdmin(ModelAdmin):
     readonly_fields = (
         'bill', 'organization', 'legislative_session', 'id')
     fields = (
@@ -34,24 +32,35 @@ class VoteEventAdmin(admin.ModelAdmin):
     list_selected_related = (
         'sources',
         'legislative_session',
-        'legislative_session__jurisdiction')
+        'legislative_session__jurisdiction',
+        'counts',
+    )
 
-    inlines = [
-        VoteCountInline, PersonVoteInline,
-        VoteSourceInline]
+    def get_jurisdiction_name(self, obj):
+        return obj.legislative_session.jurisdiction.name
+    get_jurisdiction_name.short_description = 'Jurisdiction'
 
+    def get_vote_tally(self, obj):
+        yes = no = other = 0
+        for vc in obj.counts.all():
+            if vc.option == 'yes':
+                yes = vc.value
+            elif vc.option == 'no':
+                no = vc.value
+            else:
+                other += vc.value
+        return '{}-{}-{}'.format(yes, no, other)
+    get_vote_tally.short_description = 'Vote Tally'
 
-@admin.register(models.VoteCount)
-class VoteCountAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'get_jurisdiction_name',
+        'identifier',
+        'bill',
+        'get_vote_tally',
+    )
 
+    list_filter = (
+        'legislative_session__jurisdiction__name',
+    )
 
-@admin.register(models.PersonVote)
-class PersonVoteAdmin(admin.ModelAdmin):
-    list_display = ('voter_name', 'vote')
-    readonly_fields = ('vote',)
-
-
-@admin.register(models.VoteSource)
-class VoteSourceAdmin(admin.ModelAdmin):
-    pass
+    inlines = [VoteCountInline, PersonVoteInline, VoteSourceInline]
