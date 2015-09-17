@@ -1,6 +1,7 @@
 language: python
 python:
     - "3.4"
+    - "3.5"
 install: pip install -r requirements-test.txt
 before_script:
     - psql -c "CREATE USER test with PASSWORD 'test' CREATEDB SUPERUSER;" -U postgres
@@ -11,4 +12,4 @@ after_success:
     - coveralls
 notifications:
     email:
-        - jturk@sunlightfoundation.com
+        - james.p.turk@gmail.com
