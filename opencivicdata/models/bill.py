@@ -88,12 +88,14 @@ class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='documents')
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+    text = models.TextField(default='')
 
 
 class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='versions')
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+    text = models.TextField(default='')
 
 
 class BillDocumentLink(MimetypeLinkBase):
