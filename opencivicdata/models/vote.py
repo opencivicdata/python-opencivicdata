@@ -35,13 +35,13 @@ class VoteEvent(OCDBase):
 
 
 class VoteCount(RelatedBase):
-    vote = models.ForeignKey(VoteEvent, related_name='counts')
+    vote_event = models.ForeignKey(VoteEvent, related_name='counts')
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     value = models.PositiveIntegerField()
 
 
 class PersonVote(RelatedBase):
-    vote = models.ForeignKey(VoteEvent, related_name='votes')
+    vote_event = models.ForeignKey(VoteEvent, related_name='votes')
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     voter_name = models.CharField(max_length=300)
     voter = models.ForeignKey(Person, related_name='votes', null=True)
