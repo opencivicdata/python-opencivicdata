@@ -84,7 +84,7 @@ class Organization(OCDBase):
         valid_jurisdiction = new.jurisdiction or old.jurisdiction
         setattr(persistent_obj, "jurisdiction", valid_jurisdiction)
 
-        
+
         ContactDetailBase.transfer_contact_details(persistent_obj, obsolete_obj)
         IdentifierBase.transfer_identifiers(persistent_obj, obsolete_obj)
         LinkBase.transfer_links(persistent_obj, obsolete_obj, "links")
@@ -157,7 +157,8 @@ class Post(OCDBase):
     label = models.CharField(max_length=300)
     role = models.CharField(max_length=300, blank=True)
     organization = models.ForeignKey(Organization, related_name='posts')
-    division = models.ForeignKey(Division, related_name='posts', null=True, default=None)
+    division = models.ForeignKey(Division, related_name='posts', null=True, blank=True,
+                                 default=None)
     start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
 
@@ -181,7 +182,7 @@ class PostLink(LinkBase):
 class Person(OCDBase):
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300, db_index=True)
-    sort_name = models.CharField(max_length=100, default='')
+    sort_name = models.CharField(max_length=100, default='', blank=True)
     family_name = models.CharField(max_length=100, blank=True)
     given_name = models.CharField(max_length=100, blank=True)
 
@@ -225,7 +226,7 @@ class Person(OCDBase):
 
         for n in obsolete_obj.other_names.all():
             persistent_obj.other_names.add(n)
-        
+
         ContactDetailBase.transfer_contact_details(persistent_obj, obsolete_obj)
         IdentifierBase.transfer_identifiers(persistent_obj, obsolete_obj)
         LinkBase.transfer_links(persistent_obj, obsolete_obj, "links")
