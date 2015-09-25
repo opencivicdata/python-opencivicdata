@@ -74,7 +74,7 @@ class LinkBase(RelatedBase):
 class MimetypeLinkBase(RelatedBase):
     media_type = models.CharField(max_length=100)
     url = models.URLField(max_length=2000)
-    text = models.TextField(default='')
+    text = models.TextField(default='', blank=True)
 
     class Meta:
         abstract = True

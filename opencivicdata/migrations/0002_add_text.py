@@ -15,31 +15,31 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='billdocumentlink',
             name='text',
-            field=models.TextField(default=''),
+            field=models.TextField(default='', blank=True),
         ),
         migrations.AddField(
             model_name='billversionlink',
             name='text',
-            field=models.TextField(default=''),
+            field=models.TextField(default='', blank=True),
         ),
         migrations.AddField(
             model_name='eventagendamedialink',
             name='text',
-            field=models.TextField(default=''),
+            field=models.TextField(default='', blank=True),
         ),
         migrations.AddField(
             model_name='eventdocument',
             name='text',
-            field=models.TextField(default=''),
+            field=models.TextField(default='', blank=True),
         ),
         migrations.AddField(
             model_name='eventdocumentlink',
             name='text',
-            field=models.TextField(default=''),
+            field=models.TextField(default='', blank=True),
         ),
         migrations.AddField(
             model_name='eventmedialink',
             name='text',
-            field=models.TextField(default=''),
+            field=models.TextField(default='', blank=True),
         ),
     ]
