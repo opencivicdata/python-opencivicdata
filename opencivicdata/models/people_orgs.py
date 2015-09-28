@@ -1,4 +1,6 @@
+import datetime
 from django.db import models, transaction
+from django.db.models import Q
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
@@ -41,7 +43,6 @@ class OtherNameBase(RelatedBase):
     class Meta:
         abstract = True
 
-
 # the actual models
 
 class Organization(OCDBase):
@@ -68,6 +69,17 @@ class Organization(OCDBase):
                 yield org
             else:
                 break
+
+    def get_current_members(self):
+        """ return all Person objects w/ current memberships to org """
+        today = datetime.date.today().isoformat()
+
+        return Person.objects.filter(Q(memberships__start_date='') |
+                                     Q(memberships__start_date__lte=today),
+                                     Q(memberships__end_date='') |
+                                     Q(memberships__end_date__gte=today),
+                                     memberships__organization_id=self.id
+                                     )
 
     @transaction.atomic
     def merge(self, obsolete_obj, force=False):
