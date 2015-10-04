@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from djorm_pgarray.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, MimetypeLinkBase, RelatedEntityBase
 from .jurisdiction import Jurisdiction
 from .bill import Bill
@@ -102,21 +102,21 @@ class EventParticipant(RelatedEntityBase):
 class EventAgendaItem(RelatedBase):
     description = models.TextField()
     order = models.CharField(max_length=100, blank=True)
-    subjects = ArrayField(dbtype='text')
-    notes = ArrayField(dbtype='text')
+    subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
+    notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
     event = models.ForeignKey(Event, related_name='agenda')
 
 
 class EventRelatedEntity(RelatedEntityBase):
     agenda_item = models.ForeignKey(EventAgendaItem, related_name='related_entities')
     bill = models.ForeignKey(Bill, null=True)
-    vote = models.ForeignKey(VoteEvent, null=True)
+    vote_event = models.ForeignKey(VoteEvent, null=True)
     note = models.TextField()
 
     @property
     def entity_name(self):
-        if self.entity_type == 'vote' and self.vote_id:
-            return self.vote.name
+        if self.entity_type == 'vote' and self.vote_event_id:
+            return self.vote_event.name
         elif self.entity_type == 'bill' and self.bill_id:
             return self.bill.name
         else:
@@ -125,7 +125,7 @@ class EventRelatedEntity(RelatedEntityBase):
     @property
     def entity_id(self):
         if self.entity_type == 'vote':
-            return self.vote_id
+            return self.vote_event_id
         if self.entity_type == 'bill':
             return self.bill_id
         return super(EventRelatedEntity, self).entity_id

@@ -1,5 +1,5 @@
 from django.db import models
-from djorm_pgarray.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField
 
 from .base import (OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase,
                    IdentifierBase)
@@ -16,8 +16,8 @@ class Bill(OCDBase):
     title = models.TextField()
 
     from_organization = models.ForeignKey(Organization, related_name='bills', null=True)
-    classification = ArrayField(dbtype="text")      # check that array values are in enum?
-    subject = ArrayField(dbtype="text")
+    classification = ArrayField(base_field=models.TextField(), blank=True, default=list)      # check that array values are in enum?
+    subject = ArrayField(base_field=models.TextField(), blank=True, default=list)
 
     def __str__(self):
         return '{} in {}'.format(self.identifier, self.legislative_session)
@@ -51,7 +51,7 @@ class BillAction(RelatedBase):
     organization = models.ForeignKey(Organization, related_name='actions')
     description = models.TextField()
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-    classification = ArrayField(dbtype="text")      # enum
+    classification = ArrayField(base_field=models.TextField(), blank=True, default=list)     # enum
     order = models.PositiveIntegerField()
 
     class Meta:

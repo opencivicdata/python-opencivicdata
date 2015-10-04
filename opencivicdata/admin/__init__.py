@@ -2,59 +2,10 @@ from django.core import urlresolvers
 from django.contrib import admin
 from django.template import defaultfilters
 from .. import models
+from .base import (ModelAdmin, ReadOnlyTabularInline, IdentifierInline, LinkInline,
+                   ContactDetailInline, OtherNameInline)
+from . import vote
 
-# Helpers ##########
-
-
-class ModelAdmin(admin.ModelAdmin):
-    """ deletion of top level objects is evil """
-    actions = None
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-    # we probably don't want to add anything through the interface
-    def has_add_permission(self, request):
-        return False
-
-
-class ReadOnlyTabularInline(admin.TabularInline):
-    def has_add_permission(self, request):
-        return False
-    can_delete = False
-
-
-class IdentifierInline(admin.TabularInline):
-    fields = readonly_fields = ('identifier', 'scheme')
-    extra = 0
-    can_delete = False
-    verbose_name = "ID from another system"
-    verbose_name_plural = "IDs from other systems"
-    def has_add_permission(self, request):
-        return False
-
-
-class LinkInline(admin.TabularInline):
-    fields = ('url', 'note')
-    extra = 0
-
-
-class ContactDetailInline(admin.TabularInline):
-    fields = ('type', 'value', 'note', 'label')
-    extra = 0
-    verbose_name = "Piece of contact information"
-    verbose_name_plural = "Contact information"
-
-
-class OtherNameInline(admin.TabularInline):
-    #fields = ('name', 'note', 'start_date', 'end_date')
-    extra = 0
-    verbose_name = "Alternate name"
-    verbose_name_plural = "Alternate names"
-
-# class MimetypeLinkInline(admin.TabularInline):
-#    fields = ('media_type', 'url')
-# class RelatedEntityInline(admin.TabularInline):
-#    fields = ('name', 'entity_type', 'organization', 'person')
 
 # Divisions & Jurisdictions ##########
 
@@ -69,7 +20,7 @@ class DivisionAdmin(ModelAdmin):
 
 class LegislativeSessionInline(ReadOnlyTabularInline):
     model = models.LegislativeSession
-    readonly_fields = ('identifier', 'name')
+    readonly_fields = ('identifier', 'name', 'classification', 'start_date', 'end_date')
     ordering = ('-identifier',)
 
 
@@ -113,7 +64,7 @@ class PostInline(admin.TabularInline):
     ordering = ('label',)
     can_delete = False
     show_change_link = True
-    
+
     def has_add_permission(self, request):
         return False
 
@@ -326,34 +277,25 @@ class BillSponsorshipInline(ReadOnlyTabularInline):
     extra = 0
 
 
-class BillDocumentInline(ReadOnlyTabularInline):
-    model = models.BillDocument
-
-    def get_link(self, obj):
-        return None  # TODO: get rid of this line when uuid issue fixed
-        link = obj.links.first()
-        return link.url
-
-    get_link.short_description = 'Link'
-    get_link.allow_tags = True
-
-    list_select_related = ('BillDocumentLink',)
-    readonly_fields = ('note', 'date', 'get_link')
-
-
-class BillVersionInline(ReadOnlyTabularInline):
+class DocVersionInline(ReadOnlyTabularInline):
     model = models.BillVersion
 
-    def get_link(self, obj):
-        return None   # TODO: get rid of this line when uuid issue fixed
-        link = obj.links.first()
-        return link.url
+    def get_links(self, obj):
+        return '<br />'.join('<a href="{0}">{0}</a>'.format(link.url) for link in obj.links.all())
 
-    get_link.short_description = 'Link'
-    get_link.allow_tags = True
+    get_links.short_description = 'Links'
+    get_links.allow_tags = True
 
     list_select_related = ('BillVersionLink',)
-    readonly_fields = ('note', 'date', 'get_link')
+    readonly_fields = ('note', 'date', 'get_links')
+
+
+class BillVersionInline(DocVersionInline):
+    model = models.BillVersion
+
+
+class BillDocumentInline(DocVersionInline):
+    model = models.BillDocument
 
 
 class BillSourceInline(ReadOnlyTabularInline):
@@ -365,7 +307,7 @@ class BillSourceInline(ReadOnlyTabularInline):
 class BillAdmin(ModelAdmin):
     readonly_fields = fields = (
         'identifier', 'legislative_session', 'bill_classifications',
-        'from_organization', 'title', 'id', 'extras')
+        'from_organization', 'title', 'id', 'subject', 'extras')
     search_fields = ['identifier', 'title']
     list_select_related = (
         #'sources',
@@ -417,4 +359,5 @@ class BillAdmin(ModelAdmin):
         'get_session_name', 'get_truncated_sponsors',
         'get_truncated_title', 'source_link')
 
-    list_filter = ('legislative_session__jurisdiction__name',)
+    list_filter = ('legislative_session__jurisdiction__name',
+                   )

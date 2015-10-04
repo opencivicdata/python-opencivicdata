@@ -2,9 +2,9 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata-django",
-      version='0.6.4',
+      version='0.7.0a3',
       author="James Turk",
-      author_email='jturk@sunlightfoundation.com',
+      author_email='james.p.turk@gmail.com',
       license="BSD",
       description="python opencivicdata library",
       long_description="",
