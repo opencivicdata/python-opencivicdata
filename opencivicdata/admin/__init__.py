@@ -307,7 +307,7 @@ class BillSourceInline(ReadOnlyTabularInline):
 class BillAdmin(ModelAdmin):
     readonly_fields = fields = (
         'identifier', 'legislative_session', 'bill_classifications',
-        'from_organization', 'title', 'id', 'extras')
+        'from_organization', 'title', 'id', 'subject', 'extras')
     search_fields = ['identifier', 'title']
     list_select_related = (
         #'sources',
