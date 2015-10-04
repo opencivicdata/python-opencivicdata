@@ -44,7 +44,7 @@ class Division(object):
                     #same_as_note = row.pop('sameAsNote', None)
                     Division(**row)
             if division not in self._cache:
-                raise ValueError("Division not found")
+                raise ValueError("Division not found: {}".format(division))
                 
         return self._cache[division]
 
