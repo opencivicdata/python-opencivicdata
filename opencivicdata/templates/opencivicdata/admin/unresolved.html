@@ -3,6 +3,7 @@
 {% block content %}
 
 <form method="POST" action="">
+{% csrf_token %}
 <input type="submit" value="Save">
 <table>
   <tr>
@@ -15,13 +16,13 @@
       {{name}} ({{count}})
     </td>
     <td>
-    <select class="people-opts">
-      <option value="">---</option>
-      {% for p in people %}
-      <option value="{{p.id}}">{{p}}</option>
-      {% endfor %}
-    </select>
-  </td>
+      <select name="{{name}}" class="people-opts">
+        <option value="">---</option>
+        {% for p in people %}
+        <option value="{{p.id}}">{{p}}</option>
+        {% endfor %}
+      </select>
+    </td>
   </tr>
   {% endfor %}
 </table>

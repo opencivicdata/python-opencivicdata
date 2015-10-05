@@ -1,25 +1,44 @@
-from collections import Counter
+from collections import Counter, defaultdict
 from django.shortcuts import render
 from django.db import models
 from ..models import BillSponsorship, PersonVote, Person
 
 
 def unresolved_legislators(request):
-    sponsors = BillSponsorship.objects.filter(entity_type='person', person_id=None
-                                              ).annotate(num=models.Count('name'))
-    voters = PersonVote.objects.filter(voter_id=None).annotate(num=models.Count('voter_name'))
+    if request.method == 'POST':
+        names = defaultdict(list)
+        for name, id in request.POST.items():
+            if name == 'csrfmiddlewaretoken':
+                continue
+            if not id:
+                continue
+            names[id].append(name)
 
-    unresolved = Counter()
-    for sp in sponsors:
-        unresolved[sp.name] += sp.num
-    for v in voters:
-        unresolved[v.voter_name] += v.num
+        people_by_id = Person.objects.in_bulk(names.keys())
+        for pid, person in people_by_id.items():
+            person.new_names = names[pid]
 
-    # convert unresolved to a normal dict so it's iterable in template
-    unresolved = sorted(((k, v) for (k, v) in unresolved.items()),
-                        key=lambda x: x[1], reverse=True)
+        people = people_by_id.values()
 
-    people = list(Person.objects.all())
+        return render(request, 'opencivicdata/admin/unresolved-confirm.html',
+                      {'people': people}
+                      )
+    else:
+        sponsors = BillSponsorship.objects.filter(entity_type='person', person_id=None
+                                                ).annotate(num=models.Count('name'))
+        voters = PersonVote.objects.filter(voter_id=None).annotate(num=models.Count('voter_name'))
 
-    return render(request, 'opencivicdata/admin/unresolved.html',
-                  {'unresolved': unresolved, 'people': people})
+        unresolved = Counter()
+        for sp in sponsors:
+            unresolved[sp.name] += sp.num
+        for v in voters:
+            unresolved[v.voter_name] += v.num
+
+        # convert unresolved to a normal dict so it's iterable in template
+        unresolved = sorted(((k, v) for (k, v) in unresolved.items()),
+                            key=lambda x: x[1], reverse=True)
+
+        people = list(Person.objects.all())
+
+        return render(request, 'opencivicdata/admin/unresolved.html',
+                    {'unresolved': unresolved, 'people': people})

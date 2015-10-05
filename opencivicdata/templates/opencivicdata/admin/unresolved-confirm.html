@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+Add the following aliases?
+
+<ul>
+  {% for person in people %}
+  <li> {{ person }}
+    <ul>
+      {% for name in person.new_names %}
+      <li> {{ name }}</li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>
+
+<input type="submit" value="Yes">
+<input type="button" value="Cancel">
+
+{% endblock %}
