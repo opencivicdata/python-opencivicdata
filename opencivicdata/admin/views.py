@@ -1,7 +1,9 @@
 from collections import Counter, defaultdict
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
 from django.db import models
-from ..models import BillSponsorship, PersonVote, Person
+from django.contrib import messages
+from ..models import BillSponsorship, PersonVote, Person, PersonName
 
 
 def unresolved_legislators(request):
@@ -42,3 +44,21 @@ def unresolved_legislators(request):
 
         return render(request, 'opencivicdata/admin/unresolved.html',
                     {'unresolved': unresolved, 'people': people})
+
+
+@require_POST
+def confirm_unresolved_legislators(request):
+    if request.POST.get('confirm'):
+        for pid, names in request.POST.lists():
+            if pid.startswith('ocd-person'):
+                for name in names:
+                    PersonName.objects.create(person_id=pid, name=name)
+                    sp = BillSponsorship.objects.filter(entity_type='person', person_id=None, name=name)
+                    n_sponsors = sp.update(person_id=pid)
+                    vs = PersonVote.objects.filter(voter_id=None, voter_name=name)
+                    n_voters = vs.update(voter_id=pid)
+                    messages.add_message(request, messages.INFO,
+                                         'Updated {} sponsors and {} votes to refer to {}'.format(
+                                             n_sponsors, n_voters, pid)
+                                         )
+        return redirect('unresolved_legislators')
