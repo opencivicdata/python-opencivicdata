@@ -52,7 +52,12 @@ def confirm_unresolved_legislators(request):
         for pid, names in request.POST.lists():
             if pid.startswith('ocd-person'):
                 for name in names:
-                    PersonName.objects.create(person_id=pid, name=name)
+                    PersonName.objects.create(person_id=pid, name=name,
+                                              note='added via unresolved tool')
+                    person = Person.objects.get(pk=pid)
+                    if 'other_names' not in person.locked_fields:
+                        person.locked_fields.append('other_names')
+                        person.save()
                     sp = BillSponsorship.objects.filter(entity_type='person', person_id=None, name=name)
                     n_sponsors = sp.update(person_id=pid)
                     vs = PersonVote.objects.filter(voter_id=None, voter_name=name)
