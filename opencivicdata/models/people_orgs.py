@@ -1,6 +1,6 @@
 import datetime
 from django.db import models, transaction
-from django.db.models import Q
+from django.db.models import Q, Manager
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
@@ -191,7 +191,27 @@ class PostLink(LinkBase):
     post = models.ForeignKey(Post, related_name='links')
 
 
+class PersonManager(Manager):
+    def member_of(self, organization_name, restrict_current=True):
+        filter_params = []
+
+        if restrict_current:
+            today = datetime.date.today().isoformat()
+
+            filter_params = [Q(memberships__start_date='') |
+                             Q(memberships__start_date__lte=today),
+                             Q(memberships__end_date='') |
+                             Q(memberships__end_date__gte=today),
+                             ]
+
+        qs = self.filter(*filter_params,
+                         memberships__organization__name=organization_name)
+        return qs
+
+
 class Person(OCDBase):
+    objects = PersonManager()
+
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300, db_index=True)
     sort_name = models.CharField(max_length=100, default='', blank=True)
