@@ -1,6 +1,6 @@
 import datetime
 from django.db import models, transaction
-from django.db.models import Q, Manager
+from django.db.models import Q, QuerySet
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
@@ -191,11 +191,11 @@ class PostLink(LinkBase):
     post = models.ForeignKey(Post, related_name='links')
 
 
-class PersonManager(Manager):
-    def member_of(self, organization_name, restrict_current=True):
+class PersonQuerySet(QuerySet):
+    def member_of(self, organization_name, current_only=True):
         filter_params = []
 
-        if restrict_current:
+        if current_only:
             today = datetime.date.today().isoformat()
 
             filter_params = [Q(memberships__start_date='') |
@@ -210,7 +210,7 @@ class PersonManager(Manager):
 
 
 class Person(OCDBase):
-    objects = PersonManager()
+    objects = PersonQuerySet.as_manager()
 
     id = OCDIDField(ocd_type='person')
     name = models.CharField(max_length=300, db_index=True)
