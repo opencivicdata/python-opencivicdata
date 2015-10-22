@@ -10,11 +10,11 @@ class EventLocationAdmin(admin.ModelAdmin):
     pass
 
 
-class EventLinkInline(base.LinkAdminInline):
+class EventLinkInline(base.LinkInline):
     model = models.EventLink
 
 
-class EventSourceInline(base.LinkAdminInline):
+class EventSourceInline(base.LinkInline):
     model = models.EventSource
 
 

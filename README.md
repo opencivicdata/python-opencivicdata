@@ -8,6 +8,8 @@ python-opencivicdata-django
 
 This package is part of the opencivicdata namespace package containing the utilities for using Open Civic Data data models in Django.
 
+**Requires Django 1.9 and Postgres 9.4**
+
 Its Organization, Person, Membership, Post, and VoteEvent models and related models are based on the [Popolo specification](http://popoloproject.com/).
 
 To run tests on this project: ./run-tests.sh

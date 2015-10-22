@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .. import models
-from .base import (ModelAdmin, ReadOnlyTabularInline, IdentifierInline, LinkInline,
-                   ContactDetailInline, OtherNameInline)
+from .base import ModelAdmin, ReadOnlyTabularInline
 
 
 class VoteCountInline(ReadOnlyTabularInline):
@@ -22,12 +21,12 @@ class VoteSourceInline(ReadOnlyTabularInline):
 @admin.register(models.VoteEvent)
 class VoteEventAdmin(ModelAdmin):
     readonly_fields = (
-        'bill', 'organization', 'legislative_session', 'id')
-    fields = (
-        'organization', 'legislative_session', 'bill',
-        'result', 'id', 'identifier', 'motion_text',
-        'motion_classification', 'start_date', 'end_date',
-        'extras')
+        'bill', 'organization', 'legislative_session', 'id',
+        'identifier', 'motion_text', 'extras',
+    )
+    fields = readonly_fields + (
+        'result', 'motion_classification', 'start_date', 'end_date',
+    )
 
     list_selected_related = (
         'sources',

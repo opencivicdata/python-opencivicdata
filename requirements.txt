@@ -1,4 +1,4 @@
-Django>=1.9a1
+Django>=1.9a2
 psycopg2
 opencivicdata-divisions
 

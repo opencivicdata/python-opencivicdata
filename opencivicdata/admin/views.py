@@ -27,7 +27,7 @@ def unresolved_legislators(request):
                       )
     else:
         sponsors = BillSponsorship.objects.filter(entity_type='person', person_id=None
-                                                ).annotate(num=models.Count('name'))
+                                                  ).annotate(num=models.Count('name'))
         voters = PersonVote.objects.filter(voter_id=None).annotate(num=models.Count('voter_name'))
 
         unresolved = Counter()
@@ -43,7 +43,7 @@ def unresolved_legislators(request):
         people = list(Person.objects.all())
 
         return render(request, 'opencivicdata/admin/unresolved.html',
-                    {'unresolved': unresolved, 'people': people})
+                      {'unresolved': unresolved, 'people': people})
 
 
 @require_POST
@@ -58,7 +58,8 @@ def confirm_unresolved_legislators(request):
                     if 'other_names' not in person.locked_fields:
                         person.locked_fields.append('other_names')
                         person.save()
-                    sp = BillSponsorship.objects.filter(entity_type='person', person_id=None, name=name)
+                    sp = BillSponsorship.objects.filter(entity_type='person',
+                                                        person_id=None, name=name)
                     n_sponsors = sp.update(person_id=pid)
                     vs = PersonVote.objects.filter(voter_id=None, voter_name=name)
                     n_voters = vs.update(voter_id=pid)
