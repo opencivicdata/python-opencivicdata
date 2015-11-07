@@ -1,3 +1,4 @@
+import datetime
 from collections import Counter, defaultdict
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
@@ -68,3 +69,81 @@ def confirm_unresolved_legislators(request):
                                              n_sponsors, n_voters, pid)
                                          )
         return redirect('unresolved_legislators')
+
+
+def _compute_diff(obj1, obj2):
+    comparison = []
+    fields = obj1._meta.get_fields()
+    exclude = ('created_at', 'updated_at', 'id')
+
+    # diff is either one, two, or new
+
+    for field in fields:
+        if field.name in exclude:
+            continue
+        elif not field.is_relation:
+            piece_one = getattr(obj1, field.name)
+            piece_two = getattr(obj2, field.name)
+            comparison.append({
+                'field': field.name,
+                'new': getattr(obj1, field.name),
+                'one': getattr(obj1, field.name),
+                'two': getattr(obj2, field.name),
+                'diff': 'none' if piece_one == piece_two else 'one',
+            })
+        elif field.related_name:
+            piece_one = list(getattr(obj1, field.related_name).all())
+            piece_two = list(getattr(obj2, field.related_name).all())
+            comparison.append({
+                'field': field.name,
+                # TODO: try and deduplicate the lists?
+                'new': piece_one + piece_two,
+                'one': getattr(obj1, field.related_name).all(),
+                'two': getattr(obj2, field.related_name).all(),
+                'diff': 'none' if piece_one == piece_two else 'one',
+            })
+        else:
+            # TODO: resolve these
+            import ipdb; ipdb.set_trace()
+            print(field.name, field.related_name)
+
+    comparison.append({'field': 'created_at',
+                       'new': min(obj1.created_at, obj2.created_at),
+                       'one': obj1.created_at,
+                       'two': obj2.created_at,
+                       'diff': 'one' if obj1.created_at < obj2.created_at else 'two',
+                       })
+    comparison.append({'field': 'updated_at',
+                       'new': datetime.datetime.now(),
+                       'one': obj1.updated_at,
+                       'two': obj2.updated_at,
+                       'diff': 'new',
+                       })
+    return comparison
+
+
+def merge_tool(request):
+    people = list(Person.objects.all())
+
+    if request.method == 'POST':
+        person1 = request.POST['person1']
+        person2 = request.POST['person2']
+
+        if person1 == person2:
+            messages.add_message(request, messages.ERROR,
+                                 'Cannot merge person with themselves.',
+                                 )
+        person1 = Person.objects.get(pk=person1)
+        person2 = Person.objects.get(pk=person2)
+
+        diff = _compute_diff(person1, person2)
+
+        return render(request, 'opencivicdata/admin/merge.html',
+                      {'people': people,
+                       'person1': person1,
+                       'person2': person2,
+                       'diff': diff,
+                       })
+    else:
+        return render(request, 'opencivicdata/admin/merge.html',
+                      {'people': people})

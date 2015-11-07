@@ -6,4 +6,6 @@ urlpatterns = [
         name='unresolved_legislators'),
     url(r'^opencivicdata/unresolved/confirm/$', views.confirm_unresolved_legislators,
         name='confirm_unresolved_legislators'),
+    url(r'^opencivicdata/merge/$', views.merge_tool,
+        name='merge'),
 ]
