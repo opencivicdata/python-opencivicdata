@@ -7,6 +7,7 @@ from django.core import urlresolvers
 from django.http import HttpResponseBadRequest
 from django.contrib import messages
 from ..models import BillSponsorship, PersonVote, Person, PersonName
+from ..models.merge import compute_diff, merge
 
 
 def unresolved_legislators(request):
@@ -73,76 +74,6 @@ def confirm_unresolved_legislators(request):
         return redirect('unresolved_legislators')
 
 
-def _compute_diff(obj1, obj2):
-    comparison = []
-    fields = obj1._meta.get_fields()
-    exclude = ('created_at', 'updated_at', 'id')
-
-    # diff is either none, one, two, or new
-
-    for field in fields:
-        if field.name in exclude:
-            continue
-        elif not field.is_relation:
-            piece_one = getattr(obj1, field.name)
-            piece_two = getattr(obj2, field.name)
-            comparison.append({
-                'field': field.name,
-                'new': getattr(obj1, field.name),
-                'one': getattr(obj1, field.name),
-                'two': getattr(obj2, field.name),
-                'diff': 'none' if piece_one == piece_two else 'one',
-                'list': False,
-            })
-        elif field.related_name:
-            piece_one = list(getattr(obj1, field.related_name).all())
-            piece_two = list(getattr(obj2, field.related_name).all())
-            # TODO: try and deduplicate the lists?
-            new = piece_one + piece_two
-            diff = 'none' if piece_one == piece_two else 'one'
-
-            if field.name == 'other_names':
-                new.append(field.related_model(name=obj2.name,
-                                               note='from merge w/ ' + obj2.id)
-                           )
-                diff = 'new'
-            elif field.name == 'identifiers':
-                new.append(field.related_model(identifier=obj2.id))
-                diff = 'new'
-
-            # set the backlink ids to point to the new object
-            for item in new:
-                setattr(item, field.remote_field.name, obj1)
-
-            comparison.append({
-                'field': field.name,
-                'new': new,
-                'one': piece_one,
-                'two': piece_two,
-                'diff': diff,
-                'list': True,
-            })
-        else:
-            # TODO: resolve these
-            print(field.name, field.related_name)
-
-    comparison.append({'field': 'created_at',
-                       'new': min(obj1.created_at, obj2.created_at),
-                       'one': obj1.created_at,
-                       'two': obj2.created_at,
-                       'diff': 'one' if obj1.created_at < obj2.created_at else 'two',
-                       'list': False,
-                       })
-    comparison.append({'field': 'updated_at',
-                       'new': datetime.datetime.now(),
-                       'one': obj1.updated_at,
-                       'two': obj2.updated_at,
-                       'diff': 'new',
-                       'list': False,
-                       })
-    return comparison
-
-
 def merge_tool(request):
     people = list(Person.objects.all())
 
@@ -157,7 +88,7 @@ def merge_tool(request):
         person1 = Person.objects.get(pk=person1)
         person2 = Person.objects.get(pk=person2)
 
-        diff = _compute_diff(person1, person2)
+        diff = compute_diff(person1, person2)
 
         return render(request, 'opencivicdata/admin/merge.html',
                       {'people': people,
@@ -180,20 +111,7 @@ def merge_confirm(request):
     person1 = Person.objects.get(pk=person1)
     person2 = Person.objects.get(pk=person2)
 
-    diff = _compute_diff(person1, person2)
-    for row in diff:
-        if row['diff'] != 'none':
-            if row['list']:
-                # save items, the ids have been set to person1
-                for item in row['new']:
-                    item.save()
-            else:
-                setattr(person1, row['field'], row['new'])
-
-    person1.save()
-    count, delete_plan = person2.delete()
-    if count > 1:
-        raise AssertionError('deletion failed due to related objects')
+    merge(person1, person2)
 
     messages.add_message(request, messages.INFO,
                          'merged {} with {}'.format(person1.id, person2.id)
