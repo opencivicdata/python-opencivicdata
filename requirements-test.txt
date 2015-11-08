@@ -2,4 +2,6 @@ pytest
 pytest-cov
 pytest-django
 coveralls
--r requirements.txt
+Django>=1.9b1
+psycopg2
+opencivicdata-divisions

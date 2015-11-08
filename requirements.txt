@@ -1,6 +1,0 @@
-Django>=1.9a2
-psycopg2
-opencivicdata-divisions
-
-#django/postgres object merging
--e git://github.com/sunlightlabs/waterfall.git#egg=waterfall

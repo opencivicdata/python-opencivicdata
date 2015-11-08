@@ -17,7 +17,7 @@ setup(name="opencivicdata-django",
                 'opencivicdata.models',
                 'opencivicdata.tests'],
       install_requires=[
-          'Django>=1.9a2',
+          'Django>=1.9b1',
           'psycopg2',
           'opencivicdata-divisions',
       ],

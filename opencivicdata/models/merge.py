@@ -1,9 +1,8 @@
-from waterfall import CascadingUpdate
-
 
 
 def common_merge(persistent_obj, obsolete_obj,
           new, old, keep_new, keep_old, custom_fields, force=False):
+    from waterfall import CascadingUpdate
 
     #persistent/obsolete and new/old are two sets of pointers
     #to the same object. We need to do this so we can both
@@ -13,7 +12,7 @@ def common_merge(persistent_obj, obsolete_obj,
 
     # TODO: check for human_edited fields
     # do stuff that is common to everything
-    
+
 
     # if we add fields to the model, we catch it here
     new_dict = new.__dict__.copy()
