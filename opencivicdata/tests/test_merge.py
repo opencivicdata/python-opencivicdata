@@ -31,6 +31,15 @@ class TestPersonMerge(TestCase):
         #self.assertEqual(obama.gender, 'Male',
         #                 "Data should trump empty, no matter the update order.")
 
+    def test_other_name_merge(self):
+        person1 = Person.objects.create(name='Barack Obama')
+        person2 = Person.objects.create(name='Barry Obama')
+
+        merge(person1, person2)
+
+        # moved name into other_names
+        assert person1.other_names.get().name == 'Barry Obama'
+
     def test_no_self_merge(self):
         person1 = Person.objects.create(name='Barack Obama')
 
