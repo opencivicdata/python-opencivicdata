@@ -103,6 +103,9 @@ class IdentifierBase(RelatedBase):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.identifier
+
 
 class RelatedEntityBase(RelatedBase):
     name = models.CharField(max_length=2000)

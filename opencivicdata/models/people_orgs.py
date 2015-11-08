@@ -43,6 +43,9 @@ class OtherNameBase(RelatedBase):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return '{} ({})'.format(self.name, self.note)
+
 # the actual models
 
 class Organization(OCDBase):

@@ -4,6 +4,8 @@
 <style>
     .keep { background-color: #99cc00; }
     .del { background-color: #ff9999; }
+    input.confirm-button { background-color: #d9534f; }
+    input.confirm-button:hover { background-color: #c9302c; }
 </style>
 
 <form method="POST" action="">
@@ -12,7 +14,7 @@ Merge
 <select name="person1" class="people-opts">
     <option value="">---</option>
     {% for p in people %}
-    <option value="{{p.id}}" {% if person1.id == p.id %}selected{% endif %}>{{p}}</option>
+    <option value="{{ p.id }}" {% if person1.id == p.id %}selected{% endif %}>{{ p }}</option>
     {% endfor %}
 </select>
 
@@ -21,52 +23,62 @@ with
 <select name="person2" class="people-opts">
     <option value="">---</option>
     {% for p in people %}
-    <option value="{{p.id}}" {% if person2.id == p.id %}selected{% endif %}>{{p}}</option>
+    <option value="{{ p.id }}" {% if person2.id == p.id %}selected{% endif %}>{{ p }}</option>
     {% endfor %}
 </select>
-<input type="submit" value="Merge">
+<input type="submit" value="View Merge">
 </form>
 
-<table>
-    <thead>
-    <tr>
-        <th>Field</th>
-        <th>Merged</th>
-        <th>{{person1}}</th>
-        <th>{{person2}}</th>
-    </tr>
-    </thead>
-    {% for row in diff %}
-        {% if row.diff != "none" %}
+{% if diff %}
+    <table>
+        <thead>
         <tr>
-            <td>{{row.field}}</td>
-            <td {% if row.diff == "new" %} class="keep" {% endif %}>
-                {% if row.list %}
-                    {{ row.new|unordered_list }}
-                {% else %}
-                    {{row.new}}
-                {% endif %}
-            </td>
-            <td {% if row.diff == "one" %} class="keep"
-                {% else %} class="del" {% endif %} >
-                {% if row.list %}
-                    {{ row.one|unordered_list }}
-                {% else %}
-                    {{row.one}}
-                {% endif %}
-            </td>
-            <td {% if row.diff == "two" %} class="keep"
-                {% else %} class="del" {% endif %} >
-                {% if row.list %}
-                    {{ row.two|unordered_list }}
-                {% else %}
-                    {{row.two}}
-                {% endif %}
-            </td>
+            <th>Field</th>
+            <th>Merged</th>
+            <th>{{ person1 }}</th>
+            <th>{{ person2 }}</th>
         </tr>
-        {% endif %}
-    {% endfor %}
-</table>
+        </thead>
+        {% for row in diff %}
+            {% if row.diff != "none" %}
+            <tr>
+                <td>{{ row.field }}</td>
+                <td {% if row.diff == "new" %} class="keep" {% endif %}>
+                    {% if row.list %}
+                        {{ row.new|unordered_list }}
+                    {% else %}
+                        {{ row.new }}
+                    {% endif %}
+                </td>
+                <td {% if row.diff == "one" %} class="keep"
+                    {% else %} class="del" {% endif %} >
+                    {% if row.list %}
+                        {{ row.one|unordered_list }}
+                    {% else %}
+                        {{ row.one }}
+                    {% endif %}
+                </td>
+                <td {% if row.diff == "two" %} class="keep"
+                    {% else %} class="del" {% endif %} >
+                    {% if row.list %}
+                        {{ row.two|unordered_list }}
+                    {% else %}
+                        {{ row.two }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+
+    <form method="POST" action="{% url 'merge_confirm' %}">
+        {% csrf_token %}
+        <input type="hidden" name="person1" value="{{ person1.id }}">
+        <input type="hidden" name="person2" value="{{ person2.id }}">
+        <input type="submit" class="confirm-button" name="confirm" value="Confirm Merge">
+    </form>
+
+{% endif %}
 
 <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
