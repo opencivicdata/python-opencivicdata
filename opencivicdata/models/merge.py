@@ -69,7 +69,7 @@ def compute_diff(obj1, obj2):
                        'list': False,
                        })
     comparison.append({'field': 'updated_at',
-                       'new': datetime.datetime.now(),
+                       'new': datetime.datetime.utcnow(),
                        'one': obj1.updated_at,
                        'two': obj2.updated_at,
                        'diff': 'new',
@@ -95,6 +95,7 @@ def apply_diff(obj1, obj2, diff):
     obj1.save()
     count, delete_plan = obj2.delete()
     if count > 1:
+        # shouldn't happen, but let's be sure
         raise AssertionError('deletion failed due to related objects left unmerged')
 
 
