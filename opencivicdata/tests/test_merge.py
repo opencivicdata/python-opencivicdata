@@ -28,8 +28,8 @@ class TestPersonMerge(TestCase):
                          "Simple fields should take obj1's properties")
         self.assertEqual(obama.created_at, p2_created)
         self.assertGreater(obama.updated_at, obama.created_at)
-        #self.assertEqual(obama.gender, 'Male',
-        #                 "Data should trump empty, no matter the update order.")
+        self.assertEqual(obama.gender, 'Male',
+                         "Data should trump empty, no matter the update order.")
 
     def test_other_name_merge(self):
         person1 = Person.objects.create(name='Barack Obama')

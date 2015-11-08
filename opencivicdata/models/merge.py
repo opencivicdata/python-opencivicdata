@@ -27,12 +27,21 @@ def compute_diff(obj1, obj2):
         elif not field.is_relation:
             piece_one = getattr(obj1, field.name)
             piece_two = getattr(obj2, field.name)
+            if piece_one == piece_two:
+                diff = 'none'
+                new = piece_one
+            elif piece_one:
+                diff = 'one'
+                new = piece_one
+            elif piece_two:
+                diff = 'two'
+                new = piece_two
             comparison.append({
                 'field': field.name,
-                'new': getattr(obj1, field.name),
+                'new': new,
                 'one': getattr(obj1, field.name),
                 'two': getattr(obj2, field.name),
-                'diff': 'none' if piece_one == piece_two else 'one',
+                'diff': diff,
                 'list': False,
             })
         else:
