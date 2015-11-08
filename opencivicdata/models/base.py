@@ -70,6 +70,9 @@ class LinkBase(RelatedBase):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.url
+
 
 class MimetypeLinkBase(RelatedBase):
     media_type = models.CharField(max_length=100)

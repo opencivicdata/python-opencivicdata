@@ -101,10 +101,10 @@ def _compute_diff(obj1, obj2):
                 'one': getattr(obj1, field.related_name).all(),
                 'two': getattr(obj2, field.related_name).all(),
                 'diff': 'none' if piece_one == piece_two else 'one',
+                'list': True,
             })
         else:
             # TODO: resolve these
-            import ipdb; ipdb.set_trace()
             print(field.name, field.related_name)
 
     comparison.append({'field': 'created_at',

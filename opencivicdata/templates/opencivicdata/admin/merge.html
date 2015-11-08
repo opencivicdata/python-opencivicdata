@@ -41,15 +41,27 @@ with
         <tr>
             <td>{{row.field}}</td>
             <td {% if row.diff == "new" %} class="keep" {% endif %}>
-                {{row.new}}
+                {% if row.list %}
+                    {{ row.new|unordered_list }}
+                {% else %}
+                    {{row.new}}
+                {% endif %}
             </td>
             <td {% if row.diff == "one" %} class="keep"
                 {% else %} class="del" {% endif %} >
-                {{row.one}}
+                {% if row.list %}
+                    {{ row.one|unordered_list }}
+                {% else %}
+                    {{row.one}}
+                {% endif %}
             </td>
             <td {% if row.diff == "two" %} class="keep"
                 {% else %} class="del" {% endif %} >
-                {{row.two}}
+                {% if row.list %}
+                    {{ row.two|unordered_list }}
+                {% else %}
+                    {{row.two}}
+                {% endif %}
             </td>
         </tr>
         {% endif %}
