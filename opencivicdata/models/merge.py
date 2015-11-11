@@ -16,7 +16,7 @@ def compute_diff(obj1, obj2):
     """
     comparison = []
     fields = obj1._meta.get_fields()
-    exclude = ('created_at', 'updated_at', 'id')
+    exclude = ('created_at', 'updated_at', 'id', 'locked_fields')
 
     if obj1 == obj2:
         raise ValueError('cannot merge object with itself')
@@ -86,6 +86,20 @@ def compute_diff(obj1, obj2):
                        'diff': 'new',
                        'list': False,
                        })
+    # locked fields are any fields that change that aren't M2M relations
+    # (ending in _set)
+    new_locked_fields = obj1.locked_fields + obj2.locked_fields + [
+        c['field'] for c in comparison if c['diff'] != 'none' and not c['field'].endswith('_set')
+    ]
+    new_locked_fields = set(new_locked_fields) - {'updated_at', 'created_at'}
+    comparison.append({'field': 'locked_fields',
+                       'new': list(new_locked_fields),
+                       'one': obj1.locked_fields,
+                       'two': obj2.updated_at,
+                       'diff': 'new',
+                       'list': False,
+                       })
+
     return comparison
 
 

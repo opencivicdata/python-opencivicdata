@@ -30,6 +30,7 @@ class TestPersonMerge(TestCase):
         self.assertGreater(obama.updated_at, obama.created_at)
         self.assertEqual(obama.gender, 'Male',
                          "Data should trump empty, no matter the update order.")
+        assert set(obama.locked_fields) == {'identifiers', 'gender', 'sort_name'}
 
     def test_other_name_merge(self):
         person1 = Person.objects.create(name='Barack Obama')
@@ -39,6 +40,10 @@ class TestPersonMerge(TestCase):
 
         # moved name into other_names
         assert person1.other_names.get().name == 'Barry Obama'
+
+        # check locked_fields
+        obama = Person.objects.get()
+        assert set(obama.locked_fields) == {'identifiers', 'name', 'other_names'}
 
     def test_no_self_merge(self):
         person1 = Person.objects.create(name='Barack Obama')
@@ -59,6 +64,7 @@ class TestPersonMerge(TestCase):
         obama = Person.objects.get()
         # no deduping for now
         self.assertEqual(obama.contact_details.count(), 4)
+        assert set(obama.locked_fields) == {'identifiers', 'contact_details'}
 
     def test_merge_related_obj(self):
         person1 = Person.objects.create(name='Barack Obama')
@@ -73,6 +79,8 @@ class TestPersonMerge(TestCase):
 
         sp = BillSponsorship.objects.get()
         assert sp.person == person1
+        person = Person.objects.get()
+        assert set(person.locked_fields) == {'identifiers'}
 
     def test_merge_memberships(self):
         person1 = Person.objects.create(name='Barack Obama')
@@ -92,7 +100,9 @@ class TestPersonMerge(TestCase):
         Membership.objects.create(organization=gov, person=person1, post=sen)
 
         merge(person1, person2)
+        person = Person.objects.get()
         # ensure that the party memberships are deduped and others are kept
-        assert person1.memberships.count() == 3
+        assert person.memberships.count() == 3
         assert pres.memberships.count() == 1
         assert sen.memberships.count() == 1
+        assert set(person.locked_fields) == {'memberships', 'identifiers'}
