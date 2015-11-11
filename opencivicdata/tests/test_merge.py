@@ -1,6 +1,6 @@
 from django.test import TestCase
 from opencivicdata.models import (Division, Organization, Person, Bill,
-                                  Jurisdiction, BillSponsorship)
+                                  Jurisdiction, BillSponsorship, Post, Membership)
 from opencivicdata.models.merge import compute_diff, merge
 
 
@@ -73,3 +73,26 @@ class TestPersonMerge(TestCase):
 
         sp = BillSponsorship.objects.get()
         assert sp.person == person1
+
+    def test_merge_memberships(self):
+        person1 = Person.objects.create(name='Barack Obama')
+        person2 = Person.objects.create(name='Barack Obama')
+        d = Division.objects.create(id='ocd-division/country:us', name='US')
+        j = Jurisdiction.objects.create(name='US', division=d)
+        dem = Organization.objects.create(name='Democratic', classification='party')
+        gov = Organization.objects.create(name='Federal Government',
+                                          jurisdiction=j,
+                                          classification='government')
+        # this isn't how you'd really use posts
+        pres = Post.objects.create(label='President', organization=gov)
+        sen = Post.objects.create(label='Senator', organization=gov)
+        Membership.objects.create(organization=dem, person=person1)
+        Membership.objects.create(organization=gov, person=person1, post=pres)
+        Membership.objects.create(organization=dem, person=person2)
+        Membership.objects.create(organization=gov, person=person1, post=sen)
+
+        merge(person1, person2)
+        # ensure that the party memberships are deduped and others are kept
+        assert person1.memberships.count() == 3
+        assert pres.memberships.count() == 1
+        assert sen.memberships.count() == 1

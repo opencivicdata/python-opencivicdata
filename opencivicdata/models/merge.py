@@ -60,6 +60,8 @@ def compute_diff(obj1, obj2):
             if field.name == 'identifiers':
                 new.append(field.related_model(identifier=obj2.id))
                 diff = 'new'
+            if field.name == 'memberships':
+                new = _dedupe_memberships(new)
 
             comparison.append({
                 'field': related_name,
@@ -111,3 +113,19 @@ def apply_diff(obj1, obj2, diff):
 def merge(obj1, obj2):
     diff = compute_diff(obj1, obj2)
     apply_diff(obj1, obj2, diff)
+
+
+def _dedupe_memberships(memberships):
+    deduped = []
+    mset = set()
+    for membership in memberships:
+        mkey = (membership.organization_id,
+                membership.label,
+                membership.end_date,
+                membership.post_id)
+        if mkey not in mset:
+            deduped.append(membership)
+            mset.add(mkey)
+        else:
+            membership.delete()
+    return deduped
