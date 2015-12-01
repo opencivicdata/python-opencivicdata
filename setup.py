@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata-django",
-      version='0.8.0',
+      version='0.8.2',
       author="James Turk",
       author_email='james.p.turk@gmail.com',
       license="BSD",
@@ -15,7 +15,10 @@ setup(name="opencivicdata-django",
                 'opencivicdata.management.commands',
                 'opencivicdata.migrations',
                 'opencivicdata.models',
-                'opencivicdata.tests'],
+                'opencivicdata.tests',
+                'opencivicdata.templates',
+                ],
+      include_package_data=True,
       install_requires=[
           'Django>=1.9b1',
           'psycopg2',
