@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata-django",
-      version='0.8.0',
+      version='0.8.1',
       author="James Turk",
       author_email='james.p.turk@gmail.com',
       license="BSD",
@@ -16,8 +16,14 @@ setup(name="opencivicdata-django",
                 'opencivicdata.migrations',
                 'opencivicdata.models',
                 'opencivicdata.tests'],
+      # ugly hack b/c this is a namespace package
+      data_files=[('opencivicdata/templates/opencivicdata/admin/', [
+          'opencivicdata/templates/opencivicdata/admin/merge.html',
+          'opencivicdata/templates/opencivicdata/admin/unresolved.html',
+          'opencivicdata/templates/opencivicdata/admin/unresolved-confirm.html',
+      ])],
       install_requires=[
-          'Django>=1.9b1',
+          'Django>=1.9rc2',
           'psycopg2',
           'opencivicdata-divisions',
       ],
