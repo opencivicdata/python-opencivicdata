@@ -2,6 +2,6 @@ pytest
 pytest-cov
 pytest-django
 coveralls
-Django>=1.9b1
+Django>=1.9
 psycopg2
 opencivicdata-divisions

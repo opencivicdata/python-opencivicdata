@@ -20,7 +20,7 @@ setup(name="opencivicdata-django",
                 ],
       include_package_data=True,
       install_requires=[
-          'Django>=1.9b1',
+          'Django>=1.9',
           'psycopg2',
           'opencivicdata-divisions',
       ],
