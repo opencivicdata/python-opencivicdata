@@ -116,9 +116,9 @@ class EventRelatedEntity(RelatedEntityBase):
     @property
     def entity_name(self):
         if self.entity_type == 'vote' and self.vote_event_id:
-            return self.vote_event.name
+            return self.vote_event.identifier
         elif self.entity_type == 'bill' and self.bill_id:
-            return self.bill.name
+            return self.bill.identifier
         else:
             return super(EventRelatedEntity, self).entity_name
 
