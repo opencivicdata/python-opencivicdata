@@ -80,7 +80,7 @@ class EventParticipantAdmin(admin.ModelAdmin):
 @admin.register(models.EventAgendaItem)
 class EventAgendaItemAdmin(admin.ModelAdmin):
     readonly_fields = ('event',)
-    fields = ('event', 'description', 'order', 'subjects', 'notes')
+    fields = ('event', 'description', 'classification', 'order', 'subjects', 'notes')
 
     def get_truncated_description(self, obj):
         return defaultfilters.truncatewords(obj.description, 25)
