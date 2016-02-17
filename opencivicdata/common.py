@@ -128,6 +128,7 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('veto-override-passage', 'Veto Override Passage'),
     ('veto-override-failure', 'Veto Override Failure'),
     ('deferred', 'Deferred or Tabled'),
+    ('received', 'Received'),
 )
 BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
 
