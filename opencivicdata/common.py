@@ -87,7 +87,8 @@ BILL_CLASSIFICATION_CHOICES = (
     ('order', 'Order'),
     ('concurrent order', 'Concurrent Order'),
     ('appropriation', 'Appropriation'),
-    ('ordinance', 'Ordinance')
+    ('ordinance', 'Ordinance'),
+    ('motion', 'Motion'),
 )
 BILL_CLASSIFICATIONS = _keys(BILL_CLASSIFICATION_CHOICES)
 
