@@ -101,6 +101,7 @@ class EventParticipant(RelatedEntityBase):
 
 class EventAgendaItem(RelatedBase):
     description = models.TextField()
+    classification = ArrayField(base_field=models.TextField(), blank=True, default=list)
     order = models.CharField(max_length=100, blank=True)
     subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
     notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
