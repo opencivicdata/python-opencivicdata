@@ -64,6 +64,7 @@ ORGANIZATION_CLASSIFICATION_CHOICES = (
     ('party', 'Party'),
     ('committee', 'Committee'),
     ('commission', 'Commission'),
+    ('department', 'Department'),
 )
 ORGANIZATION_CLASSIFICATIONS = _keys(ORGANIZATION_CLASSIFICATION_CHOICES)
 
