@@ -116,7 +116,6 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('amendment-withdrawal', 'Amendment Withdrawal'),
     ('amendment-failure', 'Amendment Failure'),
     ('amendment-amended', 'Amendment Amended'),
-    ('committee-referral', 'Committee Referral'),
     ('committee-passage', 'Passage from Committee'),
     ('committee-passage-favorable', 'Favorable Passage from Committee'),
     ('committee-passage-unfavorable', 'Unfavorable Passage from Committee'),
@@ -129,6 +128,8 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('veto-override-failure', 'Veto Override Failure'),
     ('deferred', 'Deferred or Tabled'),
     ('received', 'Received'),
+    ('referred', 'Referred'),
+    ('referred-committee', 'Referred to Committee'),
 )
 BILL_ACTION_CLASSIFICATIONS = _keys(BILL_ACTION_CLASSIFICATION_CHOICES)
 
