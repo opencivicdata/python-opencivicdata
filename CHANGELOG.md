@@ -29,7 +29,7 @@ Fixes:
 
 Fixes:
 
-* Fix package.
+* Fix package
 
 ## 0.8.0 (2015-11-13)
 
@@ -41,7 +41,7 @@ Improvements:
 
 Fixes:
 
-* Fix package.
+* Fix package
 
 ## 0.7.0 (2015-10-08)
 
@@ -63,4 +63,4 @@ Fixes:
 
 ## 0.6.4 (2015-08-30)
 
-Start of changelog.
+Start of changelog
