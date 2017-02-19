@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.x.x
+## 0.9.0 (2017-02-19)
 
 Backwards-incompatible changes:
 
