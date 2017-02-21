@@ -203,7 +203,8 @@ class PersonSource(LinkBase):
 class Membership(OCDBase):
     id = OCDIDField(ocd_type='membership')
     organization = models.ForeignKey(Organization, related_name='memberships')
-    person = models.ForeignKey(Person, related_name='memberships')
+    person = models.ForeignKey(Person, related_name='memberships', null=True)
+    person_name = models.CharField(max_length=300, blank=True, default='')
     post = models.ForeignKey(Post, related_name='memberships', null=True)
     on_behalf_of = models.ForeignKey(Organization, related_name='memberships_on_behalf_of',
                                      null=True)
