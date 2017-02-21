@@ -44,8 +44,11 @@ JURISDICTION_CLASSIFICATION_CHOICES = (
     ('government', 'Government'),
     ('legislature', 'Legislature'),
     ('executive', 'Executive'),
-    ('school_system', 'School System'),
-    ('transit_authority', 'Transit Authority'),
+    ('school', 'School System'),
+    ('park', 'Park District'),
+    ('sewer', 'Sewer District'),
+    ('forest', 'Forest Preserve District'),
+    ('transit', 'Transit Authority'),
 )
 JURISDICTION_CLASSIFICATIONS = _keys(JURISDICTION_CLASSIFICATION_CHOICES)
 
