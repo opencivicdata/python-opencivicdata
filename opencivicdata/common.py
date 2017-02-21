@@ -48,7 +48,7 @@ JURISDICTION_CLASSIFICATION_CHOICES = (
     ('park', 'Park District'),
     ('sewer', 'Sewer District'),
     ('forest', 'Forest Preserve District'),
-    ('transit', 'Transit Authority'),
+    ('transit_authority', 'Transit Authority'),
 )
 JURISDICTION_CLASSIFICATIONS = _keys(JURISDICTION_CLASSIFICATION_CHOICES)
 
