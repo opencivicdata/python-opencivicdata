@@ -1,7 +1,5 @@
 pytest>=2.9
 pytest-cov
-pytest-django
 coveralls
-Django>=1.9
 psycopg2
 opencivicdata-divisions
