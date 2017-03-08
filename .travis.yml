@@ -1,9 +1,8 @@
 language: python
 python:
-    - "2.7"
     - "3.3"
     - "3.4"
-install: pip install pytest>=2.9 pytest-cov pytest-django coveralls
+install: pip install pytest pytest-cov pytest-django coveralls
 script: ./run-tests.sh
 after_success:
     - coveralls
