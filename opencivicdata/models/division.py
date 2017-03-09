@@ -1,4 +1,6 @@
+from __future__ import unicode_literals
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
 
 class DivisionManager(models.Manager):
@@ -28,6 +30,7 @@ class DivisionManager(models.Manager):
                                                    **Division.subtypes_from_id(id)[0])
 
 
+@python_2_unicode_compatible
 class Division(models.Model):
     objects = DivisionManager()
 

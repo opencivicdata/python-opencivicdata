@@ -1,5 +1,7 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.utils.encoding import python_2_unicode_compatible
 
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
@@ -8,6 +10,7 @@ from .bill import Bill
 from .. import common
 
 
+@python_2_unicode_compatible
 class VoteEvent(OCDBase):
     id = OCDIDField(ocd_type='vote')
     identifier = models.CharField(max_length=300, blank=True)
@@ -34,18 +37,26 @@ class VoteEvent(OCDBase):
         ]
 
 
+@python_2_unicode_compatible
 class VoteCount(RelatedBase):
     vote_event = models.ForeignKey(VoteEvent, related_name='counts')
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     value = models.PositiveIntegerField()
 
+    def __str__(self):
+        return '{0} for {1}'.format(self.count, self.option)
 
+
+@python_2_unicode_compatible
 class PersonVote(RelatedBase):
     vote_event = models.ForeignKey(VoteEvent, related_name='votes')
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     voter_name = models.CharField(max_length=300)
     voter = models.ForeignKey(Person, related_name='votes', null=True)
     note = models.TextField(blank=True)
+
+    def __str__(self):
+        return '{0} voted for {1}'.format(self.voter_name, self.option)
 
 
 class VoteSource(LinkBase):

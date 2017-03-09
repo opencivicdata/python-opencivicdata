@@ -1,11 +1,14 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.utils.encoding import python_2_unicode_compatible
 
 from ..common import JURISDICTION_CLASSIFICATION_CHOICES, SESSION_CLASSIFICATION_CHOICES
 from .base import OCDBase, OCDIDField, RelatedBase
 from .division import Division
 
 
+@python_2_unicode_compatible
 class Jurisdiction(OCDBase):
     id = OCDIDField(ocd_type='jurisdiction')
     name = models.CharField(max_length=300)
@@ -19,6 +22,7 @@ class Jurisdiction(OCDBase):
         return self.name
 
 
+@python_2_unicode_compatible
 class LegislativeSession(RelatedBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='legislative_sessions')
     identifier = models.CharField(max_length=100)

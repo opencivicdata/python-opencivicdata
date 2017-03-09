@@ -1,6 +1,8 @@
+from __future__ import unicode_literals
 import datetime
 from django.db import models, transaction
 from django.db.models import Q, QuerySet
+from django.utils.encoding import python_2_unicode_compatible
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
@@ -9,6 +11,7 @@ from .. import common
 # abstract models
 
 
+@python_2_unicode_compatible
 class ContactDetailBase(RelatedBase):
     type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
     value = models.CharField(max_length=300)
@@ -22,6 +25,7 @@ class ContactDetailBase(RelatedBase):
         return '{}: {}'.format(self.get_type_display(), self.value)
 
 
+@python_2_unicode_compatible
 class OtherNameBase(RelatedBase):
     name = models.CharField(max_length=500, db_index=True)
     note = models.CharField(max_length=500, blank=True)
@@ -36,6 +40,7 @@ class OtherNameBase(RelatedBase):
 
 # the actual models
 
+@python_2_unicode_compatible
 class Organization(OCDBase):
     id = OCDIDField(ocd_type='organization')
     name = models.CharField(max_length=300)
@@ -79,6 +84,7 @@ class Organization(OCDBase):
         ]
 
 
+@python_2_unicode_compatible
 class OrganizationIdentifier(IdentifierBase):
     organization = models.ForeignKey(Organization, related_name='identifiers')
 
@@ -103,6 +109,7 @@ class OrganizationSource(LinkBase):
     organization = models.ForeignKey(Organization, related_name='sources')
 
 
+@python_2_unicode_compatible
 class Post(OCDBase):
     id = OCDIDField(ocd_type='post')
     label = models.CharField(max_length=300)
@@ -151,6 +158,7 @@ class PersonQuerySet(QuerySet):
         return qs
 
 
+@python_2_unicode_compatible
 class Person(OCDBase):
     objects = PersonQuerySet.as_manager()
 
@@ -200,6 +208,7 @@ class PersonSource(LinkBase):
     person = models.ForeignKey(Person, related_name='sources')
 
 
+@python_2_unicode_compatible
 class Membership(OCDBase):
     id = OCDIDField(ocd_type='membership')
     organization = models.ForeignKey(Organization, related_name='memberships')
