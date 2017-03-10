@@ -66,6 +66,9 @@ def test_division_children_of():
     # 7 divisions beneath alaska up to 3 levels
     assert Division.objects.children_of('ocd-division/country:us/state:ak', depth=3).count() == 7
 
+    # __str__
+    ak.__str__()
+
 
 @pytest.mark.django_db
 def test_ocdid_default():
