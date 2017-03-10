@@ -36,9 +36,6 @@ def test_division_create():
     assert d.subid2 == 'wild'
     assert division_id in str(d)
 
-    # __str__
-    ak.__str__()
-
 
 @pytest.mark.django_db
 def test_division_children_of():
@@ -73,9 +70,11 @@ def test_division_children_of():
 @pytest.mark.django_db
 def test_ocdid_default():
     o = Organization.objects.create(name='test org')
+    o.__str__()
     assert o.id.startswith('ocd-organization/')
     assert o.pk == o.id
     p = Person.objects.create(name='test person')
+    p.__str__()
     assert p.id.startswith('ocd-person/')
 
 
@@ -99,6 +98,8 @@ def test_ocdid_validation_jurisdiction():
     j = Jurisdiction(name='test juris', id='ocd-jurisdiction/country:us/test:something/else',
                      url='http://example.com')
     j.full_clean(exclude=['division'])
+
+    j.__str__()
 
 
 @pytest.mark.django_db
