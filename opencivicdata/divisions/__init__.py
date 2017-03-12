@@ -1,8 +1,13 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+if sys.version_info[0:2] == (2, 7):
+    from backports import csv
+else:
+    import csv
 import os
 import re
 import io
-import csv
 
 PWD = os.path.abspath(os.path.dirname(__file__))
 OCD_DIVISION_CSV = os.environ.get('OCD_DIVISION_CSV', os.path.join(PWD, 'division-ids/identifiers/country-{}.csv'))
