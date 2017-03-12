@@ -6,6 +6,10 @@ Improvements requiring migrations:
 
 * Add `Membership.person_name` property, allowing unresolved people to be members of Organizations
 
+Improvements:
+
+* Add `amendment-deferral` to match `deferral` and other amendment actions.
+
 ## 0.9.0 (2017-02-19)
 
 Backwards-incompatible changes:
