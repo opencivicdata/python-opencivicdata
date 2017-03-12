@@ -5,6 +5,7 @@
 Improvements requiring migrations:
 
 * Add `Membership.person_name` property, allowing unresolved people to be members of Organizations
+* Add `VoteEvent.bill_action`, allowing linking of VoteEvents to bill actions
 
 Improvements:
 
