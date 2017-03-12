@@ -10,6 +10,7 @@ Improvements requiring migrations:
 Improvements:
 
 * Add `amendment-deferral` to match `deferral` and other amendment actions.
+* Basic Python 2.7 support
 
 ## 0.9.0 (2017-02-19)
 
