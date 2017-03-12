@@ -53,6 +53,10 @@ class BillAction(RelatedBase):
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
     classification = ArrayField(base_field=models.TextField(), blank=True, default=list)     # enum
     order = models.PositiveIntegerField()
+    related_vote_event = models.OneToOneField('VoteEvent',
+                                              related_name='bill_action',
+                                              default=None,
+                                              null=True)
 
     class Meta:
         ordering = ['order']

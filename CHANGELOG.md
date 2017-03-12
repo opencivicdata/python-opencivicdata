@@ -1,10 +1,11 @@
 # Changelog
 
-## 0.9.1
+## TBD
 
 Improvements requiring migrations:
 
 * Add `Membership.person_name` property, allowing unresolved people to be members of Organizations
+* Add `BillAction.related_vote_event` property, allowing linkage between bill actions and votes.
 
 Improvements:
 
