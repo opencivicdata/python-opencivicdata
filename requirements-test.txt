@@ -5,4 +5,4 @@ coveralls
 Django>=1.9
 psycopg2
 -e git+https://github.com/california-civic-data-coalition/python-opencivicdata-divisions.git@HEAD#egg=opencivicdata-divisions
-backports.csv
+backports.csv ; python_version<'3.3'

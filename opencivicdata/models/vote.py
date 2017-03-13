@@ -44,7 +44,7 @@ class VoteCount(RelatedBase):
     value = models.PositiveIntegerField()
 
     def __str__(self):
-        return '{0} for {1}'.format(self.count, self.option)
+        return '{0} for {1}'.format(self.value, self.option)
 
 
 @python_2_unicode_compatible

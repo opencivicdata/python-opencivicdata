@@ -1,4 +1,5 @@
 import pytest
+from django.contrib.gis.geos import Point
 from opencivicdata.models import (Jurisdiction, LegislativeSession,                 # noqa
                                   Division, Organization,                           # noqa
                                   OrganizationIdentifier, OrganizationName,         # noqa
@@ -6,7 +7,8 @@ from opencivicdata.models import (Jurisdiction, LegislativeSession,             
                                   Person, PersonIdentifier, PersonName,             # noqa
                                   PersonContactDetail, PersonLink, PersonSource,    # noqa
                                   Post, PostContactDetail, PostLink, Membership,    # noqa
-                                  MembershipContactDetail, MembershipLink)          # noqa
+                                  MembershipContactDetail, MembershipLink,          # noqa
+                                  Event, EventLocation, VoteEvent)                  # noqa
 from django.core.exceptions import ValidationError
 
 
@@ -70,11 +72,11 @@ def test_division_children_of():
 @pytest.mark.django_db
 def test_ocdid_default():
     o = Organization.objects.create(name='test org')
-    o.__str__()
+    str(o)
     assert o.id.startswith('ocd-organization/')
     assert o.pk == o.id
     p = Person.objects.create(name='test person')
-    p.__str__()
+    str(p)
     assert p.id.startswith('ocd-person/')
 
 
@@ -99,7 +101,7 @@ def test_ocdid_validation_jurisdiction():
                      url='http://example.com')
     j.full_clean(exclude=['division'])
 
-    j.__str__()
+    str(j)
 
 
 @pytest.mark.django_db
@@ -123,3 +125,155 @@ def test_organization_get_parents():
     o3 = Organization.objects.create(name='Subcommittee on Sicilian Pizza', parent=o2)
 
     assert list(o3.get_parents()) == [o2, o1]
+
+
+
+@pytest.mark.django_db
+def test_event_instance():
+    div = Division.objects.create(
+        id='ocd-division/country:us/state:mo',
+        name='Missouri'
+    )
+
+    juris = Jurisdiction.objects.create(
+        id="ocd-division/country:us/state:mo",
+        name="Missouri State Senate",
+        url="http://www.senate.mo.gov",
+        division=div,
+    )
+
+    loc = EventLocation.objects.create(
+        name="State Legislative Building",
+        coordinates=Point(33.448040, -112.097379),
+        jurisdiction=juris,
+    )
+
+    e = Event.objects.create(
+        name="Meeting of the Committee on Energy",
+        jurisdiction=juris,
+        description="To discuss the pros/cons of wind farming.",
+        classification='committee-meeting',
+        start_time="2014-8-24 21:13:25",
+        timezone='US/Central',
+        status="passed",
+        location=loc,
+    )
+
+    str(e)
+    str(e.location)
+
+    e.media.create(
+        note="Recording of the meeting",
+        date="2014-04-12",
+        offset="19",
+    )
+    str(e.media.all()[0])
+
+    e.links.create(
+        note="EPA Website",
+        url="http://www.epa.gov/",
+    )
+    str(e.links.all()[0])
+
+    e.sources.create(
+        note="scraped source",
+        url="http://example.com/events",
+    )
+    str(e.sources.all()[0])
+    
+    ent1 = Organization.objects.create(name="Committee on Energy")
+    ent2 = Person.objects.create(name="Andrew Tobin")
+    e.participants.create(
+        organization=ent1,
+        note="Host Committee",
+    )
+    e.participants.create(
+        person=ent2,
+        note="Speaker",
+    )
+    for p in e.participants.all():
+        str(p)
+        p.entity_name
+        p.entity_id
+
+    e_a = e.agenda.create(
+        description="Presentation by Director Henry Darwin, Arizona Department "
+                    "of Environmental Quality, regarding the Environmental "
+                    "Protection Agency (EPA) Clean Power Plan proposed rule",
+        order=2,
+        subjects=["epa", "green energy", "environmental issues"],
+    )
+    str(e_a)
+    
+    ent1 = Person.objects.create(name="Henry Darwin")
+    ent2 = Organization.objects.create(name="Environmental Protection Agency (EPA)")
+    e_a.related_entities.create(
+        person=ent1,
+    )
+    e_a.related_entities.create(
+        organization=ent2,
+    )
+    for r_e in e_a.related_entities.all():
+        str(r_e)
+        r_e.entity_name
+        r_e.entity_id 
+
+    e_a_med = e_a.media.create(
+        note="Recording Darwin presentation",
+        date="2014-04-12",
+    )
+    str(e_a_med)
+    
+    e_a_med.links.create(
+        media_type="video/mp4",
+        url="http://example.com/video.mp4",
+    )
+    str(e_a_med.links.all()[0])
+
+
+@pytest.mark.django_db
+def test_vote_event_instance():
+    div = Division.objects.create(
+        id='ocd-division/country:us/state:mo',
+        name='Missouri'
+    )
+    juris = Jurisdiction.objects.create(
+        id="ocd-division/country:us/state:mo",
+        name="Missouri State Senate",
+        url="http://www.senate.mo.gov",
+        division=div,
+    )
+    l_s = LegislativeSession.objects.create(
+        jurisdiction=juris,
+        identifier=2017,
+        name="2017 Session",
+        start_date="2017-01-04",
+        end_date="2017-05-25",
+    )
+    str(l_s)
+
+    o = Organization.objects.create(name="Missouri State Senate")
+
+    v_e = VoteEvent.objects.create(
+        identifier="Roll Call #2372",
+        motion_text="That the House do now proceed to the Orders of the Day.",
+        start_date="2017-02-16",
+        result="pass",
+        organization=o,
+        legislative_session=l_s,
+    )
+    str(v_e)
+
+    v_e.counts.create(
+        option="yes",
+        value=36,
+    )
+    str(v_e.counts.all()[0])
+
+    p = Person.objects.create(name="Maria Chappelle-Nadal")
+    v_e.votes.create(
+        option="yes",
+        voter_name="Maria Chappelle-Nadal",
+        voter=p,
+    )
+    str(v_e.votes.all()[0])
