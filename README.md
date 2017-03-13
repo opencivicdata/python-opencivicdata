@@ -13,7 +13,7 @@ This package is part of the opencivicdata namespace package containing the utili
 Development
 -----------
 
-Targets 3.3/3.4 only.
+Targets 2.7/3.5 only.
 
 has submodule so clone with git clone --recursive 
 (or git submodule init && git submodule update)
