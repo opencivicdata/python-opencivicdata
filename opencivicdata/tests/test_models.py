@@ -1,6 +1,6 @@
 import pytest
 from django.contrib.gis.geos import Point
-from opencivicdata.models import (Jurisdiction, LegislativeSession,                 # noqa
+from opencivicdata.models import (Jurisdiction, LegislativeSession, Bill,           # noqa
                                   Division, Organization,                           # noqa
                                   OrganizationIdentifier, OrganizationName,         # noqa
                                   OrganizationContactDetail, OrganizationSource,    # noqa
@@ -130,24 +130,22 @@ def test_organization_get_parents():
 
 @pytest.mark.django_db
 def test_event_instance():
+    # test event creation
     div = Division.objects.create(
         id='ocd-division/country:us/state:mo',
         name='Missouri'
     )
-
     juris = Jurisdiction.objects.create(
         id="ocd-division/country:us/state:mo",
         name="Missouri State Senate",
         url="http://www.senate.mo.gov",
         division=div,
     )
-
     loc = EventLocation.objects.create(
         name="State Legislative Building",
         coordinates=Point(33.448040, -112.097379),
         jurisdiction=juris,
     )
-
     e = Event.objects.create(
         name="Meeting of the Committee on Energy",
         jurisdiction=juris,
@@ -158,29 +156,54 @@ def test_event_instance():
         status="passed",
         location=loc,
     )
-
     str(e)
     str(e.location)
-
-    e.media.create(
-        note="Recording of the meeting",
-        date="2014-04-12",
-        offset="19",
-    )
-    str(e.media.all()[0])
-
+    
+    # test adding a link to event
     e.links.create(
         note="EPA Website",
         url="http://www.epa.gov/",
     )
     str(e.links.all()[0])
+    
+    # test adding media to event
+    e_m = e.media.create(
+        note="Recording of the meeting",
+        date="2014-04-12",
+        offset="19",
+    )
+    str(e_m)
 
+    # test adding link event media
+    e_m.links.create(
+        media_type="video/webm",
+        url="http://example.com/video.webm",
+    )
+    str(e_m.links.all()[0])
+
+    # test adding document to event
+    e_d = e.documents.create(
+        date="2014-04-12",
+        note="Agenda",
+        media_type="application/pdf",
+    )
+    str(e_d)
+
+    # test adding link to event document
+    e_d.links.create(
+        url="http://committee.example.com/agenda.pdf",
+        media_type="application/pdf",
+    )
+    str(e_d.links.all()[0])
+
+    # test adding source to event
     e.sources.create(
         note="scraped source",
         url="http://example.com/events",
     )
     str(e.sources.all()[0])
     
+    # test adding participants to event
     ent1 = Organization.objects.create(name="Committee on Energy")
     ent2 = Person.objects.create(name="Andrew Tobin")
     e.participants.create(
@@ -196,6 +219,7 @@ def test_event_instance():
         p.entity_name
         p.entity_id
 
+    # test adding agenda item to event
     e_a = e.agenda.create(
         description="Presentation by Director Henry Darwin, Arizona Department "
                     "of Environmental Quality, regarding the Environmental "
@@ -204,45 +228,22 @@ def test_event_instance():
         subjects=["epa", "green energy", "environmental issues"],
     )
     str(e_a)
-    
-    ent1 = Person.objects.create(name="Henry Darwin")
-    ent2 = Organization.objects.create(name="Environmental Protection Agency (EPA)")
-    e_a.related_entities.create(
-        person=ent1,
-    )
-    e_a.related_entities.create(
-        organization=ent2,
-    )
-    for r_e in e_a.related_entities.all():
-        str(r_e)
-        r_e.entity_name
-        r_e.entity_id 
 
+    # test adding media to event agenda item
     e_a_med = e_a.media.create(
         note="Recording Darwin presentation",
         date="2014-04-12",
     )
     str(e_a_med)
     
+    # test adding link to event agenda item
     e_a_med.links.create(
         media_type="video/mp4",
         url="http://example.com/video.mp4",
     )
     str(e_a_med.links.all()[0])
 
-
-@pytest.mark.django_db
-def test_vote_event_instance():
-    div = Division.objects.create(
-        id='ocd-division/country:us/state:mo',
-        name='Missouri'
-    )
-    juris = Jurisdiction.objects.create(
-        id="ocd-division/country:us/state:mo",
-        name="Missouri State Senate",
-        url="http://www.senate.mo.gov",
-        division=div,
-    )
+    # test legislative session creation
     l_s = LegislativeSession.objects.create(
         jurisdiction=juris,
         identifier=2017,
@@ -252,10 +253,9 @@ def test_vote_event_instance():
     )
     str(l_s)
 
+    # test vote event creation
     o = Organization.objects.create(name="Missouri State Senate")
-
     v_e = VoteEvent.objects.create(
-        identifier="Roll Call #2372",
         motion_text="That the House do now proceed to the Orders of the Day.",
         start_date="2017-02-16",
         result="pass",
@@ -263,13 +263,19 @@ def test_vote_event_instance():
         legislative_session=l_s,
     )
     str(v_e)
+    # test adding identifier and alternate string repr
+    v_e.identifier="Roll Call #2372"
+    v_e.save()
+    str(v_e)
 
+    # test adding a count to a vote event
     v_e.counts.create(
         option="yes",
         value=36,
     )
     str(v_e.counts.all()[0])
 
+    # test adding a vote to a vote event
     p = Person.objects.create(name="Maria Chappelle-Nadal")
     v_e.votes.create(
         option="yes",
@@ -277,3 +283,22 @@ def test_vote_event_instance():
         voter=p,
     )
     str(v_e.votes.all()[0])
+
+    # test bill creation
+    b = Bill.objects.create(
+        legislative_session=l_s,
+        identifier="HB 1",
+        title="The Patient Protection and Affordable Care Act",
+    )
+
+    # test adding related entities to event agenda
+    e_a.related_entities.create(
+        bill=b,
+    )
+    e_a.related_entities.create(
+        vote_event=v_e,
+    )
+    for r_e in e_a.related_entities.all():
+        str(r_e)
+        r_e.entity_name
+        r_e.entity_id 
