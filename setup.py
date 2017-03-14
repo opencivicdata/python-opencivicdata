@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
+from setuptools import setup, __version__
 import sys
 
 # backports.csv required for Python 2.7
@@ -7,7 +7,7 @@ INSTALL_REQUIRES = []
 EXTRAS_REQUIRE = {}
 
 # conditionally pass install_requires arg if setuptools older than v18
-if int(setuptools.__version__.split(".", 1)[0]) < 18:
+if int(__version__.split(".", 1)[0]) < 18:
     if sys.version_info[0:2] == (2, 7):
         INSTALL_REQUIRES.append("backports.csv")
 # otherwise pass extra_requires arg
@@ -34,7 +34,9 @@ setup(name="opencivicdata-divisions",
                    "License :: OSI Approved :: BSD License",
                    "Natural Language :: English",
                    "Operating System :: OS Independent",
+                   "Programming Language :: Python :: 2.7",
                    "Programming Language :: Python :: 3.3",
                    "Programming Language :: Python :: 3.4",
+                   "Programming Language :: Python :: 3.5",
                    ],
       )

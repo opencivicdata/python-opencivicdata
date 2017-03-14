@@ -6,7 +6,9 @@ python:
     - "3.5"
 install: 
     - pip install -r requirements-test.txt
-script: ./run-tests.sh
+script: 
+    - python setup.py test
+    - ./run-tests.sh
 after_success:
     - coveralls
 notifications:
