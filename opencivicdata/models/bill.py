@@ -30,9 +30,6 @@ class Bill(OCDBase):
             ['from_organization', 'legislative_session', 'identifier'],
         ]
 
-    def __str__(self):
-        return '{0} ({1})'.format(self.title, self.id)
-
 
 @python_2_unicode_compatible
 class BillAbstract(RelatedBase):
