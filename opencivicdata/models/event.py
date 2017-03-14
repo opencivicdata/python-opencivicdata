@@ -93,7 +93,7 @@ class EventDocumentLink(MimetypeLinkBase):
     document = models.ForeignKey(EventDocument, related_name='links')
 
     def __str__(self):
-        return '{0} for {1}'.format(self.url, self.document.bill)
+        return '{0} for {1}'.format(self.url, self.document.event)
 
 
 class EventLink(LinkBase):
