@@ -17,6 +17,8 @@ before_script:
     - psql -c "CREATE USER test with PASSWORD 'test' CREATEDB SUPERUSER;" -U postgres
     - psql -c "CREATE DATABASE test;" -U postgres
     - psql -c "CREATE EXTENSION postgis;" -U postgres -d test
-script: ./run-tests.sh
+script:
+    - python setup.py test
+    - ./run-tests.sh
 after_success:
     - coveralls
