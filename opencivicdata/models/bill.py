@@ -56,10 +56,6 @@ class BillIdentifier(IdentifierBase):
     bill = models.ForeignKey(Bill, related_name='other_identifiers')
     note = models.TextField(blank=True)
 
-    def __str__(self):
-        tmpl = '%s identifies %s'
-        return tmpl % (self.identifier, self.bill)
-
 
 @python_2_unicode_compatible
 class BillAction(RelatedBase):
