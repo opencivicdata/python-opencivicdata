@@ -1,5 +1,5 @@
 import pytest
-import pytest
+from datetime import datetime
 from django.contrib.gis.geos import Point
 from opencivicdata.models import (
     Jurisdiction,
@@ -49,7 +49,7 @@ def legislative_session(jurisdiction):
 def bill(legislative_session):
     b = Bill.objects.create(
         legislative_session=legislative_session,
-        identifier="HB 1",
+        identifier="HR 3590",
         title="The Patient Protection and Affordable Care Act",
     )
     return b
@@ -85,7 +85,7 @@ def event(jurisdiction, event_location):
         jurisdiction=jurisdiction,
         description="To discuss the pros/cons of wind farming.",
         classification='committee-meeting',
-        start_time="2014-8-24 21:13:25",
+        start_time=datetime.now(),
         timezone='US/Central',
         status="passed",
         location=event_location,

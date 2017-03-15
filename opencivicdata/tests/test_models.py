@@ -138,7 +138,7 @@ def test_vote_event_str(vote_event):
 
 
 @pytest.mark.django_db
-def test_adding_count_to_vote_event(vote_event):
+def test_vote_event_count(vote_event):
     vote_event.counts.create(
         option="yes",
         value=36,
@@ -147,7 +147,7 @@ def test_adding_count_to_vote_event(vote_event):
 
 
 @pytest.mark.django_db
-def test_adding_vote_to_vote_event(vote_event):
+def test_vote_event_vote(vote_event):
     p = Person.objects.create(name="Maria Chappelle-Nadal")
     vote_event.votes.create(
         option="yes",
@@ -162,35 +162,113 @@ def test_bill_str(bill):
     assert bill.identifier in str(bill)
 
 
-# @pytest.mark.django_db
-# def test_adding_abstract_to_bill(bill):
-#     bill.abstracts.create(
-#         abstract
-#         note
-#         date
-#     )
-#     assert 
+@pytest.mark.django_db
+def test_bill_abstract(bill):
+    bill.abstracts.create(
+        abstract="This is the Senate's health care bill. The bill started off "
+                 "with text regarding an unrelated matter but the Senate is "
+                 "co-opted this bill as a vehicle for passage of their reform and "
+                 "changed the text in whole to the health care bill. They do this "
+                 "because the Constitution requires all revenue bills to start in "
+                 "the House, and their health reform plan involves revenue. So "
+                 "they have chosen to work off of a bill that started in the "
+                 "House, even if that bill is unrelated.",
+        note="Library of Congress Summary",
+    )
+    assert bill.identifier in str(bill.abstracts.all()[0])
 
 
-# BillTitle
-# BillAbstract
-# BillSponsorship
+@pytest.mark.django_db
+def test_bill_title(bill):
+    o_t = bill.other_titles.create(
+        title='Affordable Care Act',
+    )
+    assert o_t.title in str(o_t)
+    assert bill.identifier in str(o_t)
 
-# BillAction
-# BillActionRelatedEntity
 
-# RelatedBill
+@pytest.mark.django_db
+def test_bill_sponsorship(bill):
+    spon = bill.sponsorships.create(
+        classification="sponsor",
+        name="Nancy Pelosi",
+    )
+    assert spon.name in str(spon)
+    assert bill.identifier in str(spon)
 
-# BillVersion
-# BillVersionLink
 
-# BillDocument
-# BillDocumentLink
+@pytest.mark.django_db
+def test_related_bill(bill):
+    r_b = bill.related_bills.create(
+        legislative_session=bill.legislative_session,
+        identifier='SB 22',
+        relation_type='companion',
+    )
+    assert r_b.relation_type in str(r_b)
+    assert bill.identifier in str(r_b)
+
+
+@pytest.mark.django_db
+def test_bill_action(bill):
+    o = Organization.objects.create(name="Missouri State Senate")
+    a = bill.actions.create(
+        organization=o,
+        description="Third Reading and Final Passage",
+        date='2016-02-16',
+        order=1,
+    )
+    assert a.date in str(a)
+    assert bill.identifier in str(a)
+
+    # test adding related entity to bill action
+    p = Person.objects.create(name="Maria Chappelle-Nadal")
+    a.related_entities.create(
+        person=p,
+        name=p.name,
+        entity_type='person',
+    )
+    assert p.name in str(a.related_entities.all()[0])
+
+
+@pytest.mark.django_db
+def test_bill_version_with_links(bill):
+    v = bill.versions.create(
+        note="Engrossed",
+        date="2017-03-15",
+    )
+    assert v.date in str(v)
+    assert bill.identifier in str(v)
+
+    # test adding link bill version
+    v.links.create(
+        url="http://committee.example.com/billversion1.pdf",
+        media_type="application/pdf",
+    )
+    assert "http://committee.example.com/billversion1.pdf" in str(v.links.all()[0])
+    assert bill.identifier in str(v.links.all()[0])
+
+
+@pytest.mark.django_db
+def test_bill_document_with_links(bill):
+    doc = bill.documents.create(
+        note="Fiscal Note",
+        date="2017-03-01"
+    )
+    assert bill.identifier in str(doc)
+
+    # test adding link bill version
+    doc.links.create(
+        url="http://committee.example.com/bill_document.pdf",
+        media_type="application/pdf",
+    )
+    assert "http://committee.example.com/bill_document.pdf" in str(doc.links.all()[0])
+    assert bill.identifier in str(doc.links.all()[0])
 
 
 @pytest.mark.django_db
 def test_event_str(event):
     assert event.name in str(event)
+    assert '{:%Y-%m-%d}'.format(event.start_time)
 
 
 @pytest.mark.django_db
@@ -199,29 +277,43 @@ def test_event_location_str(event_location):
 
 
 @pytest.mark.django_db
-def test_adding_event_participants(event):
-    ent1 = Organization.objects.create(name="Committee on Energy")
-    ent2 = Person.objects.create(name="Andrew Tobin")
-    event.participants.create(
-        name=ent1.name,
-        organization=ent1,
-        entity_type='organization',
-        note="Host Committee",
-    )
-    event.participants.create(
-        name=ent2.name,
-        person=ent2,
+def test_event_participant_person(event):
+    p = Person.objects.create(name="Andrew Tobin")
+    e_p = event.participants.create(
+        name=p.name,
+        person=p,
         entity_type='person',
         note="Speaker",
     )
-    for p in event.participants.all():
-        assert p.name in str(p)
-        assert p.name in p.entity_name 
-        assert p.entity_id
+    assert e_p.name in str(e_p)
+    assert e_p.name in e_p.entity_name 
+    assert e_p.entity_id
+    # remove entity_type value and re-try
+    e_p.entity_type = ''
+    assert e_p.name in e_p.entity_name
+    assert e_p.entity_id == None
 
 
 @pytest.mark.django_db
-def test_adding_event_links(event):
+def test_event_participant_organization(event):
+    o = Organization.objects.create(name="Committee on Energy")
+    e_p = event.participants.create(
+        name=o.name,
+        organization=o,
+        entity_type='organization',
+        note="Host Committee",
+    )
+    assert e_p.name in str(e_p)
+    assert e_p.name in e_p.entity_name 
+    assert e_p.entity_id
+    # remove entity_type value and re-try
+    e_p.entity_type = ''
+    assert e_p.name in e_p.entity_name
+    assert e_p.entity_id == None
+
+
+@pytest.mark.django_db
+def test_event_link(event):
     event.links.create(
         note="EPA Website",
         url="http://www.epa.gov/",
@@ -230,7 +322,7 @@ def test_adding_event_links(event):
 
 
 @pytest.mark.django_db
-def test_adding_event_media_w_links(event):
+def test_event_media_w_links(event):
     # test adding media to event
     e_m = event.media.create(
         note="Recording of the meeting",
@@ -248,7 +340,7 @@ def test_adding_event_media_w_links(event):
 
 
 @pytest.mark.django_db
-def test_adding_event_document_w_links(event):
+def test_event_document_w_links(event):
     # test adding document to event
     e_d = event.documents.create(
         date="2014-04-12",
@@ -267,18 +359,8 @@ def test_adding_event_document_w_links(event):
     assert e_d.note in str(e_d.links.all()[0])
 
 
-# @pytest.mark.django_db
-# def test_adding_event_source(event):
-#     e = event
-#     e.sources.create(
-#         note="scraped source",
-#         url="http://example.com/events",
-#     )
-#     str(e.sources.all()[0])
-    
-
 @pytest.mark.django_db
-def test_adding_event_agenda(event, vote_event, bill):
+def test_event_agenda(event, vote_event, bill):
     # test adding agenda item to event
     e_a = event.agenda.create(
         description="Presentation by Director Henry Darwin, Arizona Department "
@@ -287,7 +369,6 @@ def test_adding_event_agenda(event, vote_event, bill):
         order=2,
         subjects=["epa", "green energy", "environmental issues"],
     )
-    assert e_a.description in str(e_a)
     assert event.name in str(e_a)
 
     # test adding media to event agenda item
@@ -319,3 +400,7 @@ def test_adding_event_agenda(event, vote_event, bill):
         assert r_e.name in str(r_e)
         assert r_e.name in r_e.entity_name
         assert r_e.entity_id
+        # remove entity_type value and re-try
+        r_e.entity_type = ''
+        assert r_e.name in r_e.entity_name
+        assert r_e.entity_id == None

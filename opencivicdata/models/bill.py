@@ -39,7 +39,7 @@ class BillAbstract(RelatedBase):
     date = models.TextField(max_length=10, blank=True)  # YYYY[-MM[-DD]]
 
     def __str__(self):
-        return '{0} abstract'.format(self.id)
+        return '{0} abstract'.format(self.bill.identifier)
 
 
 @python_2_unicode_compatible
@@ -49,7 +49,7 @@ class BillTitle(RelatedBase):
     note = models.TextField(blank=True)
 
     def __str__(self):
-        return '{0} ({1})'.format(self.title, self.id)
+        return '{0} ({1})'.format(self.title, self.bill.identifier)
 
 
 class BillIdentifier(IdentifierBase):
@@ -70,7 +70,7 @@ class BillAction(RelatedBase):
         ordering = ['order']
 
     def __str__(self):
-        return '{0} on {1}'.format(self.description, self.bill)
+        return '{0} action on {1}'.format(self.bill.identifier, self.date)
 
 
 @python_2_unicode_compatible
@@ -78,7 +78,7 @@ class BillActionRelatedEntity(RelatedEntityBase):
     action = models.ForeignKey(BillAction, related_name='related_entities')
 
     def __str__(self):
-        return '{0} of {1}'.format(self.entity_name, self.action)
+        return '{0} related to {1}'.format(self.entity_name, self.action)
 
 
 @python_2_unicode_compatible
@@ -112,7 +112,7 @@ class BillDocument(RelatedBase):
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
     def __str__(self):
-        return 'Document of {0}'.format(self.bill)
+        return '{0} document of {1}'.format(self.date, self.bill)
 
 
 @python_2_unicode_compatible
@@ -122,7 +122,7 @@ class BillVersion(RelatedBase):
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
     def __str__(self):
-        return 'Version of {0}'.format(self.bill)
+        return '{0} version of {1}'.format(self.date, self.bill)
 
 
 @python_2_unicode_compatible

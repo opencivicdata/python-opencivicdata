@@ -53,7 +53,7 @@ class Event(OCDBase):
     location = models.ForeignKey(EventLocation, null=True)
 
     def __str__(self):
-        return self.name
+        return '{0} ({1:%Y-%m-%d})'.format(self.name, self.start_time)
 
     class Meta:
         index_together = [
@@ -124,7 +124,9 @@ class EventAgendaItem(RelatedBase):
     event = models.ForeignKey(Event, related_name='agenda')
 
     def __str__(self):
-        return '{0} for {1}'.format(self.description, self.event)
+        return 'Agenda item {0} for {1}'.format(
+            self.order, self.event
+        ).replace('  ', ' ')
 
 
 @python_2_unicode_compatible
@@ -135,7 +137,7 @@ class EventRelatedEntity(RelatedEntityBase):
     note = models.TextField()
 
     def __str__(self):
-        return '{0} of {1}'.format(self.entity_name, self.agenda_item)
+        return '{0} related to {1}'.format(self.entity_name, self.agenda_item)
 
     @property
     def entity_name(self):
