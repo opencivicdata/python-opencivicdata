@@ -124,6 +124,75 @@ def test_organization_get_parents():
 
 
 @pytest.mark.django_db
+def test_organization_str():
+    o = Organization.objects.create(name="test org")
+    assert "test org" in str(o)
+
+
+@pytest.mark.django_db
+def test_organization_contact_details():
+    o = Organization.objects.create(name="test org")
+    o.contact_details.create(
+        type="email",
+        value="info@test.org",
+    )
+
+    assert "Email" in str(o.contact_details.all()[0])
+    assert "info@test.org" in str(o.contact_details.all()[0])
+
+
+@pytest.mark.django_db
+def test_organization_other_name():
+    o = Organization.objects.create(name="test org")
+    o.other_names.create(name="tester org")
+
+    assert "tester org" in str(o.other_names.all()[0])
+
+
+@pytest.mark.django_db
+def test_organization_identifier():
+    o = Organization.objects.create(name="test org")
+    o.identifiers.create(
+        identifier="US0123456789",
+        scheme="ISIN",
+    )
+
+    assert "US0123456789" in str(o.identifiers.all()[0])
+    assert "test org" in str(o.identifiers.all()[0])
+
+
+@pytest.mark.django_db
+def test_organization_post():
+    o = Organization.objects.create(name="test org")
+    o.posts.create(label="CEO")
+
+    assert "CEO" in str(o.posts.all()[0])
+    assert "test org" in str(o.posts.all()[0])
+
+
+@pytest.mark.django_db
+def test_organization_membership():
+    o = Organization.objects.create(name="test org")
+    p = Person.objects.create(name="test person")
+
+    o.memberships.create(
+        person=p,
+        role="CEO",
+    )
+
+    assert "CEO" in str(o.memberships.all()[0])
+    assert "test person" in str(o.memberships.all()[0])
+    assert "test org" in str(o.memberships.all()[0])
+    assert len(o.get_current_members()) > 0
+
+
+@pytest.mark.django_db
+def test_person_str():
+    p = Person.objects.create(name="test person")
+    assert "test person" in str(p)
+
+
+@pytest.mark.django_db
 def test_legislative_session_str(legislative_session):
     assert legislative_session.name in str(legislative_session)
 
@@ -195,6 +264,15 @@ def test_bill_sponsorship(bill):
     )
     assert spon.name in str(spon)
     assert bill.identifier in str(spon)
+
+
+@pytest.mark.django_db
+def test_bill_identifier(bill):
+    bill.other_identifiers.create(
+        identifier="1001",
+        scheme="senate_clerk_id",
+    )
+    assert "1001" in str(bill.other_identifiers.all()[0])
 
 
 @pytest.mark.django_db
