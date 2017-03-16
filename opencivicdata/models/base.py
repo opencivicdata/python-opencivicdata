@@ -1,8 +1,10 @@
+from __future__ import unicode_literals
 import re
 import uuid
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core.validators import RegexValidator
+from django.utils.encoding import python_2_unicode_compatible
 
 from .. import common
 
@@ -56,6 +58,7 @@ class RelatedBase(models.Model):
         abstract = True
 
 
+@python_2_unicode_compatible
 class LinkBase(RelatedBase):
     note = models.CharField(max_length=300, blank=True)
     url = models.URLField(max_length=2000)
@@ -76,6 +79,7 @@ class MimetypeLinkBase(RelatedBase):
         abstract = True
 
 
+@python_2_unicode_compatible
 class IdentifierBase(RelatedBase):
     identifier = models.CharField(max_length=300)
     scheme = models.CharField(max_length=300)
