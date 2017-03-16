@@ -183,7 +183,9 @@ def test_organization_membership():
     assert "CEO" in str(o.memberships.all()[0])
     assert "test person" in str(o.memberships.all()[0])
     assert "test org" in str(o.memberships.all()[0])
-    assert len(o.get_current_members()) > 0
+    assert len(o.get_current_members()) == 1
+    assert len(Person.objects.member_of("test org")) == 1
+    assert len(Person.objects.member_of(o.id)) == 1
 
 
 @pytest.mark.django_db
