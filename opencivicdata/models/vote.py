@@ -6,7 +6,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from .people_orgs import Organization, Person
 from .jurisdiction import LegislativeSession
-from .bill import Bill
+from .bill import Bill, BillAction
 from .. import common
 
 
@@ -23,6 +23,7 @@ class VoteEvent(OCDBase):
     organization = models.ForeignKey(Organization, related_name='votes')
     legislative_session = models.ForeignKey(LegislativeSession, related_name='votes')
     bill = models.ForeignKey(Bill, related_name='votes', null=True)
+    bill_action = models.OneToOneField(BillAction, related_name='vote', null=True, default=None)
 
     def __str__(self):
         if self.identifier:

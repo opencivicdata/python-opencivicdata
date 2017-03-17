@@ -5,6 +5,12 @@
 Improvements requiring migrations:
 
 * Add `Membership.person_name` property, allowing unresolved people to be members of Organizations
+* Add `VoteEvent.bill_action`, allowing linking of VoteEvents to bill actions
+
+Improvements:
+
+* Add `amendment-deferral` to match `deferral` and other amendment actions.
+* Basic Python 2.7 support
 
 ## 0.9.0 (2017-02-19)
 
