@@ -15,7 +15,7 @@ else:
     EXTRAS_REQUIRE[":python_version=='2.7'"] = ["backports.csv"]
 
 setup(name="opencivicdata-divisions",
-      version='2017.03.21',
+      version='2017.3.22',
       py_modules=['opencivicdata.divisions'],
       author="James Turk",
       author_email='james@openstates.org',
