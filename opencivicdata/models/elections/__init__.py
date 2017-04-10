@@ -4,19 +4,19 @@
 Election-related models.
 """
 from __future__ import unicode_literals
-import warnings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.models import Event, Division
-from opencivicdata.models.base import 
+from opencivicdata.models.base import (
     IdentifierBase,
     LinkBase,
     OCDIDField,
     OCDBase,
 )
-from opencivicdata.models.elections import CandidateContest
+# from opencivicdata.models.elections.contests import CandidateContest
 from opencivicdata.models.people_orgs import (
     Organization,
+    Person,
     Post,
 )
 
@@ -31,7 +31,7 @@ class Election(Event):
         help_text="Reference to the Division that defines the broadest political "
                   "geography of any contest to be decided by the election.",
     )
-    administrative_org = models.ForeignKey(
+    administrative_organization = models.ForeignKey(
         Organization,
         related_name='elections',
         null=True,
@@ -85,7 +85,7 @@ class Candidacy(OCDBase):
                   'the candidate is competing.',
     )
     contest = models.ForeignKey(
-        CandidateContest,
+        'opencivicdata.CandidateContest',
         related_name='candidacies',
         help_text="Reference to an OCD CandidateContest representing the contest "
                   "in which the candidate is competing.",
@@ -103,7 +103,7 @@ class Candidacy(OCDBase):
                   "public office he/she currently holds",
     )
     party = models.ForeignKey(
-        Party,
+        'opencivicdata.Party',
         related_name='candidacies',
         null=True,
         help_text='Reference to and Party with which the candidate is affiliated.'
@@ -117,6 +117,9 @@ class Candidacy(OCDBase):
                   "reference to candidacy at the top of the ticket."
     )
 
+    def __str__(self):
+        return '{0.candidate_name} for {0.contest}'.format(self)
+
     class Meta:
         """
         Model options.
@@ -124,13 +127,10 @@ class Candidacy(OCDBase):
         verbose_name_plural = "candidacies"
         ordering = ("contest", "post", "person",)
 
-    def __str__(self):
-        return self.ballot_name
-
     @property
     def election(self):
         """
-        Returns the election this candidacy is tied to.
+        Election in which the person is a candidate.
         """
         return self.contest.election
 

@@ -15,12 +15,10 @@ from opencivicdata.models.base import (
 from opencivicdata.models.division import Division
 from opencivicdata.models.elections import (
     Election,
-    Candidacy,
     Party,
-) 
+)
 from opencivicdata.models.people_orgs import (
     Membership,
-    Organization,
     Post,
 )
 
@@ -30,7 +28,7 @@ class ContestBase(OCDBase):
     """
     A base class for representing a specific decision set before voters in an election.
 
-    Includes properties shared by all contest types: BallotMeasureContest, 
+    Includes properties shared by all contest types: BallotMeasureContest,
     CandidateContest, PartyContest and RetentionContest.
     """
     id = OCDIDField(
@@ -56,12 +54,13 @@ class ContestBase(OCDBase):
     )
 
     def __str__(self):
-        return "{0} {1}".format(self.election, self.name)
+        return "{0} (in {1})".format(self.name, self.election.name)
 
     class Meta:
         """
         Model options.
         """
+        verbose_name_plural = "Contests (base objects)"
         ordering = ("election", "name",)
 
 
@@ -213,7 +212,7 @@ class CandidateContestPost(models.Model):
 
 class PartyContest(ContestBase):
     """
-    A subclass of ``Contest`` for representing a contest in which voters can vote directly for a political party.
+    Subclass of Contest wherein voters can vote directly for a political party.
     """
     runoff_for_contest = models.OneToOneField(
         'self',
@@ -253,7 +252,7 @@ class PartyContestOption(models.Model):
 
 class RetentionContest(BallotMeasureContest):
     """
-    A subclass of BallotMeasureContest for representing a contest where voters vote to retain or recall a current office holder.
+    Subclass of BallotMeasureContest for contests wherein an office holder retain or lose a post.
 
     For example, a judicial retention or recall election.
     """
