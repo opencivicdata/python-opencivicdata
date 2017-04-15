@@ -3,7 +3,6 @@ addons:
     postgresql: "9.4"
 sudo: false
 python:
-    - "2.7"
     - "3.4"
     - "3.5"
     - "3.6"
@@ -21,3 +20,6 @@ script:
     - ./run-tests.sh
 after_success:
     - coveralls
+notifications:
+    email:
+        - james@openstates.org
