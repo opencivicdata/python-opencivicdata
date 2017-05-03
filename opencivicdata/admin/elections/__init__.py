@@ -94,12 +94,14 @@ class CandidacyAdmin(ModelAdmin):
         'post',
         'filed_date',
         'is_incumbent',
+        'registration_status',
         'party',
     ) + raw_id_fields
     list_display = (
         'candidate_name',
         'contest',
         'is_incumbent',
+        'registration_status',
         'id',
         'party_abbreviation',
         'updated_at',
@@ -109,6 +111,7 @@ class CandidacyAdmin(ModelAdmin):
     list_filter = (
         'party',
         'is_incumbent',
+        'registration_status',
         'updated_at',
     )
     # date_hierarchy across relations was added to django 1.11

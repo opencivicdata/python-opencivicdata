@@ -108,6 +108,18 @@ class Candidacy(OCDBase):
         null=True,
         help_text='Reference to and Party with which the candidate is affiliated.'
     )
+    REGISTRATION_STATUSES = (
+        ('filed', 'Filed'),
+        ('qualified', 'Qualified'),
+        ('withdrawn', 'Withdrawn'),
+        ('write-in', 'Write-in'),
+    )
+    registration_status = models.CharField(
+        max_length=10,
+        choices=REGISTRATION_STATUSES,
+        null=True,
+        help_text='Registration status of the candidate.',
+    )
     top_ticket_candidacy = models.ForeignKey(
         'self',
         related_name="ticket",
