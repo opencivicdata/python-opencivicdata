@@ -107,7 +107,7 @@ class CandidacyAdmin(ModelAdmin):
         'updated_at',
     )
     
-    search_fields = ('candidate_name', 'contest', 'post', )
+    search_fields = ('candidate_name', 'contest__name', 'post__label', )
     list_filter = (
         'party',
         'is_incumbent',

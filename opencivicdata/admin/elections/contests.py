@@ -134,7 +134,12 @@ class RetentionContestBaseAdmin(ModelAdmin):
         'id',
         'updated_at',
     )
-    search_fields = ('name', 'membership', 'election__name', )
+    search_fields = (
+        'name',
+        'membership__person__name',
+        'membership__role',
+        'election__name',
+    )
     list_filter = ('classification', 'updated_at', )
     # date_hierarchy across relations was added to django 1.11
     if django_version[0] >= 1 and django_version[1] >= 11:
