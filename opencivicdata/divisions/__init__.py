@@ -6,12 +6,16 @@ import re
 import io
 if sys.version_info[0:2] == (2, 7):
     from backports import csv
+    from urllib2 import urlopen
 else:
     import csv
+    from urllib.request import urlopen
 
 PWD = os.path.abspath(os.path.dirname(__file__))
 OCD_DIVISION_CSV = os.environ.get('OCD_DIVISION_CSV',
                                   os.path.join(PWD, 'division-ids/identifiers/country-{}.csv'))
+OCD_REMOTE_URL = ('https://raw.githubusercontent.com/opencivicdata/ocd-division-ids/master/'
+                  'identifiers/country-{}.csv')
 
 
 class Division(object):
@@ -19,10 +23,23 @@ class Division(object):
 
     @classmethod
     def all(self, country, from_csv=None):
-        if not from_csv:
-            from_csv = OCD_DIVISION_CSV.format(country)
 
-        for row in csv.DictReader(io.open(from_csv, encoding='utf8')):
+        file_handle = None
+
+        # check for environment variable
+        if not from_csv and 'OCD_DIVISION_CSV' in os.environ:
+            from_csv = os.environ.get('OCD_DIVISION_CSV').format(country)
+            try:
+                file_handle = io.open(from_csv, encoding='utf8')
+            except FileNotFoundError:
+                raise ValueError("Unknown country in OCD ID")
+
+        # going to the remote URL
+        if not file_handle:
+            file_handle = io.StringIO(urlopen(OCD_REMOTE_URL.format(country)
+                                              ).read().decode('utf-8'))
+
+        for row in csv.DictReader(file_handle):
             yield Division(**row)
 
     @classmethod
@@ -33,22 +50,11 @@ class Division(object):
                 if not re.match(r"ocd-division/country:\w{2}", division):
                     raise ValueError("Invalid OCD format.")
                 country = re.findall(r'country:(\w{2})', division)[0]
-                from_csv = OCD_DIVISION_CSV.format(country)
 
-            # load division and all children
-            try:
-                country_csv = io.open(from_csv, encoding='utf8')
-            except FileNotFoundError:
-                raise ValueError("Unknown country in OCD ID")
+            # just load all divisions into cache
+            for d in self.all(country, from_csv):
+                pass
 
-            for row in csv.DictReader(country_csv):
-                if row['id'].startswith(division):
-                    # same_as = row.pop('sameAs', None)
-                    # if same_as:
-                        # divisions[same_as].names.append(row['id'])
-                        # continue
-                    # same_as_note = row.pop('sameAsNote', None)
-                    Division(**row)
             if division not in self._cache:
                 raise ValueError("Division not found: {}".format(division))
 
