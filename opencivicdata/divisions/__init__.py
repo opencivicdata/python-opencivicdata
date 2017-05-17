@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
+import os
+import re
+import io
 if sys.version_info[0:2] == (2, 7):
     from backports import csv
 else:
     import csv
-import os
-import re
-import io
 
 PWD = os.path.abspath(os.path.dirname(__file__))
-OCD_DIVISION_CSV = os.environ.get('OCD_DIVISION_CSV', os.path.join(PWD, 'division-ids/identifiers/country-{}.csv'))
+OCD_DIVISION_CSV = os.environ.get('OCD_DIVISION_CSV',
+                                  os.path.join(PWD, 'division-ids/identifiers/country-{}.csv'))
 
 
 class Division(object):
@@ -42,15 +43,15 @@ class Division(object):
 
             for row in csv.DictReader(country_csv):
                 if row['id'].startswith(division):
-                    #same_as = row.pop('sameAs', None)
-                    #if same_as:
-                        #divisions[same_as].names.append(row['id'])
-                        #continue
-                    #same_as_note = row.pop('sameAsNote', None)
+                    # same_as = row.pop('sameAs', None)
+                    # if same_as:
+                        # divisions[same_as].names.append(row['id'])
+                        # continue
+                    # same_as_note = row.pop('sameAsNote', None)
                     Division(**row)
             if division not in self._cache:
                 raise ValueError("Division not found: {}".format(division))
-                
+
         return self._cache[division]
 
     def __init__(self, id, name, **kwargs):
