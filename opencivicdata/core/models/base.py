@@ -96,8 +96,8 @@ class RelatedEntityBase(RelatedBase):
     entity_type = models.CharField(max_length=20, blank=True)
 
     # optionally tied to an organization or person if it was linkable
-    organization = models.ForeignKey('Organization', null=True)
-    person = models.ForeignKey('Person', null=True)
+    organization = models.ForeignKey('core.Organization', null=True)
+    person = models.ForeignKey('core.Person', null=True)
 
     @property
     def entity_name(self):
