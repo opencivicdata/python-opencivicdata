@@ -1,6 +1,6 @@
 #!/u/bin/env python
 # -*- coding: utf-8 -*-
-from .. import Division
+from opencivicdata.divisions import Division
 
 
 def test_get():
