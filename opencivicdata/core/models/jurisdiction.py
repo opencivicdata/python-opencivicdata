@@ -3,8 +3,8 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils.encoding import python_2_unicode_compatible
 
-from ..common import JURISDICTION_CLASSIFICATION_CHOICES, SESSION_CLASSIFICATION_CHOICES
-from .base import OCDBase, OCDIDField, RelatedBase
+from ..common import JURISDICTION_CLASSIFICATION_CHOICES
+from .base import OCDBase, OCDIDField
 from .division import Division
 
 
@@ -20,17 +20,3 @@ class Jurisdiction(OCDBase):
 
     def __str__(self):
         return self.name
-
-
-@python_2_unicode_compatible
-class LegislativeSession(RelatedBase):
-    jurisdiction = models.ForeignKey(Jurisdiction, related_name='legislative_sessions')
-    identifier = models.CharField(max_length=100)
-    name = models.CharField(max_length=300)
-    classification = models.CharField(max_length=100, choices=SESSION_CLASSIFICATION_CHOICES,
-                                      blank=True)
-    start_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
-
-    def __str__(self):
-        return '{} {}'.format(self.jurisdiction, self.name)

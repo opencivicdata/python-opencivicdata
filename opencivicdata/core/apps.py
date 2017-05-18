@@ -3,6 +3,6 @@ import os
 
 
 class BaseConfig(AppConfig):
-    name = 'opencivicdata'
-    verbose_name = 'Open Civic Data'
+    name = 'opencivicdata.core'
+    verbose_name = 'Open Civic Data Core'
     path = os.path.dirname(__file__)

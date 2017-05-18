@@ -3,10 +3,11 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils.encoding import python_2_unicode_compatible
 
-from .base import (OCDBase, LinkBase, OCDIDField, RelatedBase, RelatedEntityBase, MimetypeLinkBase,
-                   IdentifierBase)
-from .people_orgs import Organization
-from .jurisdiction import LegislativeSession
+from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
+                                            RelatedBase, RelatedEntityBase,
+                                            MimetypeLinkBase, IdentifierBase)
+from opencivicdata.core.models import Organization
+from .session import LegislativeSession
 from .. import common
 
 
