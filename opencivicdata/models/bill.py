@@ -19,7 +19,9 @@ class Bill(OCDBase):
     title = models.TextField()
 
     from_organization = models.ForeignKey(Organization, related_name='bills', null=True)
-    classification = ArrayField(base_field=models.TextField(), blank=True, default=list)      # check that array values are in enum?
+    # check that array values are in enum?
+    classification = ArrayField(base_field=models.TextField(), blank=True,
+                                default=list)
     subject = ArrayField(base_field=models.TextField(), blank=True, default=list)
 
     def __str__(self):

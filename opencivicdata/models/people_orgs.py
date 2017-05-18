@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 import datetime
-from django.db import models, transaction
+from django.db import models
 from django.db.models import Q, QuerySet
 from django.utils.encoding import python_2_unicode_compatible
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
@@ -37,6 +37,7 @@ class OtherNameBase(RelatedBase):
 
     def __str__(self):
         return '{} ({})'.format(self.name, self.note)
+
 
 # the actual models
 
@@ -151,10 +152,10 @@ class PersonQuerySet(QuerySet):
                              ]
         if organization_name.startswith('ocd-organization/'):
             qs = self.filter(*filter_params,
-                            memberships__organization_id=organization_name)
+                             memberships__organization_id=organization_name)
         else:
             qs = self.filter(*filter_params,
-                            memberships__organization__name=organization_name)
+                             memberships__organization__name=organization_name)
         return qs
 
 
@@ -180,9 +181,7 @@ class Person(OCDBase):
         return self.name
 
     def add_other_name(self, name, note=""):
-        PersonName.objects.create(name=name,
-                        note=note,
-                        person_id=self.id)
+        PersonName.objects.create(name=name, note=note, person_id=self.id)
 
     class Meta:
         verbose_name_plural = "people"

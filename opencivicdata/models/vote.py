@@ -15,7 +15,8 @@ class VoteEvent(OCDBase):
     id = OCDIDField(ocd_type='vote')
     identifier = models.CharField(max_length=300, blank=True)
     motion_text = models.TextField()
-    motion_classification = ArrayField(base_field=models.TextField(), blank=True, default=list) # enum
+    # enum
+    motion_classification = ArrayField(base_field=models.TextField(), blank=True, default=list)
     start_date = models.CharField(max_length=19)    # YYYY-MM-DD HH:MM:SS
     end_date = models.CharField(max_length=19, blank=True)    # YYYY-MM-DD
 

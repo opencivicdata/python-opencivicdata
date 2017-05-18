@@ -54,7 +54,7 @@ def compute_diff(obj1, obj2):
 
             if (field.name == 'other_names' and obj1.name != obj2.name):
                 new.append(field.related_model(name=obj2.name,
-                                            note='from merge w/ ' + obj2.id)
+                                               note='from merge w/ ' + obj2.id)
                            )
                 diff = 'new'
             if field.name == 'identifiers':

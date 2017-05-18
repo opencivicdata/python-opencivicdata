@@ -1,4 +1,3 @@
-import datetime
 from collections import Counter, defaultdict
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST

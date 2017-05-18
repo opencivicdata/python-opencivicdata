@@ -2,6 +2,10 @@
 
 ## 0.10.0
 
+Backwards-incompatible changes:
+
+* This package is no longer split into opencivicdata-divisions and opencivicdata-django.  This really shouldn't cause any issues, but you shouldn't be installing opencivicdata-divisions anymore, and doing so explicitly may cause some issues.
+
 Improvements requiring migrations:
 
 * Add `Membership.person_name` property, allowing unresolved people to be members of Organizations
