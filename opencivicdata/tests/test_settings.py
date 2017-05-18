@@ -1,6 +1,9 @@
 # not tests, just Django settings
 SECRET_KEY = 'test'
-INSTALLED_APPS = ('opencivicdata.apps.BaseConfig',)
+INSTALLED_APPS = (
+    'opencivicdata.core.apps.BaseConfig',
+    'opencivicdata.legislative.apps.BaseConfig',
+)
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',

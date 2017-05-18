@@ -7,7 +7,7 @@ from opencivicdata.core.models.base import OCDBase, LinkBase, OCDIDField, Relate
 from opencivicdata.core.models import Organization, Person
 from .session import LegislativeSession
 from .bill import Bill, BillAction
-from .. import common
+from ... import common
 
 
 @python_2_unicode_compatible

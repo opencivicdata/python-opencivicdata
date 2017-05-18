@@ -6,7 +6,7 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core.validators import RegexValidator
 from django.utils.encoding import python_2_unicode_compatible
 
-from .. import common
+from ... import common
 
 
 class OCDIDField(models.CharField):

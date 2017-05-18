@@ -6,7 +6,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
-from .. import common
+from ... import common
 
 # abstract models
 

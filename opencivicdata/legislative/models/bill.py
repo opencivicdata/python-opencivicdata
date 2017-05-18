@@ -8,7 +8,7 @@ from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
                                             MimetypeLinkBase, IdentifierBase)
 from opencivicdata.core.models import Organization
 from .session import LegislativeSession
-from .. import common
+from ... import common
 
 
 @python_2_unicode_compatible

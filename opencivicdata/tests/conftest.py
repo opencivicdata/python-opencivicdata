@@ -1,11 +1,9 @@
 import pytest
 from datetime import datetime
 from django.contrib.gis.geos import Point
-from opencivicdata.models import (
-    Jurisdiction,
+from opencivicdata.core.models import Jurisdiction, Division, Organization
+from opencivicdata.legislative.models import (
     LegislativeSession,
-    Division,
-    Organization,
     Event,
     EventLocation,
     VoteEvent,
