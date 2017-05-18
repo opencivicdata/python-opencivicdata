@@ -112,7 +112,7 @@ class RelatedBill(RelatedBase):
                                                       self.relation_type)
 
     class Meta:
-        db_table = 'opencivicdata_billrelatedbill'
+        db_table = 'opencivicdata_relatedbill'
 
 
 @python_2_unicode_compatible

@@ -408,7 +408,7 @@ class Migration(migrations.Migration):
                 ('related_bill', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_bills_reverse', to='legislative.Bill')),
             ],
             options={
-                'db_table': 'opencivicdata_billrelatedbill',
+                'db_table': 'opencivicdata_relatedbill',
             },
         ),
         migrations.CreateModel(
