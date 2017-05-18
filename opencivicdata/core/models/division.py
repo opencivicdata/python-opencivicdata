@@ -55,6 +55,9 @@ class Division(models.Model):
     subtype7 = models.CharField(max_length=50, blank=True)
     subid7 = models.CharField(max_length=100, blank=True)
 
+    class Meta:
+        db_table = 'opencivicdata_division'
+
     def __str__(self):
         return '{0} ({1})'.format(self.name, self.id)
     __unicode__ = __str__

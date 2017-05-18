@@ -29,6 +29,7 @@ class Bill(OCDBase):
         return '{} in {}'.format(self.identifier, self.legislative_session)
 
     class Meta:
+        db_table = 'opencivicdata_bill'
         index_together = [
             ['from_organization', 'legislative_session', 'identifier'],
         ]
@@ -44,6 +45,9 @@ class BillAbstract(RelatedBase):
     def __str__(self):
         return '{0} abstract'.format(self.bill.identifier)
 
+    class Meta:
+        db_table = 'opencivicdata_billabstract'
+
 
 @python_2_unicode_compatible
 class BillTitle(RelatedBase):
@@ -54,10 +58,16 @@ class BillTitle(RelatedBase):
     def __str__(self):
         return '{0} ({1})'.format(self.title, self.bill.identifier)
 
+    class Meta:
+        db_table = 'opencivicdata_billtitle'
+
 
 class BillIdentifier(IdentifierBase):
     bill = models.ForeignKey(Bill, related_name='other_identifiers')
     note = models.TextField(blank=True)
+
+    class Meta:
+        db_table = 'opencivicdata_billidentifier'
 
 
 @python_2_unicode_compatible
@@ -70,6 +80,7 @@ class BillAction(RelatedBase):
     order = models.PositiveIntegerField()
 
     class Meta:
+        db_table = 'opencivicdata_billaction'
         ordering = ['order']
 
     def __str__(self):
@@ -82,6 +93,9 @@ class BillActionRelatedEntity(RelatedEntityBase):
 
     def __str__(self):
         return '{0} related to {1}'.format(self.entity_name, self.action)
+
+    class Meta:
+        db_table = 'opencivicdata_billactionrelatedentity'
 
 
 @python_2_unicode_compatible
@@ -97,6 +111,9 @@ class RelatedBill(RelatedBase):
         return 'relationship of {} to {} ({})'.format(self.bill, self.related_bill,
                                                       self.relation_type)
 
+    class Meta:
+        db_table = 'opencivicdata_billrelatedbill'
+
 
 @python_2_unicode_compatible
 class BillSponsorship(RelatedEntityBase):
@@ -106,6 +123,9 @@ class BillSponsorship(RelatedEntityBase):
 
     def __str__(self):
         return '{} ({}) sponsorship of {}'.format(self.name, self.entity_type, self.bill)
+
+    class Meta:
+        db_table = 'opencivicdata_billsponsorship'
 
 
 @python_2_unicode_compatible
@@ -117,6 +137,9 @@ class BillDocument(RelatedBase):
     def __str__(self):
         return '{0} document of {1}'.format(self.date, self.bill)
 
+    class Meta:
+        db_table = 'opencivicdata_billdocument'
+
 
 @python_2_unicode_compatible
 class BillVersion(RelatedBase):
@@ -127,6 +150,9 @@ class BillVersion(RelatedBase):
     def __str__(self):
         return '{0} version of {1}'.format(self.date, self.bill)
 
+    class Meta:
+        db_table = 'opencivicdata_billversion'
+
 
 @python_2_unicode_compatible
 class BillDocumentLink(MimetypeLinkBase):
@@ -134,6 +160,9 @@ class BillDocumentLink(MimetypeLinkBase):
 
     def __str__(self):
         return '{0} for {1}'.format(self.url, self.document.bill)
+
+    class Meta:
+        db_table = 'opencivicdata_billdocumentlink'
 
 
 @python_2_unicode_compatible
@@ -143,6 +172,12 @@ class BillVersionLink(MimetypeLinkBase):
     def __str__(self):
         return '{0} for {1}'.format(self.url, self.version)
 
+    class Meta:
+        db_table = 'opencivicdata_billversionlink'
+
 
 class BillSource(LinkBase):
     bill = models.ForeignKey(Bill, related_name='sources')
+
+    class Meta:
+        db_table = 'opencivicdata_billsource'

@@ -33,6 +33,7 @@ class VoteEvent(OCDBase):
             return '{} on {}'.format(self.motion_text, self.bill)
 
     class Meta:
+        db_table = 'opencivicdata_voteevent'
         index_together = [
             ['legislative_session', 'identifier', 'bill'],
             ['legislative_session', 'bill']
@@ -48,6 +49,9 @@ class VoteCount(RelatedBase):
     def __str__(self):
         return '{0} for {1}'.format(self.value, self.option)
 
+    class Meta:
+        db_table = 'opencivicdata_votecount'
+
 
 @python_2_unicode_compatible
 class PersonVote(RelatedBase):
@@ -60,6 +64,12 @@ class PersonVote(RelatedBase):
     def __str__(self):
         return '{0} voted for {1}'.format(self.voter_name, self.option)
 
+    class Meta:
+        db_table = 'opencivicdata_personvote'
+
 
 class VoteSource(LinkBase):
     vote_event = models.ForeignKey(VoteEvent, related_name='sources')
+
+    class Meta:
+        db_table = 'opencivicdata_votesource'

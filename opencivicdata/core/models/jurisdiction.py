@@ -18,5 +18,8 @@ class Jurisdiction(OCDBase):
     feature_flags = ArrayField(base_field=models.TextField(), blank=True, default=list)
     division = models.ForeignKey(Division, related_name='jurisdictions', db_index=True)
 
+    class Meta:
+        db_table = 'opencivicdata_jurisdiction'
+
     def __str__(self):
         return self.name

@@ -79,6 +79,7 @@ class Organization(OCDBase):
                                      )
 
     class Meta:
+        db_table = 'opencivicdata_organization'
         index_together = [
             ['jurisdiction', 'classification', 'name'],
             ['classification', 'name'],
@@ -93,21 +94,36 @@ class OrganizationIdentifier(IdentifierBase):
         tmpl = '%s identifies %s'
         return tmpl % (self.identifier, self.organization)
 
+    class Meta:
+        db_table = 'opencivicdata_organizationidentifier'
+
 
 class OrganizationName(OtherNameBase):
     organization = models.ForeignKey(Organization, related_name='other_names')
+
+    class Meta:
+        db_table = 'opencivicdata_organizationname'
 
 
 class OrganizationContactDetail(ContactDetailBase):
     organization = models.ForeignKey(Organization, related_name='contact_details')
 
+    class Meta:
+        db_table = 'opencivicdata_organizationcontactdetail'
+
 
 class OrganizationLink(LinkBase):
     organization = models.ForeignKey(Organization, related_name='links')
 
+    class Meta:
+        db_table = 'opencivicdata_organizationlink'
+
 
 class OrganizationSource(LinkBase):
     organization = models.ForeignKey(Organization, related_name='sources')
+
+    class Meta:
+        db_table = 'opencivicdata_organizationsource'
 
 
 @python_2_unicode_compatible
@@ -122,6 +138,7 @@ class Post(OCDBase):
     end_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
 
     class Meta:
+        db_table = 'opencivicdata_post'
         index_together = [
             ['organization', 'label']
         ]
@@ -133,9 +150,15 @@ class Post(OCDBase):
 class PostContactDetail(ContactDetailBase):
     post = models.ForeignKey(Post, related_name='contact_details')
 
+    class Meta:
+        db_table = 'opencivicdata_postcontactdetail'
+
 
 class PostLink(LinkBase):
     post = models.ForeignKey(Post, related_name='links')
+
+    class Meta:
+        db_table = 'opencivicdata_postlink'
 
 
 class PersonQuerySet(QuerySet):
@@ -184,27 +207,43 @@ class Person(OCDBase):
         PersonName.objects.create(name=name, note=note, person_id=self.id)
 
     class Meta:
+        db_table = 'opencivicdata_person'
         verbose_name_plural = "people"
 
 
 class PersonIdentifier(IdentifierBase):
     person = models.ForeignKey(Person, related_name='identifiers')
 
+    class Meta:
+        db_table = 'opencivicdata_personidentifier'
+
 
 class PersonName(OtherNameBase):
     person = models.ForeignKey(Person, related_name='other_names')
+
+    class Meta:
+        db_table = 'opencivicdata_personname'
 
 
 class PersonContactDetail(ContactDetailBase):
     person = models.ForeignKey(Person, related_name='contact_details')
 
+    class Meta:
+        db_table = 'opencivicdata_personcontactdetail'
+
 
 class PersonLink(LinkBase):
     person = models.ForeignKey(Person, related_name='links')
 
+    class Meta:
+        db_table = 'opencivicdata_personlink'
+
 
 class PersonSource(LinkBase):
     person = models.ForeignKey(Person, related_name='sources')
+
+    class Meta:
+        db_table = 'opencivicdata_personsource'
 
 
 @python_2_unicode_compatible
@@ -222,6 +261,7 @@ class Membership(OCDBase):
     end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
 
     class Meta:
+        db_table = 'opencivicdata_membership'
         index_together = [
             ['organization', 'person', 'label', 'post']
         ]
@@ -233,6 +273,12 @@ class Membership(OCDBase):
 class MembershipContactDetail(ContactDetailBase):
     membership = models.ForeignKey(Membership, related_name='contact_details')
 
+    class Meta:
+        db_table = 'opencivicdata_membershipcontactdetail'
+
 
 class MembershipLink(LinkBase):
     membership = models.ForeignKey(Membership, related_name='links')
+
+    class Meta:
+        db_table = 'opencivicdata_membershiplink'

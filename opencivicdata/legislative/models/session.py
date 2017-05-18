@@ -18,3 +18,6 @@ class LegislativeSession(RelatedBase):
 
     def __str__(self):
         return '{} {}'.format(self.jurisdiction, self.name)
+
+    class Meta:
+        db_table = 'opencivicdata_legislativesession'
