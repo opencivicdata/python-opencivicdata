@@ -1,16 +1,14 @@
-#!/usr/bin/env python
+#!/u/bin/env python
 # -*- coding: utf-8 -*-
-import sys
-import pytest
 from .. import Division
 
 
 def test_get():
-    wake = Division.get('ocd-division/country:us/state:nc/county:wake')
-    assert wake.name == 'Wake County'
-    assert wake.name in str(wake)
+    div = Division.get('ocd-division/country:de/land:bw/wahlkreis:bad_kissingen')
+    assert div.name == 'Bad Kissingen'
+    assert div.name in str(div)
 
 
 def test_children():
-    us = Division.get('ocd-division/country:us')
-    assert len(list(us.children('state', duplicates=False))) == 50
+    us = Division.get('ocd-division/country:ua')
+    assert len(list(us.children('region', duplicates=False))) == 25
