@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.1
+## 0.10.0
 
 Improvements requiring migrations:
 
