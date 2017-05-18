@@ -12,6 +12,3 @@ Development
 -----------
 
 Targets 2.7, 3.4 and 3.5.
-
-has submodule so clone with git clone --recursive 
-(or git submodule init && git submodule update)
