@@ -10,7 +10,7 @@ setup(name="opencivicdata-django",
       long_description="",
       url="",
       py_modules=['opencivicdata.apps',
-                  'opencivicdata.common'
+                  'opencivicdata.common',
                   'opencivicdata.divisions',
                   ],
       packages=['opencivicdata.admin',
