@@ -10,7 +10,7 @@ class DivisionAdmin(ModelAdmin):
     fields = readonly_fields = ('id', 'name', 'redirect', 'country')
     ordering = ('id',)
 
-
+# TODO: needs to be fixed since model comes from legislative
 class LegislativeSessionInline(ReadOnlyTabularInline):
     model = models.LegislativeSession
     readonly_fields = ('identifier', 'name', 'classification', 'start_date', 'end_date')

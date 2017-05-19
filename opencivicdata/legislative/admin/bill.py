@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.template import defaultfilters
+from opencividata.core.admin.base import ModelAdmin, ReadOnlyTabularInline, IdentifierInline
 from .. import models
-from .base import ModelAdmin, ReadOnlyTabularInline, IdentifierInline
 
 
 class BillAbstractInline(ReadOnlyTabularInline):
