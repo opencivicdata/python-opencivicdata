@@ -1,5 +1,5 @@
 from django.test import TestCase
-from opencivicdata.core.models import (Division, Organization, Person, 
+from opencivicdata.core.models import (Division, Organization, Person,
                                        Jurisdiction, Post, Membership)
 from opencivicdata.legislative.models import Bill, BillSponsorship
 from opencivicdata.merge import merge
