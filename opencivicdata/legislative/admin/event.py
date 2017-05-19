@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.template import defaultfilters
-from opencividata.core.admin import base
+from opencivicdata.core.admin import base
 from .. import models
 
 
