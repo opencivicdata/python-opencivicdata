@@ -5,6 +5,13 @@
 Backwards-incompatible changes:
 
 * This package is no longer split into opencivicdata-divisions and opencivicdata-django.  This really shouldn't cause any issues, but you shouldn't be installing opencivicdata-divisions anymore, and doing so explicitly may cause some issues.
+* Instead of adding:
+    ```'opencivicdata.apps.BaseConfig'`` to your ``INSTALLED_APPS`` you'll need to add:
+    ```
+    'opencivicdata.core.apps.BaseConfig',
+    'opencivicdata.legislative.apps.BaseConfig',
+    ```
+* If you already have models you'll need to run: ```./manage.py migrate --fake-initial`` to skip the initial migrations for the two new apps.
 
 Improvements requiring migrations:
 

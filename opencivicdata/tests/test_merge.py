@@ -1,7 +1,8 @@
 from django.test import TestCase
-from opencivicdata.models import (Division, Organization, Person, Bill,
-                                  Jurisdiction, BillSponsorship, Post, Membership)
-from opencivicdata.models.merge import merge
+from opencivicdata.core.models import (Division, Organization, Person,
+                                       Jurisdiction, Post, Membership)
+from opencivicdata.legislative.models import Bill, BillSponsorship
+from opencivicdata.merge import merge
 
 # TODO: compute_diff test?
 
