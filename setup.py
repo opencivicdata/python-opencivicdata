@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
-setup(name="opencivicdata-django",
-      version='0.10.0',
+setup(name="opencivicdata",
+      version='1.0.0',
       author="James Turk",
       author_email='james@openstates.org',
       license="BSD",
