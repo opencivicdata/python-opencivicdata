@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(name="opencivicdata-django",
-      version='0.9.0',
+      version='0.10.0',
       author="James Turk",
       author_email='james@openstates.org',
       license="BSD",
