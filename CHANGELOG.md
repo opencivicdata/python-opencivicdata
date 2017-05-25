@@ -1,10 +1,12 @@
 # Changelog
 
-## 0.10.0
+## 1.0.0
 
 Backwards-incompatible changes:
 
-* This package is no longer split into opencivicdata-divisions and opencivicdata-django.  This really shouldn't cause any issues, but you shouldn't be installing opencivicdata-divisions anymore, and doing so explicitly may cause some issues.
+* This package is renamed to opencivicdata from opencivicdata-divisions and opencivicdata-django.
+ This also means it is no longer split into opencivicdata-divisions and opencivicdata-django.  This really shouldn't cause any issues, but you shouldn't be installing opencivicdata-divisions anymore, and doing so explicitly may cause some issues.
+* Your requirements.txt or other requirements definition should now use the opencivicdata name exclusively.
 * Instead of adding:
     ```'opencivicdata.apps.BaseConfig'`` to your ``INSTALLED_APPS`` you'll need to add:
     ```
@@ -21,7 +23,8 @@ Improvements requiring migrations:
 Improvements:
 
 * Add `amendment-deferral` to match `deferral` and other amendment actions.
-* Basic Python 2.7 support
+* Add `study request` and `concurrent study request` to to bill classifications.
+* Basic Python 2.7 support is restored.
 
 ## 0.9.0 (2017-02-19)
 
