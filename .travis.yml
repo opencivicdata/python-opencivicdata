@@ -19,6 +19,7 @@ before_script:
     - psql -c "CREATE EXTENSION postgis;" -U postgres -d test
 script:
     - ./run-tests.sh
+    - flake8
 after_success:
     - coveralls
 notifications:
