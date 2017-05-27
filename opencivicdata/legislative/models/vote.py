@@ -17,8 +17,8 @@ class VoteEvent(OCDBase):
     motion_text = models.TextField()
     # enum
     motion_classification = ArrayField(base_field=models.TextField(), blank=True, default=list)
-    start_date = models.CharField(max_length=19)    # YYYY-MM-DD HH:MM:SS
-    end_date = models.CharField(max_length=19, blank=True)    # YYYY-MM-DD
+    start_time = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
+    end_time = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
 
     result = models.CharField(max_length=50, choices=common.VOTE_RESULT_CHOICES)
     organization = models.ForeignKey(Organization, related_name='votes')
