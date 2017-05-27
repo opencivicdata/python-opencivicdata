@@ -1,6 +1,12 @@
 # Changelog
 
-## 1.0.0
+## WIP
+
+Bugfix:
+
+* fix usage of FileNotFoundError on Python 2.7
+
+## 1.0.0 (2017-05-25)
 
 Backwards-incompatible changes:
 
