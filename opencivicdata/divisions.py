@@ -7,6 +7,7 @@ import io
 if sys.version_info[0:2] == (2, 7):
     from backports import csv
     from urllib2 import urlopen
+    FileNotFoundError = IOError
 else:
     import csv
     from urllib.request import urlopen
