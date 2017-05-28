@@ -58,7 +58,7 @@ class Event(OCDBase):
     location = models.ForeignKey(EventLocation, null=True)
 
     def __str__(self):
-        return '{0} ({1:%Y-%m-%d})'.format(self.name, self.start_time)
+        return '{0} ({1})'.format(self.name, self.start_date)
 
     class Meta:
         db_table = 'opencivicdata_event'
