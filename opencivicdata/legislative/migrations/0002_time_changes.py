@@ -11,34 +11,19 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='voteevent',
-            old_name='end_date',
-            new_name='end_time',
-        ),
-        migrations.RenameField(
-            model_name='voteevent',
-            old_name='start_date',
-            new_name='start_time',
-        ),
         migrations.AlterField(
             model_name='voteevent',
-            name='end_time',
+            name='end_date',
             field=models.CharField(blank=True, max_length=25),
         ),
         migrations.AlterField(
             model_name='voteevent',
-            name='start_time',
+            name='start_date',
             field=models.CharField(max_length=25),
-        ),
-        migrations.RenameField(
-            model_name='billaction',
-            old_name='date',
-            new_name='time',
         ),
         migrations.AlterField(
             model_name='billaction',
-            name='time',
+            name='date',
             field=models.CharField(max_length=25),
         ),
         migrations.AlterField(
@@ -51,5 +36,19 @@ class Migration(migrations.Migration):
             model_name='event',
             name='start_time',
             field=models.CharField(max_length=25),
+        ),
+        migrations.RenameField(
+            model_name='event',
+            old_name='end_time',
+            new_name='end_date',
+        ),
+        migrations.RenameField(
+            model_name='event',
+            old_name='start_time',
+            new_name='start_date',
+        ),
+        migrations.AlterIndexTogether(
+            name='event',
+            index_together=set([('jurisdiction', 'start_date', 'name')]),
         ),
     ]

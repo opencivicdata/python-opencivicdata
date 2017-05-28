@@ -50,8 +50,8 @@ class Event(OCDBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='events')
     description = models.TextField()
     classification = models.CharField(max_length=100)
-    start_time = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
-    end_time = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
+    start_date = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
+    end_date = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
     timezone = models.CharField(max_length=300)
     all_day = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=EVENT_STATUS_CHOICES)
@@ -63,7 +63,7 @@ class Event(OCDBase):
     class Meta:
         db_table = 'opencivicdata_event'
         index_together = [
-            ['jurisdiction', 'start_time', 'name']
+            ['jurisdiction', 'start_date', 'name']
         ]
 
 
