@@ -28,7 +28,7 @@ class EventAdmin(admin.ModelAdmin):
     fields = (
         'name', 'jurisdiction', 'location', 'description',
         'classification', 'status',
-        ('start_time', 'end_time'),
+        ('start_date', 'end_date'),
         ('timezone', 'all_day'),
         )
 
@@ -40,7 +40,7 @@ class EventAdmin(admin.ModelAdmin):
     source_link.allow_tags = True
 
     list_display = (
-        'jurisdiction', 'name', 'start_time', 'source_link')
+        'jurisdiction', 'name', 'start_date', 'source_link')
 
     inlines = [
         EventLinkInline,
