@@ -51,4 +51,8 @@ class Migration(migrations.Migration):
             name='event',
             index_together=set([('jurisdiction', 'start_date', 'name')]),
         ),
+        migrations.RemoveField(
+            model_name='event',
+            name='timezone',
+        ),
     ]

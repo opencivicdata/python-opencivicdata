@@ -28,8 +28,7 @@ class EventAdmin(admin.ModelAdmin):
     fields = (
         'name', 'jurisdiction', 'location', 'description',
         'classification', 'status',
-        ('start_date', 'end_date'),
-        ('timezone', 'all_day'),
+        ('start_date', 'end_date', 'all_day'),
         )
 
     def source_link(self, obj):

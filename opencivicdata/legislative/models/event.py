@@ -52,7 +52,6 @@ class Event(OCDBase):
     classification = models.CharField(max_length=100)
     start_date = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
     end_date = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
-    timezone = models.CharField(max_length=300)
     all_day = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=EVENT_STATUS_CHOICES)
     location = models.ForeignKey(EventLocation, null=True)
