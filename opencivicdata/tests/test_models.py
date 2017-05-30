@@ -1,12 +1,9 @@
 import pytest
-from opencivicdata.models import (Jurisdiction, LegislativeSession,                 # noqa
-                                  Division, Organization,                           # noqa
-                                  OrganizationIdentifier, OrganizationName,         # noqa
-                                  OrganizationContactDetail, OrganizationSource,    # noqa
-                                  Person, PersonIdentifier, PersonName,             # noqa
-                                  PersonContactDetail, PersonLink, PersonSource,    # noqa
-                                  Post, PostContactDetail, PostLink, Membership,    # noqa
-                                  MembershipContactDetail, MembershipLink)          # noqa
+from opencivicdata.core.models import (Jurisdiction,
+                                       Division,
+                                       Organization,
+                                       Person,
+                                       )
 from django.core.exceptions import ValidationError
 
 
@@ -205,7 +202,7 @@ def test_vote_event_str(vote_event):
     # test adding identifier and alternate string repr
     vote_event.identifier = "Roll Call #2372"
     vote_event.save()
-    assert "Roll Call #2372"in str(vote_event) 
+    assert "Roll Call #2372" in str(vote_event)
 
 
 @pytest.mark.django_db
@@ -366,12 +363,12 @@ def test_event_participant_person(event):
         note="Speaker",
     )
     assert e_p.name in str(e_p)
-    assert e_p.name in e_p.entity_name 
+    assert e_p.name in e_p.entity_name
     assert e_p.entity_id
     # remove entity_type value and re-try
     e_p.entity_type = ''
     assert e_p.name in e_p.entity_name
-    assert e_p.entity_id == None
+    assert e_p.entity_id is None
 
 
 @pytest.mark.django_db
@@ -384,12 +381,12 @@ def test_event_participant_organization(event):
         note="Host Committee",
     )
     assert e_p.name in str(e_p)
-    assert e_p.name in e_p.entity_name 
+    assert e_p.name in e_p.entity_name
     assert e_p.entity_id
     # remove entity_type value and re-try
     e_p.entity_type = ''
     assert e_p.name in e_p.entity_name
-    assert e_p.entity_id == None
+    assert e_p.entity_id is None
 
 
 @pytest.mark.django_db
@@ -457,7 +454,7 @@ def test_event_agenda(event, vote_event, bill):
         date="2014-04-12",
     )
     assert "Recording Darwin presentation" in str(e_a_med)
-    
+
     # test adding link to event agenda item media
     e_a_med.links.create(
         media_type="video/mp4",
@@ -483,4 +480,4 @@ def test_event_agenda(event, vote_event, bill):
         # remove entity_type value and re-try
         r_e.entity_type = ''
         assert r_e.name in r_e.entity_name
-        assert r_e.entity_id == None
+        assert r_e.entity_id is None

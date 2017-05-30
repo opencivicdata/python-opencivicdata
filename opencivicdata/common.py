@@ -6,7 +6,7 @@ DIVISION_ID_REGEX = r'^ocd-division/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*$'
 JURISDICTION_ID_REGEX = r'^ocd-jurisdiction/country:[a-z]{2}(/[^\W\d]+:[\w.~-]+)*/\w+$'
 
 # helper for making options-only lists
-_keys = lambda allopts: [opt[0] for opt in allopts]
+_keys = lambda allopts: [opt[0] for opt in allopts]     # noqa
 
 """
 Policy on addition of new types here:
@@ -96,6 +96,8 @@ BILL_CLASSIFICATION_CHOICES = (
     ('appropriation', 'Appropriation'),
     ('ordinance', 'Ordinance'),
     ('motion', 'Motion'),
+    ('study request', 'Study Request'),
+    ('concurrent study request', 'Concurrent Study Request'),
 )
 BILL_CLASSIFICATIONS = _keys(BILL_CLASSIFICATION_CHOICES)
 

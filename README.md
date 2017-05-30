@@ -1,14 +1,15 @@
-python-opencivicdata-django
-===========================
+python-opencivicdata
+====================
 
-[![Build Status](https://travis-ci.org/opencivicdata/python-opencivicdata-django.svg?branch=master)](https://travis-ci.org/opencivicdata/python-opencivicdata-django)
-[![Coverage Status](https://coveralls.io/repos/opencivicdata/python-opencivicdata-django/badge.png?branch=master)](https://coveralls.io/r/opencivicdata/python-opencivicdata-django?branch=master)
-[![PyPI](https://img.shields.io/pypi/v/opencivicdata-django.svg)](https://pypi.python.org/pypi/opencivicdata-django)
+[![Build Status](https://travis-ci.org/opencivicdata/python-opencivicdata.svg?branch=master)](https://travis-ci.org/opencivicdata/python-opencivicdata)
+[![Coverage Status](https://coveralls.io/repos/opencivicdata/python-opencivicdata/badge.png?branch=master)](https://coveralls.io/r/opencivicdata/python-opencivicdata?branch=master)
+[![PyPI](https://img.shields.io/pypi/v/opencivicdata.svg)](https://pypi.python.org/pypi/opencivicdata)
 
-This package is part of the opencivicdata namespace package containing the utilities for using Open Civic Data data models in Django.
+Python utilities (including Django models) for implementing the
+Open Civic Data specification.
 
-**Requires Django 1.9 and Postgres 9.4**
+**Requires Django >=1.10 and Postgres >=9.4**
 
-Its Organization, Person, Membership, Post, and VoteEvent models and related models are based on the [Popolo specification](http://popoloproject.com/).
+The Organization, Person, Membership, Post, and VoteEvent models and related models are based on the [Popolo specification](http://popoloproject.com/).
 
 To run tests on this project: ./run-tests.sh
