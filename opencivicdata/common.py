@@ -71,6 +71,7 @@ ORGANIZATION_CLASSIFICATION_CHOICES = (
     ('corporation', 'Corporation'),
     ('agency', 'Agency'),
     ('department', 'Department'),
+    ('transit_authority', 'Transit Authority')
 )
 ORGANIZATION_CLASSIFICATIONS = _keys(ORGANIZATION_CLASSIFICATION_CHOICES)
 
