@@ -3,8 +3,9 @@ import sys
 from setuptools import setup, find_packages
 
 install_requires = [
-  'Django>=1.9',
-  'psycopg2',
+    'six',
+    'Django>=1.9',
+    'psycopg2',
 ]
 
 if sys.version_info[0] == 2:
