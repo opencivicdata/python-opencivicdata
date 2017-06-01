@@ -82,7 +82,7 @@ class OrganizationAdmin(ModelAdmin):
     def get_jurisdiction(self, obj):
         jurisdiction = obj.jurisdiction
         if jurisdiction:
-            admin_url = urlresolvers.reverse('admin:opencivicdata_jurisdiction_change',
+            admin_url = urlresolvers.reverse('admin:core_jurisdiction_change',
                                              args=(jurisdiction.pk,))
             tmpl = '<a href="%s">%s</a>'
             return tmpl % (admin_url, jurisdiction.name)
