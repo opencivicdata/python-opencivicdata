@@ -11,7 +11,7 @@ env:
     - DJANGO_VERSION=1.10.5
     - DJANGO_VERSION=1.11
 install: 
-    - pip install -U setuptools
+    - pip install -U setuptools six
     - pip install -e .[dev] Django==$DJANGO_VERSION
 before_script:
     - psql -c "CREATE USER test with PASSWORD 'test' CREATEDB SUPERUSER;" -U postgres
