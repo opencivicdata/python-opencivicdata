@@ -18,10 +18,10 @@ def to_db(fd):
 def load_divisions(country):
     existing_divisions = Division.objects.filter(country=country)
 
-    country = FileDivision.get('ocd-division/country:{}'.format(country))
-    objects = [to_db(country)]
+    country_division = FileDivision.get('ocd-division/country:{}'.format(country))
+    objects = [to_db(country_division)]
 
-    for child in country.children(levels=100):
+    for child in country_division.children(levels=100):
         objects.append(to_db(child))
 
     print('{} divisions found in the CSV, and {} already in the DB'.
