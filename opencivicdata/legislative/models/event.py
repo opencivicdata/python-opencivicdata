@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.contrib.gis.db import models
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
                                             RelatedBase, RelatedEntityBase,
@@ -149,6 +149,7 @@ class EventAgendaItem(RelatedBase):
     subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
     notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
     event = models.ForeignKey(Event, related_name='agenda')
+    extras = JSONField(default=dict, blank=True)
 
     def __str__(self):
         return 'Agenda item {0} for {1}'.format(
