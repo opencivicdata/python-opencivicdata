@@ -8,7 +8,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import OCDBase, OCDIDField
 from opencivicdata.core.models import Division
-from .election import Election
+from ..election import Election
 
 
 @python_2_unicode_compatible

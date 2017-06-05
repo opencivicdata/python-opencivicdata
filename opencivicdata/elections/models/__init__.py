@@ -9,5 +9,5 @@ from .contests.ballot_measure import (BallotMeasureContest, BallotMeasureContest
                                       RetentionContestSource)
 from .contests.candidate import (CandidateContest, CandidateContestPost,
                                  CandidateContestIdentifier, CandidateContestSource)
-from .contests.party import (Party, PartyContest, PartyContestOption, 
+from .contests.party import (PartyContest, PartyContestOption, 
                              PartyContestIdentifier, PartyContestSource)
