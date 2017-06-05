@@ -2,6 +2,14 @@
 
 ## WIP
 
+Backwards-incompatible changes:
+
+* Implementation of [OCDEP #101](http://docs.opencivicdata.org/en/latest/proposals/0101.html) - datetime fields are fuzzy and Event's start/end_time are now start/end_date.
+
+Improvments requiring migrations:
+
+* add extras to BillAction & EventAgendaItem
+
 Bugfix:
 
 * fix usage of FileNotFoundError on Python 2.7
