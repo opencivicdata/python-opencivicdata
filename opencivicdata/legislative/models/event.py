@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.contrib.gis.db import models
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
                                             RelatedBase, RelatedEntityBase,
@@ -50,20 +50,19 @@ class Event(OCDBase):
     jurisdiction = models.ForeignKey(Jurisdiction, related_name='events')
     description = models.TextField()
     classification = models.CharField(max_length=100)
-    start_time = models.DateTimeField()
-    timezone = models.CharField(max_length=300)
-    end_time = models.DateTimeField(null=True)
+    start_date = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
+    end_date = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
     all_day = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=EVENT_STATUS_CHOICES)
     location = models.ForeignKey(EventLocation, null=True)
 
     def __str__(self):
-        return '{0} ({1:%Y-%m-%d})'.format(self.name, self.start_time)
+        return '{0} ({1})'.format(self.name, self.start_date)
 
     class Meta:
         db_table = 'opencivicdata_event'
         index_together = [
-            ['jurisdiction', 'start_time', 'name']
+            ['jurisdiction', 'start_date', 'name']
         ]
 
 
@@ -149,6 +148,7 @@ class EventAgendaItem(RelatedBase):
     subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
     notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
     event = models.ForeignKey(Event, related_name='agenda')
+    extras = JSONField(default=dict, blank=True)
 
     def __str__(self):
         return 'Agenda item {0} for {1}'.format(

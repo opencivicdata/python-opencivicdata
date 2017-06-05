@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.utils.encoding import python_2_unicode_compatible
 
 from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
@@ -75,9 +75,10 @@ class BillAction(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='actions')
     organization = models.ForeignKey(Organization, related_name='actions')
     description = models.TextField()
-    date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+    date = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
     classification = ArrayField(base_field=models.TextField(), blank=True, default=list)     # enum
     order = models.PositiveIntegerField()
+    extras = JSONField(default=dict, blank=True)
 
     class Meta:
         db_table = 'opencivicdata_billaction'

@@ -83,8 +83,7 @@ def event(jurisdiction, event_location):
         jurisdiction=jurisdiction,
         description="To discuss the pros/cons of wind farming.",
         classification='committee-meeting',
-        start_time=datetime.now(),
-        timezone='US/Central',
+        start_date=datetime.utcnow().isoformat().split('.')[0],
         status="passed",
         location=event_location,
     )
