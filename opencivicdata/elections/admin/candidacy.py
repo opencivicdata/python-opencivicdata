@@ -40,7 +40,7 @@ class CandidacyAdmin(base.ModelAdmin):
         'is_incumbent',
         'registration_status',
         'id',
-        'party__name',
+        'party_name',
         'updated_at',
     )
 
@@ -53,8 +53,18 @@ class CandidacyAdmin(base.ModelAdmin):
     )
     # date_hierarchy across relations was added to django 1.11
     if django_version[0] >= 1 and django_version[1] >= 11:
-        date_hierarchy = 'contest__election__start_time'
+        date_hierarchy = 'contest__election__date'
 
     inlines = [
         CandidacySourceInline,
     ]
+
+    def party_name(self, obj):
+        """
+        Return the name of the Party associated with the Candidacy.
+        """
+        if obj.party:
+            name = obj.party.name
+        else:
+            name = None
+        return name
