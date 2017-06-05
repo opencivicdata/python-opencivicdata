@@ -1,5 +1,16 @@
 #!/usr/bin/env python
+import sys
 from setuptools import setup, find_packages
+
+install_requires = [
+    'six',
+    'Django>=1.9',
+    'psycopg2',
+]
+
+if sys.version_info[0] == 2:
+    install_requires.append('backports.csv')
+
 
 setup(name="opencivicdata",
       version='1.0.0',
@@ -11,10 +22,16 @@ setup(name="opencivicdata",
       url="",
       packages=find_packages(),
       include_package_data=True,
-      install_requires=[
-          'Django>=1.9',
-          'psycopg2',
-      ],
+      install_requires=install_requires,
+      extras_require={
+          'dev': [
+            'pytest>=2.9',
+            'pytest-cov',
+            'pytest-django',
+            'coveralls',
+            'flake8',
+          ],
+      },
       platforms=["any"],
       classifiers=["Development Status :: 4 - Beta",
                    "Intended Audience :: Developers",
