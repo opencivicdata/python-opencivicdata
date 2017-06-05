@@ -1,6 +1,4 @@
 [run]
 omit =  opencivicdata/tests/*
-        opencivicdata/core/migrations/*
-        opencivicdata/core/admin/*
-        opencivicdata/legislative/migrations/*
-        opencivicdata/legislative/admin/*
+        opencivicdata/*/migrations/*
+        opencivicdata/*/admin/*
