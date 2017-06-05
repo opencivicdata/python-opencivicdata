@@ -11,8 +11,11 @@ from opencivicdata.core.models.base import (
     LinkBase,
     OCDIDField,
 )
-from opencivicdata.core.models import Person, Post
-from .contests.Candidate import CandidateContest
+from opencivicdata.core.models import (
+    Person,
+    Post,
+    Organization,
+)
 
 
 @python_2_unicode_compatible
@@ -36,7 +39,7 @@ class Candidacy(OCDBase):
                   'the candidate is competing.',
     )
     contest = models.ForeignKey(
-        CandidateContest,
+        'elections.CandidateContest',
         related_name='candidacies',
         help_text="Reference to an OCD CandidateContest representing the contest "
                   "in which the candidate is competing.",
@@ -54,7 +57,7 @@ class Candidacy(OCDBase):
                   "public office he/she currently holds",
     )
     party = models.ForeignKey(
-        'opencivicdata.Party',
+        Organization,
         related_name='candidacies',
         null=True,
         help_text='Reference to and Party with which the candidate is affiliated.'
