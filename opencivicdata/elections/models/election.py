@@ -58,7 +58,7 @@ class Election(OCDBase):
         Model options.
         """
         db_table = 'opencivicdata_election'
-        ordering = ("-start_time",)
+        ordering = ("-date",)
 
 
 @python_2_unicode_compatible
