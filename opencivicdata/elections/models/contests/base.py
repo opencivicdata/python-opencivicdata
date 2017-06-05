@@ -29,7 +29,8 @@ class ContestBase(OCDBase):
     )
     division = models.ForeignKey(
         Division,
-        related_name="divisions",
+        related_name="%(class)s_divisions",
+        related_query_name="%(class)ss",
         help_text="Reference to the Division that defines the political "
                   "geography of the contest, e.g., a specific Congressional or "
                   "State Senate district. Should be a subdivision of the Division "
@@ -37,7 +38,8 @@ class ContestBase(OCDBase):
     )
     election = models.ForeignKey(
         Election,
-        related_name="contests",
+        related_name="%(app_label)s_%(class)s_contests",
+        related_query_name="%(app_label)s_%(class)ss",
         help_text="Reference to the Election in which the contest is decided.",
     )
 
