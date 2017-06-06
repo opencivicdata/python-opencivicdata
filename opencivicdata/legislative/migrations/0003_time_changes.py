@@ -11,6 +11,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunSQL('SET CONSTRAINTS ALL IMMEDIATE',
+                          reverse_sql=migrations.RunSQL.noop),
         migrations.AlterField(
             model_name='voteevent',
             name='end_date',
@@ -55,4 +57,6 @@ class Migration(migrations.Migration):
             model_name='event',
             name='timezone',
         ),
+       migrations.RunSQL(migrations.RunSQL.noop,
+                        reverse_sql='SET CONSTRAINTS ALL IMMEDIATE'),
     ]
