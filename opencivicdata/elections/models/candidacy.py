@@ -59,6 +59,7 @@ class Candidacy(OCDBase):
     party = models.ForeignKey(
         Organization,
         related_name='candidacies',
+        limit_choices_to={'classification': 'party'},
         null=True,
         help_text='Reference to and Party with which the candidate is affiliated.'
     )
