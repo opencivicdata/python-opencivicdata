@@ -121,7 +121,7 @@ def event(jurisdiction, event_location):
 
 @pytest.fixture
 def party():
-    p = Organization.objects.create(name='Republican')
+    p = Organization.objects.create(name='Republican', classification='party')
     return p
 
 
