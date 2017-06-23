@@ -186,9 +186,8 @@ def test_organization_membership():
 
 
 @pytest.mark.django_db
-def test_person_str():
-    p = Person.objects.create(name="test person")
-    assert "test person" in str(p)
+def test_person_str(person):
+    assert person.name in str(person)
 
 
 @pytest.mark.django_db
