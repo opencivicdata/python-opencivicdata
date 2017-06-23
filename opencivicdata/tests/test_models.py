@@ -344,7 +344,7 @@ def test_bill_document_with_links(bill):
 @pytest.mark.django_db
 def test_event_str(event):
     assert event.name in str(event)
-    assert '{:%Y-%m-%d}'.format(event.start_time)
+    assert event.start_date in str(event)
 
 
 @pytest.mark.django_db
