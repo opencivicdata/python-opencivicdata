@@ -90,7 +90,7 @@ class Candidacy(OCDBase):
         """
         Model options.
         """
-        db_table = 'opencivicdata_candidacies'
+        db_table = 'opencivicdata_candidacy'
         verbose_name_plural = "candidacies"
         ordering = ("contest", "post", "person",)
 
