@@ -47,7 +47,7 @@ class PartyContestOption(models.Model):
     )
 
     def __str__(self):
-        return "{0} in {1}".format(self.post.label, self.contest)
+        return "{0} for {1}".format(self.party.name, self.contest)
 
     class Meta:
         """
