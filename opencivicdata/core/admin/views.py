@@ -50,6 +50,6 @@ def merge_confirm(request):
                          'merged {} with {}'.format(person1.id, person2.id)
                          )
 
-    return redirect(urlresolvers.reverse('admin:opencivicdata_person_change',
+    return redirect(urlresolvers.reverse('admin:core_person_change',
                                          args=(person1.id,))
                     )
