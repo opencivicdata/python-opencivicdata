@@ -7,8 +7,10 @@ from ..models import Person
 from ...merge import compute_diff, merge
 
 
-def merge_tool(request):
-    people = list(Person.objects.all())
+def merge_tool(request, jur_name):
+    people = Person.objects \
+        .filter(memberships__organization__jurisdiction__name__exact=jur_name) \
+        .distinct()
 
     if request.method == 'POST':
         person1 = request.POST['person1']
@@ -28,10 +30,11 @@ def merge_tool(request):
                        'person1': person1,
                        'person2': person2,
                        'diff': diff,
+                       'jur_name': jur_name,
                        })
     else:
         return render(request, 'opencivicdata/admin/merge.html',
-                      {'people': people})
+                      {'people': people, 'jur_name': jur_name})
 
 
 @require_POST
