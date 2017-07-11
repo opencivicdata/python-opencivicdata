@@ -5,11 +5,14 @@ from django.http import HttpResponseBadRequest
 from django.contrib import messages
 from ..models import Person
 from ...merge import compute_diff, merge
+from opencivicdata.core.models import Jurisdiction
 
 
-def merge_tool(request):
-    people = list(Person.objects.all())
-
+def merge_tool(request, jur_id):
+    people = Person.objects \
+        .filter(memberships__organization__jurisdiction__id=jur_id) \
+        .distinct()
+    jur_name = Jurisdiction.objects.get(id=jur_id).name
     if request.method == 'POST':
         person1 = request.POST['person1']
         person2 = request.POST['person2']
@@ -28,10 +31,11 @@ def merge_tool(request):
                        'person1': person1,
                        'person2': person2,
                        'diff': diff,
+                       'jur_name': jur_name,
                        })
     else:
         return render(request, 'opencivicdata/admin/merge.html',
-                      {'people': people})
+                      {'people': people, 'jur_name': jur_name})
 
 
 @require_POST
