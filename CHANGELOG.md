@@ -10,6 +10,10 @@ Improvments requiring migrations:
 
 * add extras to BillAction & EventAgendaItem
 
+Improvements:
+
+* jurisdiction specific merge tool
+
 Bugfix:
 
 * fix usage of FileNotFoundError on Python 2.7

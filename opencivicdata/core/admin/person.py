@@ -64,7 +64,7 @@ class PersonAdmin(ModelAdmin):
         SHOW_N = 5
         for memb in memberships[:SHOW_N]:
             org = memb.organization
-            admin_url = urlresolvers.reverse('admin:opencivicdata_organization_change',
+            admin_url = urlresolvers.reverse('admin:core_organization_change',
                                              args=(org.pk,))
             tmpl = '<a href="%s">%s%s</a>\n'
             html.append(tmpl % (
@@ -81,3 +81,8 @@ class PersonAdmin(ModelAdmin):
     get_memberships.allow_tags = True
 
     list_display = ('name', 'id', 'get_memberships')
+
+    # Since `Membership` objects are not registered on admin panel.
+    # So to ignore `DisallowedModelAdminLookup` error.
+    def lookup_allowed(self, request, key):
+        return True
