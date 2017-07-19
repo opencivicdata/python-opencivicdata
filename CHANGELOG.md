@@ -9,10 +9,12 @@ Backwards-incompatible changes:
 Improvments requiring migrations:
 
 * add extras to BillAction & EventAgendaItem
+* add Post.maximum_memberships
 
 Improvements:
 
 * jurisdiction specific merge tool
+* experimental introduction of opencivicdata.elections - provisional for now w/ future changes likely
 
 Bugfix:
 
