@@ -136,6 +136,7 @@ class Post(OCDBase):
                                  default=None)
     start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
     end_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
+    maximum_memberships = models.PositiveIntegerField(default=1)
 
     class Meta:
         db_table = 'opencivicdata_post'
