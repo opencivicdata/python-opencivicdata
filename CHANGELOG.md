@@ -1,5 +1,7 @@
 # Changelog
 
+## WIP
+
 ## 2.0.0 (2017-07-19)
 
 Backwards-incompatible changes:
