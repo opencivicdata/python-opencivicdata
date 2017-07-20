@@ -13,7 +13,7 @@ if sys.version_info[0] == 2:
 
 
 setup(name="opencivicdata",
-      version='2.0.0-dev',
+      version='2.0.0',
       author="James Turk",
       author_email='james@openstates.org',
       license="BSD",
