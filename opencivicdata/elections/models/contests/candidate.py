@@ -40,7 +40,7 @@ class CandidateContest(ContestBase):
                   "previously undecided contest, reference to that CandidateContest.",
     )
 
-    class Meta:
+    class Meta(ContestBase.Meta):
         db_table = 'opencivicdata_candidatecontest'
 
 
