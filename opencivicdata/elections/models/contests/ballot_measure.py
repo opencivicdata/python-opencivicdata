@@ -41,7 +41,7 @@ class BallotMeasureContest(ContestBase):
                   "BallotMeasureContest.",
     )
 
-    class Meta:
+    class Meta(ContestBase.Meta):
         db_table = 'opencivicdata_ballotmeasurecontest'
 
 
@@ -104,7 +104,7 @@ class BallotMeasureContestSource(LinkBase):
         db_table = 'opencivicdata_ballotmeasurecontestsource'
 
 
-class RetentionContest(ContestBase):
+class BallotMeasureContest(ContestBase):
     """
     A subclass of ContestBase wherein an officeholder may retain or lose a Post.
 
@@ -133,7 +133,7 @@ class RetentionContest(ContestBase):
                   "person in a specific public office.",
     )
 
-    class Meta:
+    class Meta(ContestBase.Meta):
         db_table = 'opencivicdata_retentioncontest'
 
 
