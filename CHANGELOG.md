@@ -2,6 +2,8 @@
 
 ## WIP
 
+## 2.0.0 (2017-07-19)
+
 Backwards-incompatible changes:
 
 * Implementation of [OCDEP #101](http://docs.opencivicdata.org/en/latest/proposals/0101.html) - datetime fields are fuzzy and Event's start/end_time are now start/end_date.
@@ -9,10 +11,12 @@ Backwards-incompatible changes:
 Improvments requiring migrations:
 
 * add extras to BillAction & EventAgendaItem
+* add Post.maximum_memberships for validating expected number of memberships, useful for multi-member seats
 
 Improvements:
 
 * jurisdiction specific merge tool
+* experimental introduction of opencivicdata.elections - provisional for now w/ future changes likely
 
 Bugfix:
 
