@@ -104,7 +104,7 @@ class BallotMeasureContestSource(LinkBase):
         db_table = 'opencivicdata_ballotmeasurecontestsource'
 
 
-class BallotMeasureContest(ContestBase):
+class RetentionContest(ContestBase):
     """
     A subclass of ContestBase wherein an officeholder may retain or lose a Post.
 
