@@ -41,7 +41,7 @@ class BallotMeasureContest(ContestBase):
                   "BallotMeasureContest.",
     )
 
-    class Meta:
+    class Meta(ContestBase.Meta):
         db_table = 'opencivicdata_ballotmeasurecontest'
 
 
@@ -133,7 +133,7 @@ class RetentionContest(ContestBase):
                   "person in a specific public office.",
     )
 
-    class Meta:
+    class Meta(ContestBase.Meta):
         db_table = 'opencivicdata_retentioncontest'
 
 
