@@ -81,8 +81,3 @@ class PersonAdmin(ModelAdmin):
     get_memberships.allow_tags = True
 
     list_display = ('name', 'id', 'get_memberships')
-
-    # Since `Membership` objects are not registered on admin panel.
-    # So to ignore `DisallowedModelAdminLookup` error.
-    def lookup_allowed(self, request, key):
-        return True

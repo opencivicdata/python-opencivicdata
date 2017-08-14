@@ -14,6 +14,11 @@ class ModelAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+    # To ignore `DisallowedModelAdminLookup` error because of non
+    # registered models
+    def lookup_allowed(self, request, key):
+        return True
+
 
 class ReadOnlyTabularInline(admin.TabularInline):
     def has_add_permission(self, request):
