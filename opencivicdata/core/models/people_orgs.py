@@ -198,14 +198,39 @@ class OrganizationSource(LinkBase):
 @python_2_unicode_compatible
 class Post(OCDBase):
     id = OCDIDField(ocd_type='post')
-    label = models.CharField(max_length=300)
-    role = models.CharField(max_length=300, blank=True)
-    organization = models.ForeignKey(Organization, related_name='posts')
-    division = models.ForeignKey(Division, related_name='posts', null=True, blank=True,
-                                 default=None)
-    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    maximum_memberships = models.PositiveIntegerField(default=1)
+    label = models.CharField(max_length=300, help_text="A label describing the Post.")
+    role = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="The function that the holder of the post fulfills."
+    )
+    organization = models.ForeignKey(
+        Organization,
+        related_name='posts',
+        help_text="The Organization in which the post is held."
+    )
+    division = models.ForeignKey(
+        Division,
+        related_name='posts',
+        null=True,
+        blank=True,
+        default=None,
+        help_text="The Division where the post exists."
+    )
+    start_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional start date for the Post in YYYY[-MM[-DD]] string format."
+    )
+    end_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional end date for the Post in YYYY[-MM[-DD]] string format."
+    )
+    maximum_memberships = models.PositiveIntegerField(
+        default=1,
+        help_text="The maximum number of people who can hold this Post."
+    )
 
     class Meta:
         db_table = 'opencivicdata_post'
