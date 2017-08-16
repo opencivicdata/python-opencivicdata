@@ -89,8 +89,11 @@ class MimetypeLinkBase(RelatedBase):
 
 @python_2_unicode_compatible
 class IdentifierBase(RelatedBase):
-    identifier = models.CharField(max_length=300)
-    scheme = models.CharField(max_length=300)
+    identifier = models.CharField(
+        max_length=300,
+        help_text="A unique identifier developed by an upstream or third party source."
+    )
+    scheme = models.CharField(max_length=300, help_text="The name of the service that created the identifier.")
 
     class Meta:
         abstract = True
