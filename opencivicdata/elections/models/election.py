@@ -87,7 +87,11 @@ class ElectionSource(LinkBase):
     """
     Source used in assembling the Election.
     """
-    event = models.ForeignKey(Election, related_name='sources')
+    event = models.ForeignKey(
+        Election,
+        related_name='sources',
+        help_text="Reference to the Election this source verifies."
+    )
 
     class Meta:
         db_table = 'opencivicdata_electionsource'
