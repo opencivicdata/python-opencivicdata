@@ -243,14 +243,22 @@ class Post(OCDBase):
 
 
 class PostContactDetail(ContactDetailBase):
-    post = models.ForeignKey(Post, related_name='contact_details')
+    post = models.ForeignKey(
+        Post,
+        related_name='contact_details',
+        help_text="A link to the Post connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_postcontactdetail'
 
 
 class PostLink(LinkBase):
-    post = models.ForeignKey(Post, related_name='links')
+    post = models.ForeignKey(
+        Post,
+        related_name='links',
+        help_text="A reference to the Post connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_postlink'
