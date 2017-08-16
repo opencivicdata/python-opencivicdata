@@ -174,14 +174,22 @@ class OrganizationContactDetail(ContactDetailBase):
 
 
 class OrganizationLink(LinkBase):
-    organization = models.ForeignKey(Organization, related_name='links')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='links',
+        help_text="A reference to the Organization connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationlink'
 
 
 class OrganizationSource(LinkBase):
-    organization = models.ForeignKey(Organization, related_name='sources')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='sources',
+        help_text="A link to the Organization connected to this source."
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationsource'
