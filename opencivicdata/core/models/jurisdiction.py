@@ -24,7 +24,7 @@ class Jurisdiction(OCDBase):
         choices=JURISDICTION_CLASSIFICATION_CHOICES,
         default='government',
         db_index=True,
-        help_text="The type of jurisdiction being defined."
+        help_text="The type of Jurisdiction being defined."
     )
     feature_flags = ArrayField(
         base_field=models.TextField(),

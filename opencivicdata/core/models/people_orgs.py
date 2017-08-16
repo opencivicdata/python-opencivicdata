@@ -44,14 +44,40 @@ class OtherNameBase(RelatedBase):
 @python_2_unicode_compatible
 class Organization(OCDBase):
     id = OCDIDField(ocd_type='organization')
-    name = models.CharField(max_length=300)
-    image = models.URLField(blank=True, max_length=2000)
-    parent = models.ForeignKey('self', related_name='children', null=True)
-    jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations', null=True)
-    classification = models.CharField(max_length=100, blank=True,
-                                      choices=common.ORGANIZATION_CLASSIFICATION_CHOICES)
-    founding_date = models.CharField(max_length=10, blank=True)     # YYYY[-MM[-DD]]
-    dissolution_date = models.CharField(max_length=10, blank=True)  # YYYY[-MM[-DD]]
+    name = models.CharField(max_length=300, help_text="The name of the Organization.")
+    image = models.URLField(
+        blank=True,
+        max_length=2000,
+        help_text="A URL leading to an image that identifies the Organization visually."
+    )
+    parent = models.ForeignKey(
+        'self',
+        related_name='children',
+        null=True,
+        help_text="A link to another Organization that serves as this Organization's parent."
+    )
+    jurisdiction = models.ForeignKey(
+        Jurisdiction,
+        related_name='organizations',
+        null=True,
+        help_text="A link to the Jurisdiction that contains this Organization.",
+    )
+    classification = models.CharField(
+        max_length=100,
+        blank=True,
+        choices=common.ORGANIZATION_CLASSIFICATION_CHOICES,
+        help_text="The type of Organization being defined."
+    )
+    founding_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The founding date of the Organization in YYYY[-MM[-DD]] string format."
+    )
+    dissolution_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The dissolution date of the Organization in YYYY[-MM[-DD]] string format."
+    )
 
     def __str__(self):
         return self.name
