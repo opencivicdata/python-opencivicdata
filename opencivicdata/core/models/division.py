@@ -35,25 +35,84 @@ class Division(models.Model):
     objects = DivisionManager()
 
     id = models.CharField(max_length=300, primary_key=True)
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=300, help_text="The name of the division.")
     redirect = models.ForeignKey('self', null=True)
-    country = models.CharField(max_length=2)
+    country = models.CharField(
+        max_length=2,
+        help_text="An ISO-3166-1 alpha-2 code identifying the county where this division is found."
+    )
 
     # up to 7 pieces of the id that are searchable
-    subtype1 = models.CharField(max_length=50, blank=True)
-    subid1 = models.CharField(max_length=100, blank=True)
-    subtype2 = models.CharField(max_length=50, blank=True)
-    subid2 = models.CharField(max_length=100,  blank=True)
-    subtype3 = models.CharField(max_length=50, blank=True)
-    subid3 = models.CharField(max_length=100, blank=True)
-    subtype4 = models.CharField(max_length=50, blank=True)
-    subid4 = models.CharField(max_length=100, blank=True)
-    subtype5 = models.CharField(max_length=50, blank=True)
-    subid5 = models.CharField(max_length=100, blank=True)
-    subtype6 = models.CharField(max_length=50, blank=True)
-    subid6 = models.CharField(max_length=100, blank=True)
-    subtype7 = models.CharField(max_length=50, blank=True)
-    subid7 = models.CharField(max_length=100, blank=True)
+    subtype1 = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The first subtype in the unique identifier."
+    )
+    subid1 = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The first subidentifier in the unique identifer."
+    )
+    subtype2 = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The second subtype in the unique identifier."
+    )
+    subid2 = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The second subidentifier in the unique identifer."
+    )
+    subtype3 = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The third subtype in the unique identifier."
+    )
+    subid3 = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The third subidentifier in the unique identifer."
+    )
+    subtype4 = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The fourth subtype in the unique identifier."
+    )
+    subid4 = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The fourth subidentifier in the unique identifer."
+    )
+    subtype5 = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The fifth subtype in the unique identifier."
+    )
+    subid5 = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The fifth subidentifier in the unique identifer."
+    )
+    subtype6 = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The sixth subtype in the unique identifier."
+    )
+    subid6 = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The sixth subidentifier in the unique identifer."
+    )
+    subtype7 = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="The seventh subtype in the unique identifier."
+    )
+    subid7 = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="The seventh subidentifier in the unique identifer."
+    )
 
     class Meta:
         db_table = 'opencivicdata_division'
