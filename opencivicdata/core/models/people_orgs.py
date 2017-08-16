@@ -163,7 +163,11 @@ class OrganizationName(OtherNameBase):
 
 
 class OrganizationContactDetail(ContactDetailBase):
-    organization = models.ForeignKey(Organization, related_name='contact_details')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='contact_details',
+        help_text="A link to the Organization connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationcontactdetail'
