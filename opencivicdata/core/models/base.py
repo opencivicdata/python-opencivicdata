@@ -42,9 +42,13 @@ class OCDIDField(models.CharField):
 
 class OCDBase(models.Model):
     """ common base fields across all top-level models """
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    extras = JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="The date and time of creation.")
+    updated_at = models.DateTimeField(auto_now=True, help_text="The date and time of the last update.")
+    extras = JSONField(
+        default=dict,
+        blank=True,
+        help_text="A key-value store for storing arbitrary information not covered elsewhere."
+    )
     locked_fields = ArrayField(base_field=models.TextField(), blank=True, default=list)
 
     class Meta:
