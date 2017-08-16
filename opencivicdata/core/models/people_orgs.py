@@ -415,16 +415,55 @@ class PersonSource(LinkBase):
 @python_2_unicode_compatible
 class Membership(OCDBase):
     id = OCDIDField(ocd_type='membership')
-    organization = models.ForeignKey(Organization, related_name='memberships')
-    person = models.ForeignKey(Person, related_name='memberships', null=True)
-    person_name = models.CharField(max_length=300, blank=True, default='')
-    post = models.ForeignKey(Post, related_name='memberships', null=True)
-    on_behalf_of = models.ForeignKey(Organization, related_name='memberships_on_behalf_of',
-                                     null=True)
-    label = models.CharField(max_length=300, blank=True)
-    role = models.CharField(max_length=300, blank=True)
-    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
+    organization = models.ForeignKey(
+        Organization,
+        related_name='memberships',
+        help_text="A link to the Organization in which the Person is a member."
+    )
+    person = models.ForeignKey(
+        Person,
+        related_name='memberships',
+        null=True,
+        help_text="A link to the Person that is a member of the Organization."
+    )
+    person_name = models.CharField(
+        max_length=300,
+        blank=True,
+        default='',
+        help_text="The name of the Person that is a member of the Organization."
+    )
+    post = models.ForeignKey(
+        Post,
+        related_name='memberships',
+        null=True,
+        help_text="	The Post held by the member in the Organization."
+    )
+    on_behalf_of = models.ForeignKey(
+        Organization,
+        related_name='memberships_on_behalf_of',
+        null=True,
+        help_text="The Organization on whose behalf the Person is a member of the Organization."
+    )
+    label = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A label describing the membership."
+    )
+    role = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="The role that the member fulfills in the Organization."
+    )
+    start_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The date on which the relationship began in YYYY[-MM[-DD]] string format."
+    )
+    end_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The date on which the relationship ended in YYYY[-MM[-DD]] string format."
+    )
 
     class Meta:
         db_table = 'opencivicdata_membership'
@@ -437,14 +476,22 @@ class Membership(OCDBase):
 
 
 class MembershipContactDetail(ContactDetailBase):
-    membership = models.ForeignKey(Membership, related_name='contact_details')
+    membership = models.ForeignKey(
+        Membership,
+        related_name='contact_details',
+        help_text="A link to the Membership connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_membershipcontactdetail'
 
 
 class MembershipLink(LinkBase):
-    membership = models.ForeignKey(Membership, related_name='links')
+    membership = models.ForeignKey(
+        Membership,
+        related_name='links',
+        help_text="A reference to the Membership connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_membershiplink'
