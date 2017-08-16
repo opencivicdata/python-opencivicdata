@@ -13,10 +13,25 @@ from ... import common
 
 @python_2_unicode_compatible
 class ContactDetailBase(RelatedBase):
-    type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
-    value = models.CharField(max_length=300)
-    note = models.CharField(max_length=300, blank=True)
-    label = models.CharField(max_length=300, blank=True)
+    type = models.CharField(
+        max_length=50,
+        choices=common.CONTACT_TYPE_CHOICES,
+        help_text="The type of Contact being defined.",
+    )
+    value = models.CharField(
+        max_length=300,
+        help_text="The content of the Contact information like a phone number or email address."
+    )
+    note = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A short, optional note about the Contact value."
+    )
+    label = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A title for the content of the Contact."
+    )
 
     class Meta:
         abstract = True
