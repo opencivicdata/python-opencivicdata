@@ -358,35 +358,55 @@ class Person(OCDBase):
 
 
 class PersonIdentifier(IdentifierBase):
-    person = models.ForeignKey(Person, related_name='identifiers')
+    person = models.ForeignKey(
+        Person,
+        related_name='identifiers',
+        help_text="A link to the Person connected to this alternative identifier."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personidentifier'
 
 
 class PersonName(OtherNameBase):
-    person = models.ForeignKey(Person, related_name='other_names')
+    person = models.ForeignKey(
+        Person,
+        related_name='other_names',
+        help_text="A link to the Person connected to this alternative name."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personname'
 
 
 class PersonContactDetail(ContactDetailBase):
-    person = models.ForeignKey(Person, related_name='contact_details')
+    person = models.ForeignKey(
+        Person,
+        related_name='contact_details',
+        help_text="A link to the Person connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personcontactdetail'
 
 
 class PersonLink(LinkBase):
-    person = models.ForeignKey(Person, related_name='links')
+    person = models.ForeignKey(
+        Person,
+        related_name='links',
+        help_text="A reference to the Person connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personlink'
 
 
 class PersonSource(LinkBase):
-    person = models.ForeignKey(Person, related_name='sources')
+    person = models.ForeignKey(
+        Person,
+        related_name='sources',
+        help_text="A link to the Person connected to this source."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personsource'
