@@ -64,8 +64,12 @@ class RelatedBase(models.Model):
 
 @python_2_unicode_compatible
 class LinkBase(RelatedBase):
-    note = models.CharField(max_length=300, blank=True)
-    url = models.URLField(max_length=2000)
+    note = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A short, optional note related to an object."
+    )
+    url = models.URLField(max_length=2000, help_text="A hyperlink related to an object.")
 
     class Meta:
         abstract = True
