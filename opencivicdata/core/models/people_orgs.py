@@ -27,10 +27,18 @@ class ContactDetailBase(RelatedBase):
 
 @python_2_unicode_compatible
 class OtherNameBase(RelatedBase):
-    name = models.CharField(max_length=500, db_index=True)
-    note = models.CharField(max_length=500, blank=True)
-    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
+    name = models.CharField(max_length=500, db_index=True, help_text="An alternative name.")
+    note = models.CharField(max_length=500, blank=True, help_text="A short, optional note about alternative name.")
+    start_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional start date for usage of the alternative name in YYYY[-MM[-DD]] string format."
+    )
+    end_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional end date for usage of the alternative name in YYYY[-MM[-DD]] string format."
+    )
 
     class Meta:
         abstract = True
@@ -125,7 +133,11 @@ class OrganizationIdentifier(IdentifierBase):
 
 
 class OrganizationName(OtherNameBase):
-    organization = models.ForeignKey(Organization, related_name='other_names')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='other_names',
+        help_text="A link to the Organization with this alternative name.",
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationname'
