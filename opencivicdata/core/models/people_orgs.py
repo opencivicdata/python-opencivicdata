@@ -122,7 +122,11 @@ class Organization(OCDBase):
 
 @python_2_unicode_compatible
 class OrganizationIdentifier(IdentifierBase):
-    organization = models.ForeignKey(Organization, related_name='identifiers')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='identifiers',
+        help_text="Reference to the Organization identified by this alternative identifier.",
+    )
 
     def __str__(self):
         tmpl = '%s identifies %s'

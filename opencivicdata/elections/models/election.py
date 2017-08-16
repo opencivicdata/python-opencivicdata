@@ -72,7 +72,7 @@ class ElectionIdentifier(IdentifierBase):
     election = models.ForeignKey(
         Election,
         related_name='identifiers',
-        help_text="Reference to the Election identified by the identifier.",
+        help_text="Reference to the Election identified by this alternative identifier.",
     )
 
     class Meta:
