@@ -290,18 +290,61 @@ class Person(OCDBase):
     objects = PersonQuerySet.as_manager()
 
     id = OCDIDField(ocd_type='person')
-    name = models.CharField(max_length=300, db_index=True)
-    sort_name = models.CharField(max_length=100, default='', blank=True)
-    family_name = models.CharField(max_length=100, blank=True)
-    given_name = models.CharField(max_length=100, blank=True)
-
-    image = models.URLField(blank=True, max_length=2000)
-    gender = models.CharField(max_length=100, blank=True)
-    summary = models.CharField(max_length=500, blank=True)
-    national_identity = models.CharField(max_length=300, blank=True)
-    biography = models.TextField(blank=True)
-    birth_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    death_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
+    name = models.CharField(
+        max_length=300,
+        db_index=True,
+        help_text="A Person's preferred full name."
+    )
+    sort_name = models.CharField(
+        max_length=100,
+        default='',
+        blank=True,
+        help_text="A version of a Person's full name rearranged for alphabetical sorting."
+    )
+    family_name = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="A Person's family name."
+    )
+    given_name = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="A Person's given name."
+    )
+    image = models.URLField(
+        blank=True,
+        max_length=2000,
+        help_text="A URL leading to an image that identifies the Person visually."
+    )
+    gender = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="A Person's gender"
+    )
+    summary = models.CharField(
+        max_length=500,
+        blank=True,
+        help_text="A short, one-line account of a Person's life."
+    )
+    national_identity = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="The nation a Person is identified with."
+    )
+    biography = models.TextField(
+        blank=True,
+        help_text="An extended account of a Person's life."
+    )
+    birth_date = models.CharField(
+        max_length=10,
+        blank=True
+        help_text="The date of a Person's birth in YYYY[-MM[-DD]] string format."
+    )
+    death_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The date of a Person's death in YYYY[-MM[-DD]] string format."
+    )
 
     def __str__(self):
         return self.name
