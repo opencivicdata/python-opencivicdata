@@ -42,17 +42,26 @@ class ContactDetailBase(RelatedBase):
 
 @python_2_unicode_compatible
 class OtherNameBase(RelatedBase):
-    name = models.CharField(max_length=500, db_index=True, help_text="An alternative name.")
-    note = models.CharField(max_length=500, blank=True, help_text="A short, optional note about alternative name.")
+    name = models.CharField(
+        max_length=500,
+        db_index=True,
+        help_text="An alternative name.",
+    )
+    note = models.CharField(
+        max_length=500, blank=True,
+        help_text="A short, optional note about alternative name.",
+    )
     start_date = models.CharField(
         max_length=10,
         blank=True,
-        help_text="An optional start date for usage of the alternative name in YYYY[-MM[-DD]] string format."
+        help_text="An optional start date for usage of the alternative name "
+                  "in YYYY[-MM[-DD]] string format.",
     )
     end_date = models.CharField(
         max_length=10,
         blank=True,
-        help_text="An optional end date for usage of the alternative name in YYYY[-MM[-DD]] string format."
+        help_text="An optional end date for usage of the alternative name in "
+                  "YYYY[-MM[-DD]] string format.",
     )
 
     class Meta:
@@ -337,7 +346,7 @@ class Person(OCDBase):
     )
     birth_date = models.CharField(
         max_length=10,
-        blank=True
+        blank=True,
         help_text="The date of a Person's birth in YYYY[-MM[-DD]] string format."
     )
     death_date = models.CharField(

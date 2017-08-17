@@ -42,8 +42,14 @@ class OCDIDField(models.CharField):
 
 class OCDBase(models.Model):
     """ common base fields across all top-level models """
-    created_at = models.DateTimeField(auto_now_add=True, help_text="The date and time of creation.")
-    updated_at = models.DateTimeField(auto_now=True, help_text="The date and time of the last update.")
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="The date and time of creation.",
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="The date and time of the last update.",
+    )
     extras = JSONField(
         default=dict,
         blank=True,
@@ -93,7 +99,10 @@ class IdentifierBase(RelatedBase):
         max_length=300,
         help_text="A unique identifier developed by an upstream or third party source."
     )
-    scheme = models.CharField(max_length=300, help_text="The name of the service that created the identifier.")
+    scheme = models.CharField(
+        max_length=300,
+        help_text="The name of the service that created the identifier.",
+    )
 
     class Meta:
         abstract = True
