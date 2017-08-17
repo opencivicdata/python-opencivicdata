@@ -13,7 +13,7 @@ class Jurisdiction(OCDBase):
     id = OCDIDField(ocd_type='jurisdiction')
     name = models.CharField(
         max_length=300,
-        help_text="The common name of the Jurisdiction, such as 'Wyoming' or 'Hope County School System.'"
+        help_text="The common name of the Jurisdiction, such as 'Wyoming.'"
     )
     url = models.URLField(
         max_length=2000,
