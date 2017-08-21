@@ -32,6 +32,14 @@ class DivisionManager(models.Manager):
 
 @python_2_unicode_compatible
 class Division(models.Model):
+    """
+    A political geography, which may have multiple boundaries over its lifetime.
+
+    Types of divisions include, among others:
+    * Governmental jurisdiction - A division that a government has jurisdiction over. (e.g. North Carolina)
+    * Political district - A division that elects a representative to a legislature. (e.g. North Carolina Congressional District 4)
+    * Service zone - An area to which a government provides a service. (e.g. Washington DC Police District 105)
+    """
     objects = DivisionManager()
 
     id = models.CharField(max_length=300, primary_key=True)

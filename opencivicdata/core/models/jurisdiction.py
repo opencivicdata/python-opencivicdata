@@ -10,6 +10,13 @@ from .division import Division
 
 @python_2_unicode_compatible
 class Jurisdiction(OCDBase):
+    """
+    A Jurisdiction represents a logical unit of governance.
+
+    Examples would include: the United States Federal Government, the Government
+    of the District of Columbia, the Lexington-Fayette Urban County Government,
+    or the Wake County Public School System.
+    """
     id = OCDIDField(ocd_type='jurisdiction')
     name = models.CharField(max_length=300)
     url = models.URLField(max_length=2000)
