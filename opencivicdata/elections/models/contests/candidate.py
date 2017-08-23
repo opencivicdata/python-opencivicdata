@@ -21,7 +21,8 @@ class CandidateContest(ContestBase):
         limit_choices_to={'classification': 'party'},
         null=True,
         help_text="If the contest is among candidates of the same political party, "
-                  "e.g., a partisan primary election, reference to the Party."
+                  "e.g., a partisan primary election, reference to the Organization "
+                  "representing that party."
     )
     previous_term_unexpired = models.BooleanField(
         default=False,
@@ -57,7 +58,8 @@ class CandidateContestPost(models.Model):
     post = models.ForeignKey(
         Post,
         related_name="contests",
-        help_text="Reference to the Post at stake in the CandidateContest.",
+        help_text="Reference to the Post representing a public office at stake in "
+                  "the CandidateContest.",
     )
     sort_order = models.IntegerField(
         default=0,

@@ -34,13 +34,14 @@ class PartyContestOption(models.Model):
     contest = models.ForeignKey(
         PartyContest,
         related_name="parties",
-        help_text="Reference to the PartyContest in which the Party is an option.",
+        help_text="Reference to the PartyContest in which the party is an option.",
     )
     party = models.ForeignKey(
         Organization,
         related_name='party_contests',
         limit_choices_to={'classification': 'party'},
-        help_text="Reference to the Party option in the PartyContest.",
+        help_text="Reference to an Organization representing a political party "
+                  "voters may choose in the contest.",
     )
     is_incumbent = models.NullBooleanField(
         help_text="Indicates whether the party currently holds majority power.",

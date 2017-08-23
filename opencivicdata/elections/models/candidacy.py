@@ -35,8 +35,8 @@ class Candidacy(OCDBase):
     post = models.ForeignKey(
         Post,
         related_name='candidacies',
-        help_text='Reference to Post represents the public office for which '
-                  'the candidate is competing.',
+        help_text='Reference to Post representing the public office for which '
+                  'the candidate is seeking election.',
     )
     contest = models.ForeignKey(
         'elections.CandidateContest',
@@ -61,7 +61,9 @@ class Candidacy(OCDBase):
         related_name='candidacies',
         limit_choices_to={'classification': 'party'},
         null=True,
-        help_text='Reference to and Party with which the candidate is affiliated.'
+        help_text="Reference to the Organization representing the political party "
+                  "that nominated the candidate or would nominate the candidate "
+                  "(as in the case of a partisan primary).",
     )
     REGISTRATION_STATUSES = (
         ('filed', 'Filed'),
