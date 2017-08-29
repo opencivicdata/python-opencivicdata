@@ -64,7 +64,7 @@ class Election(OCDBase):
 @python_2_unicode_compatible
 class ElectionIdentifier(IdentifierBase):
     """
-    Upstream identifiers of the election, if any exist.
+    Upstream identifiers of a Election.
 
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
@@ -85,7 +85,7 @@ class ElectionIdentifier(IdentifierBase):
 
 class ElectionSource(LinkBase):
     """
-    Source used in assembling the Election.
+    Source used in assembling a Election.
     """
     event = models.ForeignKey(Election, related_name='sources')
 

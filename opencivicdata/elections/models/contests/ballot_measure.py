@@ -13,7 +13,7 @@ from .base import ContestBase
 
 class BallotMeasureContest(ContestBase):
     """
-    A subclass of ContestBase for representing a ballot measure before voters.
+    A contest in which voters select from among options proposed in a ballot measure.
     """
     description = models.TextField(
         help_text="Text describing the purpose and/or potential outcomes of the "
@@ -70,7 +70,7 @@ class BallotMeasureContestOption(models.Model):
 @python_2_unicode_compatible
 class BallotMeasureContestIdentifier(IdentifierBase):
     """
-    Upstream identifiers of the BallotMeasureContest, if any exist.
+    Upstream identifiers of a BallotMeasureContest.
 
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
@@ -92,7 +92,7 @@ class BallotMeasureContestIdentifier(IdentifierBase):
 
 class BallotMeasureContestSource(LinkBase):
     """
-    Source used in assembling the BallotMeasureContest.
+    Source used in assembling a BallotMeasureContest.
     """
     contest = models.ForeignKey(
         BallotMeasureContest,
@@ -106,9 +106,9 @@ class BallotMeasureContestSource(LinkBase):
 
 class RetentionContest(ContestBase):
     """
-    A subclass of ContestBase wherein an officeholder may retain or lose a Post.
+    A contest where voters vote to retain or recall a current office holder.
 
-    For example, a judicial retention or recall election.
+    These contests include judicial retention or recall elections.
     """
     description = models.TextField(
         help_text="Text describing the purpose and/or potential outcomes of the "
@@ -162,7 +162,7 @@ class RetentionContestOption(models.Model):
 @python_2_unicode_compatible
 class RetentionContestIdentifier(IdentifierBase):
     """
-    Upstream identifiers of the RetentionMeasureContest, if any exist.
+    Upstream identifiers of a RetentionContest.
 
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
@@ -184,7 +184,7 @@ class RetentionContestIdentifier(IdentifierBase):
 
 class RetentionContestSource(LinkBase):
     """
-    Source used in assembling the RetentionContest.
+    Source used in assembling a RetentionContest.
     """
     contest = models.ForeignKey(
         RetentionContest,

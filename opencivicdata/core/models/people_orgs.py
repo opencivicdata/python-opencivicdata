@@ -13,6 +13,9 @@ from ... import common
 
 @python_2_unicode_compatible
 class ContactDetailBase(RelatedBase):
+    """
+    A base class for ContactDetail models.
+    """
     type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
     value = models.CharField(max_length=300)
     note = models.CharField(max_length=300, blank=True)
@@ -27,6 +30,9 @@ class ContactDetailBase(RelatedBase):
 
 @python_2_unicode_compatible
 class OtherNameBase(RelatedBase):
+    """
+    A base class for OtherName models.
+    """
     name = models.CharField(max_length=500, db_index=True)
     note = models.CharField(max_length=500, blank=True)
     start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
@@ -43,6 +49,9 @@ class OtherNameBase(RelatedBase):
 
 @python_2_unicode_compatible
 class Organization(OCDBase):
+    """
+    A group of people, typically in a legislative or rule-making context.
+    """
     id = OCDIDField(ocd_type='organization')
     name = models.CharField(max_length=300)
     image = models.URLField(blank=True, max_length=2000)
@@ -88,6 +97,9 @@ class Organization(OCDBase):
 
 @python_2_unicode_compatible
 class OrganizationIdentifier(IdentifierBase):
+    """
+    Upstream identifiers of an Organization.
+    """
     organization = models.ForeignKey(Organization, related_name='identifiers')
 
     def __str__(self):
@@ -99,6 +111,9 @@ class OrganizationIdentifier(IdentifierBase):
 
 
 class OrganizationName(OtherNameBase):
+    """
+    Alternate or former name for an Organization.
+    """
     organization = models.ForeignKey(Organization, related_name='other_names')
 
     class Meta:
@@ -106,6 +121,9 @@ class OrganizationName(OtherNameBase):
 
 
 class OrganizationContactDetail(ContactDetailBase):
+    """
+    Contact information for an Organization.
+    """
     organization = models.ForeignKey(Organization, related_name='contact_details')
 
     class Meta:
@@ -113,6 +131,9 @@ class OrganizationContactDetail(ContactDetailBase):
 
 
 class OrganizationLink(LinkBase):
+    """
+    URL for a document about an Organization.
+    """
     organization = models.ForeignKey(Organization, related_name='links')
 
     class Meta:
@@ -120,6 +141,9 @@ class OrganizationLink(LinkBase):
 
 
 class OrganizationSource(LinkBase):
+    """
+    Source used in assembling an Organization.
+    """
     organization = models.ForeignKey(Organization, related_name='sources')
 
     class Meta:
@@ -128,6 +152,9 @@ class OrganizationSource(LinkBase):
 
 @python_2_unicode_compatible
 class Post(OCDBase):
+    """
+    A position in an organization that exists independently of the person holding it.
+    """
     id = OCDIDField(ocd_type='post')
     label = models.CharField(max_length=300)
     role = models.CharField(max_length=300, blank=True)
@@ -149,6 +176,9 @@ class Post(OCDBase):
 
 
 class PostContactDetail(ContactDetailBase):
+    """
+    Contact information for whoever currently occupies a Post.
+    """
     post = models.ForeignKey(Post, related_name='contact_details')
 
     class Meta:
@@ -156,6 +186,9 @@ class PostContactDetail(ContactDetailBase):
 
 
 class PostLink(LinkBase):
+    """
+    URL for a document about a Post.
+    """
     post = models.ForeignKey(Post, related_name='links')
 
     class Meta:
@@ -185,6 +218,9 @@ class PersonQuerySet(QuerySet):
 
 @python_2_unicode_compatible
 class Person(OCDBase):
+    """
+    An individual that has served in a political office.
+    """
     objects = PersonQuerySet.as_manager()
 
     id = OCDIDField(ocd_type='person')
@@ -213,6 +249,9 @@ class Person(OCDBase):
 
 
 class PersonIdentifier(IdentifierBase):
+    """
+    Upstream identifier for a Person.
+    """
     person = models.ForeignKey(Person, related_name='identifiers')
 
     class Meta:
@@ -220,6 +259,9 @@ class PersonIdentifier(IdentifierBase):
 
 
 class PersonName(OtherNameBase):
+    """
+    Alternate or former name of a Person.
+    """
     person = models.ForeignKey(Person, related_name='other_names')
 
     class Meta:
@@ -227,6 +269,9 @@ class PersonName(OtherNameBase):
 
 
 class PersonContactDetail(ContactDetailBase):
+    """
+    Contact information for a Person.
+    """
     person = models.ForeignKey(Person, related_name='contact_details')
 
     class Meta:
@@ -234,6 +279,9 @@ class PersonContactDetail(ContactDetailBase):
 
 
 class PersonLink(LinkBase):
+    """
+    URL for a document about a Person.
+    """
     person = models.ForeignKey(Person, related_name='links')
 
     class Meta:
@@ -241,6 +289,9 @@ class PersonLink(LinkBase):
 
 
 class PersonSource(LinkBase):
+    """
+    Source used in assembling a Person.
+    """
     person = models.ForeignKey(Person, related_name='sources')
 
     class Meta:
@@ -249,6 +300,9 @@ class PersonSource(LinkBase):
 
 @python_2_unicode_compatible
 class Membership(OCDBase):
+    """
+    A relationship between a Person and an Organization, possibly including a Post.
+    """
     id = OCDIDField(ocd_type='membership')
     organization = models.ForeignKey(Organization, related_name='memberships')
     person = models.ForeignKey(Person, related_name='memberships', null=True)
@@ -272,6 +326,9 @@ class Membership(OCDBase):
 
 
 class MembershipContactDetail(ContactDetailBase):
+    """
+    Contact information for Person at an Organization.
+    """
     membership = models.ForeignKey(Membership, related_name='contact_details')
 
     class Meta:
@@ -279,6 +336,9 @@ class MembershipContactDetail(ContactDetailBase):
 
 
 class MembershipLink(LinkBase):
+    """
+    URL for a document about a Person's relationship to an Organization.
+    """
     membership = models.ForeignKey(Membership, related_name='links')
 
     class Meta:
