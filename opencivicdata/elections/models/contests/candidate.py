@@ -13,7 +13,7 @@ from .base import ContestBase
 
 class CandidateContest(ContestBase):
     """
-    A subclass of ContestBase for repesenting a contest among candidates.
+    A contest among candidates seeking election to one or more public offices.
     """
     party = models.ForeignKey(
         Organization,
@@ -48,7 +48,7 @@ class CandidateContest(ContestBase):
 @python_2_unicode_compatible
 class CandidateContestPost(models.Model):
     """
-    Link between a CandidateContest and a Post at stake in the contest.
+    A public office (i.e., Post) at stake in a CandidateContest.
     """
     contest = models.ForeignKey(
         CandidateContest,
@@ -74,7 +74,7 @@ class CandidateContestPost(models.Model):
     @property
     def candidacies(self):
         """
-        List of candidacies for the Post in the CandidateContest.
+        List of candidacies for the Post in a CandidateContest.
         """
         return self.contest.candidacies.filter(post=self.post)
 
@@ -89,7 +89,7 @@ class CandidateContestPost(models.Model):
 @python_2_unicode_compatible
 class CandidateContestIdentifier(IdentifierBase):
     """
-    Upstream identifiers of the CandidateContest, if any exist.
+    Upstream identifiers of a CandidateContest.
 
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
@@ -110,7 +110,7 @@ class CandidateContestIdentifier(IdentifierBase):
 
 class CandidateContestSource(LinkBase):
     """
-    Source used in assembling the CandidateContest.
+    Source used in assembling a CandidateContest.
     """
     contest = models.ForeignKey(
         CandidateContest,

@@ -21,7 +21,7 @@ from opencivicdata.core.models import (
 @python_2_unicode_compatible
 class Candidacy(OCDBase):
     """
-    A person competing in an election contest to hold a specific office for a term.
+    A person seeking election to hold a specific public office for a term.
     """
     id = OCDIDField(
         ocd_type='candidacy',
@@ -107,7 +107,7 @@ class Candidacy(OCDBase):
 
 class CandidacySource(LinkBase):
     """
-    Source used in assembling the Candidacy.
+    Source used in assembling a Candidacy.
     """
     candidacy = models.ForeignKey(
         Candidacy,

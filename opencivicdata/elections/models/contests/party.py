@@ -13,7 +13,11 @@ from .base import ContestBase
 
 class PartyContest(ContestBase):
     """
-    Subclass of Contest wherein voters can vote directly for a political party.
+    A contest in which voters can vote directly for a political party.
+
+    In these contests, voters can vote for a party in lieu of/in addition to
+    voting for candidates endorsed by that party (as in the case of party-list
+    proportional representation).
     """
     runoff_for_contest = models.OneToOneField(
         'self',
@@ -29,7 +33,7 @@ class PartyContest(ContestBase):
 @python_2_unicode_compatible
 class PartyContestOption(models.Model):
     """
-    Link between a PartyContest and a Party for which a voter could vote in the election contest.
+    A party (i.e., Organization) voters choose in a PartyContest.
     """
     contest = models.ForeignKey(
         PartyContest,
@@ -61,7 +65,7 @@ class PartyContestOption(models.Model):
 @python_2_unicode_compatible
 class PartyContestIdentifier(IdentifierBase):
     """
-    Upstream identifiers of the PartyMeasureContest, if any exist.
+    Upstream identifiers of a PartyMeasureContest.
 
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
@@ -83,7 +87,7 @@ class PartyContestIdentifier(IdentifierBase):
 
 class PartyContestSource(LinkBase):
     """
-    Source used in assembling the PartyContest.
+    Source used in assembling a PartyContest.
     """
     contest = models.ForeignKey(
         PartyContest,
