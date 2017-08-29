@@ -72,7 +72,7 @@ class ElectionIdentifier(IdentifierBase):
     election = models.ForeignKey(
         Election,
         related_name='identifiers',
-        help_text="Reference to the Election identified by the identifier.",
+        help_text="Reference to the Election identified by this alternative identifier.",
     )
 
     class Meta:
@@ -87,7 +87,11 @@ class ElectionSource(LinkBase):
     """
     Source used in assembling a Election.
     """
-    election = models.ForeignKey(Election, related_name='sources')
+    event = models.ForeignKey(
+        Election,
+        related_name='sources',
+        help_text="Reference to the Election this source verifies."
+    )
 
     class Meta:
         db_table = 'opencivicdata_electionsource'

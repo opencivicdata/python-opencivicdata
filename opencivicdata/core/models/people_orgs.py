@@ -16,10 +16,25 @@ class ContactDetailBase(RelatedBase):
     """
     A base class for ContactDetail models.
     """
-    type = models.CharField(max_length=50, choices=common.CONTACT_TYPE_CHOICES)
-    value = models.CharField(max_length=300)
-    note = models.CharField(max_length=300, blank=True)
-    label = models.CharField(max_length=300, blank=True)
+    type = models.CharField(
+        max_length=50,
+        choices=common.CONTACT_TYPE_CHOICES,
+        help_text="The type of Contact being defined.",
+    )
+    value = models.CharField(
+        max_length=300,
+        help_text="The content of the Contact information like a phone number or email address."
+    )
+    note = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A short, optional note about the Contact value."
+    )
+    label = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A title for the content of the Contact."
+    )
 
     class Meta:
         abstract = True
@@ -33,10 +48,27 @@ class OtherNameBase(RelatedBase):
     """
     A base class for OtherName models.
     """
-    name = models.CharField(max_length=500, db_index=True)
-    note = models.CharField(max_length=500, blank=True)
-    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
+    name = models.CharField(
+        max_length=500,
+        db_index=True,
+        help_text="An alternative name.",
+    )
+    note = models.CharField(
+        max_length=500, blank=True,
+        help_text="A short, optional note about alternative name.",
+    )
+    start_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional start date for usage of the alternative name "
+                  "in YYYY[-MM[-DD]] string format.",
+    )
+    end_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional end date for usage of the alternative name in "
+                  "YYYY[-MM[-DD]] string format.",
+    )
 
     class Meta:
         abstract = True
@@ -53,14 +85,40 @@ class Organization(OCDBase):
     A group of people, typically in a legislative or rule-making context.
     """
     id = OCDIDField(ocd_type='organization')
-    name = models.CharField(max_length=300)
-    image = models.URLField(blank=True, max_length=2000)
-    parent = models.ForeignKey('self', related_name='children', null=True)
-    jurisdiction = models.ForeignKey(Jurisdiction, related_name='organizations', null=True)
-    classification = models.CharField(max_length=100, blank=True,
-                                      choices=common.ORGANIZATION_CLASSIFICATION_CHOICES)
-    founding_date = models.CharField(max_length=10, blank=True)     # YYYY[-MM[-DD]]
-    dissolution_date = models.CharField(max_length=10, blank=True)  # YYYY[-MM[-DD]]
+    name = models.CharField(max_length=300, help_text="The name of the Organization.")
+    image = models.URLField(
+        blank=True,
+        max_length=2000,
+        help_text="A URL leading to an image that identifies the Organization visually."
+    )
+    parent = models.ForeignKey(
+        'self',
+        related_name='children',
+        null=True,
+        help_text="A link to another Organization that serves as this Organization's parent."
+    )
+    jurisdiction = models.ForeignKey(
+        Jurisdiction,
+        related_name='organizations',
+        null=True,
+        help_text="A link to the Jurisdiction that contains this Organization.",
+    )
+    classification = models.CharField(
+        max_length=100,
+        blank=True,
+        choices=common.ORGANIZATION_CLASSIFICATION_CHOICES,
+        help_text="The type of Organization being defined."
+    )
+    founding_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The founding date of the Organization in YYYY[-MM[-DD]] string format."
+    )
+    dissolution_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The dissolution date of the Organization in YYYY[-MM[-DD]] string format."
+    )
 
     def __str__(self):
         return self.name
@@ -100,7 +158,11 @@ class OrganizationIdentifier(IdentifierBase):
     """
     Upstream identifiers of an Organization.
     """
-    organization = models.ForeignKey(Organization, related_name='identifiers')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='identifiers',
+        help_text="Reference to the Organization identified by this alternative identifier.",
+    )
 
     def __str__(self):
         tmpl = '%s identifies %s'
@@ -114,7 +176,11 @@ class OrganizationName(OtherNameBase):
     """
     Alternate or former name for an Organization.
     """
-    organization = models.ForeignKey(Organization, related_name='other_names')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='other_names',
+        help_text="A link to the Organization with this alternative name.",
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationname'
@@ -124,7 +190,11 @@ class OrganizationContactDetail(ContactDetailBase):
     """
     Contact information for an Organization.
     """
-    organization = models.ForeignKey(Organization, related_name='contact_details')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='contact_details',
+        help_text="A link to the Organization connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationcontactdetail'
@@ -134,7 +204,11 @@ class OrganizationLink(LinkBase):
     """
     URL for a document about an Organization.
     """
-    organization = models.ForeignKey(Organization, related_name='links')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='links',
+        help_text="A reference to the Organization connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationlink'
@@ -144,7 +218,11 @@ class OrganizationSource(LinkBase):
     """
     Source used in assembling an Organization.
     """
-    organization = models.ForeignKey(Organization, related_name='sources')
+    organization = models.ForeignKey(
+        Organization,
+        related_name='sources',
+        help_text="A link to the Organization connected to this source."
+    )
 
     class Meta:
         db_table = 'opencivicdata_organizationsource'
@@ -156,14 +234,39 @@ class Post(OCDBase):
     A position in an organization that exists independently of the person holding it.
     """
     id = OCDIDField(ocd_type='post')
-    label = models.CharField(max_length=300)
-    role = models.CharField(max_length=300, blank=True)
-    organization = models.ForeignKey(Organization, related_name='posts')
-    division = models.ForeignKey(Division, related_name='posts', null=True, blank=True,
-                                 default=None)
-    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    maximum_memberships = models.PositiveIntegerField(default=1)
+    label = models.CharField(max_length=300, help_text="A label describing the Post.")
+    role = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="The function that the holder of the post fulfills."
+    )
+    organization = models.ForeignKey(
+        Organization,
+        related_name='posts',
+        help_text="The Organization in which the post is held."
+    )
+    division = models.ForeignKey(
+        Division,
+        related_name='posts',
+        null=True,
+        blank=True,
+        default=None,
+        help_text="The Division where the post exists."
+    )
+    start_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional start date for the Post in YYYY[-MM[-DD]] string format."
+    )
+    end_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="An optional end date for the Post in YYYY[-MM[-DD]] string format."
+    )
+    maximum_memberships = models.PositiveIntegerField(
+        default=1,
+        help_text="The maximum number of people who can hold this Post."
+    )
 
     class Meta:
         db_table = 'opencivicdata_post'
@@ -179,7 +282,11 @@ class PostContactDetail(ContactDetailBase):
     """
     Contact information for whoever currently occupies a Post.
     """
-    post = models.ForeignKey(Post, related_name='contact_details')
+    post = models.ForeignKey(
+        Post,
+        related_name='contact_details',
+        help_text="A link to the Post connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_postcontactdetail'
@@ -189,7 +296,11 @@ class PostLink(LinkBase):
     """
     URL for a document about a Post.
     """
-    post = models.ForeignKey(Post, related_name='links')
+    post = models.ForeignKey(
+        Post,
+        related_name='links',
+        help_text="A reference to the Post connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_postlink'
@@ -224,18 +335,61 @@ class Person(OCDBase):
     objects = PersonQuerySet.as_manager()
 
     id = OCDIDField(ocd_type='person')
-    name = models.CharField(max_length=300, db_index=True)
-    sort_name = models.CharField(max_length=100, default='', blank=True)
-    family_name = models.CharField(max_length=100, blank=True)
-    given_name = models.CharField(max_length=100, blank=True)
-
-    image = models.URLField(blank=True, max_length=2000)
-    gender = models.CharField(max_length=100, blank=True)
-    summary = models.CharField(max_length=500, blank=True)
-    national_identity = models.CharField(max_length=300, blank=True)
-    biography = models.TextField(blank=True)
-    birth_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    death_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
+    name = models.CharField(
+        max_length=300,
+        db_index=True,
+        help_text="A Person's preferred full name."
+    )
+    sort_name = models.CharField(
+        max_length=100,
+        default='',
+        blank=True,
+        help_text="A version of a Person's full name rearranged for alphabetical sorting."
+    )
+    family_name = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="A Person's family name."
+    )
+    given_name = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="A Person's given name."
+    )
+    image = models.URLField(
+        blank=True,
+        max_length=2000,
+        help_text="A URL leading to an image that identifies the Person visually."
+    )
+    gender = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="A Person's gender"
+    )
+    summary = models.CharField(
+        max_length=500,
+        blank=True,
+        help_text="A short, one-line account of a Person's life."
+    )
+    national_identity = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="The nation a Person is identified with."
+    )
+    biography = models.TextField(
+        blank=True,
+        help_text="An extended account of a Person's life."
+    )
+    birth_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The date of a Person's birth in YYYY[-MM[-DD]] string format."
+    )
+    death_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The date of a Person's death in YYYY[-MM[-DD]] string format."
+    )
 
     def __str__(self):
         return self.name
@@ -252,6 +406,12 @@ class PersonIdentifier(IdentifierBase):
     """
     Upstream identifier for a Person.
     """
+    person = models.ForeignKey(
+        Person,
+        related_name='identifiers',
+        help_text="A link to the Person connected to this alternative identifier."
+    )
+
     person = models.ForeignKey(Person, related_name='identifiers')
 
     class Meta:
@@ -262,7 +422,11 @@ class PersonName(OtherNameBase):
     """
     Alternate or former name of a Person.
     """
-    person = models.ForeignKey(Person, related_name='other_names')
+    person = models.ForeignKey(
+        Person,
+        related_name='other_names',
+        help_text="A link to the Person connected to this alternative name."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personname'
@@ -272,7 +436,11 @@ class PersonContactDetail(ContactDetailBase):
     """
     Contact information for a Person.
     """
-    person = models.ForeignKey(Person, related_name='contact_details')
+    person = models.ForeignKey(
+        Person,
+        related_name='contact_details',
+        help_text="A link to the Person connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personcontactdetail'
@@ -282,7 +450,11 @@ class PersonLink(LinkBase):
     """
     URL for a document about a Person.
     """
-    person = models.ForeignKey(Person, related_name='links')
+    person = models.ForeignKey(
+        Person,
+        related_name='links',
+        help_text="A reference to the Person connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personlink'
@@ -292,7 +464,11 @@ class PersonSource(LinkBase):
     """
     Source used in assembling a Person.
     """
-    person = models.ForeignKey(Person, related_name='sources')
+    person = models.ForeignKey(
+        Person,
+        related_name='sources',
+        help_text="A link to the Person connected to this source."
+    )
 
     class Meta:
         db_table = 'opencivicdata_personsource'
@@ -304,16 +480,55 @@ class Membership(OCDBase):
     A relationship between a Person and an Organization, possibly including a Post.
     """
     id = OCDIDField(ocd_type='membership')
-    organization = models.ForeignKey(Organization, related_name='memberships')
-    person = models.ForeignKey(Person, related_name='memberships', null=True)
-    person_name = models.CharField(max_length=300, blank=True, default='')
-    post = models.ForeignKey(Post, related_name='memberships', null=True)
-    on_behalf_of = models.ForeignKey(Organization, related_name='memberships_on_behalf_of',
-                                     null=True)
-    label = models.CharField(max_length=300, blank=True)
-    role = models.CharField(max_length=300, blank=True)
-    start_date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
-    end_date = models.CharField(max_length=10, blank=True)      # YYYY[-MM[-DD]]
+    organization = models.ForeignKey(
+        Organization,
+        related_name='memberships',
+        help_text="A link to the Organization in which the Person is a member."
+    )
+    person = models.ForeignKey(
+        Person,
+        related_name='memberships',
+        null=True,
+        help_text="A link to the Person that is a member of the Organization."
+    )
+    person_name = models.CharField(
+        max_length=300,
+        blank=True,
+        default='',
+        help_text="The name of the Person that is a member of the Organization."
+    )
+    post = models.ForeignKey(
+        Post,
+        related_name='memberships',
+        null=True,
+        help_text="	The Post held by the member in the Organization."
+    )
+    on_behalf_of = models.ForeignKey(
+        Organization,
+        related_name='memberships_on_behalf_of',
+        null=True,
+        help_text="The Organization on whose behalf the Person is a member of the Organization."
+    )
+    label = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A label describing the membership."
+    )
+    role = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="The role that the member fulfills in the Organization."
+    )
+    start_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The date on which the relationship began in YYYY[-MM[-DD]] string format."
+    )
+    end_date = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="The date on which the relationship ended in YYYY[-MM[-DD]] string format."
+    )
 
     class Meta:
         db_table = 'opencivicdata_membership'
@@ -329,7 +544,11 @@ class MembershipContactDetail(ContactDetailBase):
     """
     Contact information for Person at an Organization.
     """
-    membership = models.ForeignKey(Membership, related_name='contact_details')
+    membership = models.ForeignKey(
+        Membership,
+        related_name='contact_details',
+        help_text="A link to the Membership connected to this contact."
+    )
 
     class Meta:
         db_table = 'opencivicdata_membershipcontactdetail'
@@ -339,7 +558,11 @@ class MembershipLink(LinkBase):
     """
     URL for a document about a Person's relationship to an Organization.
     """
-    membership = models.ForeignKey(Membership, related_name='links')
+    membership = models.ForeignKey(
+        Membership,
+        related_name='links',
+        help_text="A reference to the Membership connected to this link."
+    )
 
     class Meta:
         db_table = 'opencivicdata_membershiplink'

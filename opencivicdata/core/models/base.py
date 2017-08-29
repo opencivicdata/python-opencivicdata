@@ -42,9 +42,19 @@ class OCDIDField(models.CharField):
 
 class OCDBase(models.Model):
     """ common base fields across all top-level models """
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    extras = JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="The date and time of creation.",
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="The date and time of the last update.",
+    )
+    extras = JSONField(
+        default=dict,
+        blank=True,
+        help_text="A key-value store for storing arbitrary information not covered elsewhere."
+    )
     locked_fields = ArrayField(base_field=models.TextField(), blank=True, default=list)
 
     class Meta:
@@ -60,8 +70,12 @@ class RelatedBase(models.Model):
 
 @python_2_unicode_compatible
 class LinkBase(RelatedBase):
-    note = models.CharField(max_length=300, blank=True)
-    url = models.URLField(max_length=2000)
+    note = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="A short, optional note related to an object."
+    )
+    url = models.URLField(max_length=2000, help_text="A hyperlink related to an object.")
 
     class Meta:
         abstract = True
@@ -81,8 +95,14 @@ class MimetypeLinkBase(RelatedBase):
 
 @python_2_unicode_compatible
 class IdentifierBase(RelatedBase):
-    identifier = models.CharField(max_length=300)
-    scheme = models.CharField(max_length=300)
+    identifier = models.CharField(
+        max_length=300,
+        help_text="A unique identifier developed by an upstream or third party source."
+    )
+    scheme = models.CharField(
+        max_length=300,
+        help_text="The name of the service that created the identifier.",
+    )
 
     class Meta:
         abstract = True
