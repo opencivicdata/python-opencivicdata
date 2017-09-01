@@ -10,7 +10,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('elections', '0002_auto_20170731_2047'),
+        ('elections', '0003_election_fk'),
     ]
 
     operations = [
@@ -141,7 +141,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='electionsource',
-            name='event',
+            name='election',
             field=models.ForeignKey(help_text='Reference to the Election this source verifies.', on_delete=django.db.models.deletion.CASCADE, related_name='sources', to='elections.Election'),
         ),
         migrations.AlterField(

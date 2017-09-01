@@ -9,7 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('elections', '0003_field_docs'),
+        ('elections', '0004_field_docs'),
     ]
 
     operations = [
