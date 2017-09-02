@@ -98,7 +98,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='jurisdiction',
             name='classification',
-            field=models.CharField(choices=[(b'government', b'Government'), (b'legislature', b'Legislature'), (b'executive', b'Executive'), (b'school', b'School System'), (b'park', b'Park District'), (b'sewer', b'Sewer District'), (b'forest', b'Forest Preserve District'), (b'transit_authority', b'Transit Authority')], db_index=True, default='government', help_text='The type of Jurisdiction being defined.', max_length=50),
+            field=models.CharField(choices=[('government', 'Government'), ('legislature', 'Legislature'), ('executive', 'Executive'), ('school', 'School System'), ('park', 'Park District'), ('sewer', 'Sewer District'), ('forest', 'Forest Preserve District'), ('transit_authority', 'Transit Authority')], db_index=True, default='government', help_text='The type of Jurisdiction being defined.', max_length=50),
         ),
         migrations.AlterField(
             model_name='jurisdiction',
@@ -213,7 +213,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='membershipcontactdetail',
             name='type',
-            field=models.CharField(choices=[(b'address', b'Postal Address'), (b'email', b'Email'), (b'url', b'URL'), (b'fax', b'Fax'), (b'text', b'Text Phone'), (b'voice', b'Voice Phone'), (b'video', b'Video Phone'), (b'pager', b'Pager'), (b'textphone', b'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
+            field=models.CharField(choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
         ),
         migrations.AlterField(
             model_name='membershipcontactdetail',
@@ -238,7 +238,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='organization',
             name='classification',
-            field=models.CharField(blank=True, choices=[(b'legislature', b'Legislature'), (b'executive', b'Executive'), (b'upper', b'Upper Chamber'), (b'lower', b'Lower Chamber'), (b'party', b'Party'), (b'committee', b'Committee'), (b'commission', b'Commission'), (b'corporation', b'Corporation'), (b'agency', b'Agency'), (b'department', b'Department')], help_text='The type of Organization being defined.', max_length=100),
+            field=models.CharField(blank=True, choices=[('legislature', 'Legislature'), ('executive', 'Executive'), ('upper', 'Upper Chamber'), ('lower', 'Lower Chamber'), ('party', 'Party'), ('committee', 'Committee'), ('commission', 'Commission'), ('corporation', 'Corporation'), ('agency', 'Agency'), ('department', 'Department')], help_text='The type of Organization being defined.', max_length=100),
         ),
         migrations.AlterField(
             model_name='organization',
@@ -303,7 +303,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='organizationcontactdetail',
             name='type',
-            field=models.CharField(choices=[(b'address', b'Postal Address'), (b'email', b'Email'), (b'url', b'URL'), (b'fax', b'Fax'), (b'text', b'Text Phone'), (b'voice', b'Voice Phone'), (b'video', b'Video Phone'), (b'pager', b'Pager'), (b'textphone', b'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
+            field=models.CharField(choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
         ),
         migrations.AlterField(
             model_name='organizationcontactdetail',
@@ -468,7 +468,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='personcontactdetail',
             name='type',
-            field=models.CharField(choices=[(b'address', b'Postal Address'), (b'email', b'Email'), (b'url', b'URL'), (b'fax', b'Fax'), (b'text', b'Text Phone'), (b'voice', b'Voice Phone'), (b'video', b'Video Phone'), (b'pager', b'Pager'), (b'textphone', b'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
+            field=models.CharField(choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
         ),
         migrations.AlterField(
             model_name='personcontactdetail',
@@ -613,7 +613,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='postcontactdetail',
             name='type',
-            field=models.CharField(choices=[(b'address', b'Postal Address'), (b'email', b'Email'), (b'url', b'URL'), (b'fax', b'Fax'), (b'text', b'Text Phone'), (b'voice', b'Voice Phone'), (b'video', b'Video Phone'), (b'pager', b'Pager'), (b'textphone', b'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
+            field=models.CharField(choices=[('address', 'Postal Address'), ('email', 'Email'), ('url', 'URL'), ('fax', 'Fax'), ('text', 'Text Phone'), ('voice', 'Voice Phone'), ('video', 'Video Phone'), ('pager', 'Pager'), ('textphone', 'Device for people with hearing impairment')], help_text='The type of Contact being defined.', max_length=50),
         ),
         migrations.AlterField(
             model_name='postcontactdetail',

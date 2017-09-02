@@ -412,8 +412,6 @@ class PersonIdentifier(IdentifierBase):
         help_text="A link to the Person connected to this alternative identifier."
     )
 
-    person = models.ForeignKey(Person, related_name='identifiers')
-
     class Meta:
         db_table = 'opencivicdata_personidentifier'
 

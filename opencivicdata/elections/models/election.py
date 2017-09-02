@@ -87,7 +87,7 @@ class ElectionSource(LinkBase):
     """
     Source used in assembling a Election.
     """
-    event = models.ForeignKey(
+    election = models.ForeignKey(
         Election,
         related_name='sources',
         help_text="Reference to the Election this source verifies."
