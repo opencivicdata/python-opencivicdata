@@ -4,7 +4,7 @@ from opencivicdata.divisions import Division
 
 
 def test_get():
-    div = Division.get('ocd-division/country:de/land:bw/wahlkreis:bad_kissingen')
+    div = Division.get('ocd-division/country:de/state:by/cd:248')
     assert div.name == 'Bad Kissingen'
     assert div.name in str(div)
 
