@@ -31,7 +31,7 @@ class VoteEvent(OCDBase):
                                             # make legislative session hard to delete
                                             on_delete=models.PROTECT,
                                             )
-    bill = models.ForeignKey(Bill, 
+    bill = models.ForeignKey(Bill,
                              related_name='votes',
                              null=True,
                              # if a bill was linked, the vote isn't meaningful without it
