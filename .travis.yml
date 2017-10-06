@@ -10,7 +10,6 @@ python:
     - "3.5"
     - "3.6"
 env:
-    - DJANGO_VERSION=1.10.5
     - DJANGO_VERSION=1.11
     - DJANGO_VERSION=2.0a1
 install: 
