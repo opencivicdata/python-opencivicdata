@@ -42,12 +42,16 @@ class Election(OCDBase):
         related_name="elections",
         help_text="Reference to the Division that defines the broadest political "
                   "geography of any contest to be decided by the election.",
+        # divisions should be tough to delete
+        on_delete=models.PROTECT,
     )
     administrative_organization = models.ForeignKey(
         Organization,
         related_name='elections',
         null=True,
         help_text='Reference to the Organization that administers the election.',
+        # shouldn't destroy election if org does go away
+        on_delete=models.SET_NULL,
     )
 
     def __str__(self):
@@ -73,6 +77,7 @@ class ElectionIdentifier(IdentifierBase):
         Election,
         related_name='identifiers',
         help_text="Reference to the Election identified by this alternative identifier.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -90,7 +95,8 @@ class ElectionSource(LinkBase):
     election = models.ForeignKey(
         Election,
         related_name='sources',
-        help_text="Reference to the Election this source verifies."
+        help_text="Reference to the Election this source verifies.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:

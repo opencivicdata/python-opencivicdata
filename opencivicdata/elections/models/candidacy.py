@@ -31,18 +31,21 @@ class Candidacy(OCDBase):
         Person,
         related_name='candidacies',
         help_text='Reference to the Person who is the candidate.',
+        on_delete=models.CASCADE,
     )
     post = models.ForeignKey(
         Post,
         related_name='candidacies',
         help_text='Reference to Post representing the public office for which '
                   'the candidate is seeking election.',
+        on_delete=models.CASCADE,
     )
     contest = models.ForeignKey(
         'elections.CandidateContest',
         related_name='candidacies',
         help_text="Reference to an OCD CandidateContest representing the contest "
                   "in which the candidate is competing.",
+        on_delete=models.CASCADE,
     )
     candidate_name = models.CharField(
         max_length=300,
@@ -64,6 +67,8 @@ class Candidacy(OCDBase):
         help_text="Reference to the Organization representing the political party "
                   "that nominated the candidate or would nominate the candidate "
                   "(as in the case of a partisan primary).",
+        # survive party deletion
+        on_delete=models.SET_NULL,
     )
     REGISTRATION_STATUSES = (
         ('filed', 'Filed'),
@@ -81,6 +86,7 @@ class Candidacy(OCDBase):
         'self',
         related_name="ticket",
         null=True,
+        on_delete=models.CASCADE,
         help_text="If the candidate is running as part of ticket, e.g., a Vice "
                   "Presidential candidate running with a Presidential candidate, "
                   "reference to candidacy at the top of the ticket."
@@ -112,6 +118,7 @@ class CandidacySource(LinkBase):
     candidacy = models.ForeignKey(
         Candidacy,
         related_name='sources',
+        on_delete=models.CASCADE,
         help_text="Reference to the assembed Candidacy.",
     )
 

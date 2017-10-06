@@ -22,6 +22,7 @@ class PartyContest(ContestBase):
     runoff_for_contest = models.OneToOneField(
         'self',
         null=True,
+        on_delete=models.CASCADE,
         help_text="If this contest is a runoff to determine the outcome of a previously "
                   "undecided contest, reference to that PartyContest.",
     )
@@ -38,11 +39,13 @@ class PartyContestOption(models.Model):
     contest = models.ForeignKey(
         PartyContest,
         related_name="parties",
+        on_delete=models.CASCADE,
         help_text="Reference to the PartyContest in which the party is an option.",
     )
     party = models.ForeignKey(
         Organization,
         related_name='party_contests',
+        on_delete=models.CASCADE,
         limit_choices_to={'classification': 'party'},
         help_text="Reference to an Organization representing a political party "
                   "voters may choose in the contest.",
@@ -73,6 +76,7 @@ class PartyContestIdentifier(IdentifierBase):
     contest = models.ForeignKey(
         PartyContest,
         related_name="identifiers",
+        on_delete=models.CASCADE,
         help_text="Reference to the PartyContest linked to the upstream "
                   "identifier.",
     )
@@ -92,6 +96,7 @@ class PartyContestSource(LinkBase):
     contest = models.ForeignKey(
         PartyContest,
         related_name='sources',
+        on_delete=models.CASCADE,
         help_text="Reference to the PartyContest assembled from the source.",
     )
 

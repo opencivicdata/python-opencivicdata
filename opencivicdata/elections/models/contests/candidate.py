@@ -20,6 +20,8 @@ class CandidateContest(ContestBase):
         related_name='candidate_contests',
         limit_choices_to={'classification': 'party'},
         null=True,
+        # survive party deletion
+        on_delete=models.SET_NULL,
         help_text="If the contest is among candidates of the same political party, "
                   "e.g., a partisan primary election, reference to the Organization "
                   "representing that party."
@@ -37,6 +39,7 @@ class CandidateContest(ContestBase):
         'self',
         related_name='runoff_contest',
         null=True,
+        on_delete=models.CASCADE,
         help_text="If this contest is a runoff to determine the outcome of a "
                   "previously undecided contest, reference to that CandidateContest.",
     )
@@ -53,11 +56,13 @@ class CandidateContestPost(models.Model):
     contest = models.ForeignKey(
         CandidateContest,
         related_name="posts",
+        on_delete=models.CASCADE,
         help_text="Reference to the CandidateContest in which the Post is at stake.",
     )
     post = models.ForeignKey(
         Post,
         related_name="contests",
+        on_delete=models.CASCADE,
         help_text="Reference to the Post representing a public office at stake in "
                   "the CandidateContest.",
     )
@@ -97,6 +102,7 @@ class CandidateContestIdentifier(IdentifierBase):
     contest = models.ForeignKey(
         CandidateContest,
         related_name="identifiers",
+        on_delete=models.CASCADE,
         help_text="Reference to the CandidateContest linked to the upstream identifier.",
     )
 
@@ -115,6 +121,7 @@ class CandidateContestSource(LinkBase):
     contest = models.ForeignKey(
         CandidateContest,
         related_name='sources',
+        on_delete=models.CASCADE,
         help_text="Reference to the CandidateContest assembled from the source.",
     )
 
