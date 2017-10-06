@@ -7,15 +7,15 @@ addons:
 sudo: false
 python:
     - "2.7"
-    - "3.4"
     - "3.5"
     - "3.6"
 env:
     - DJANGO_VERSION=1.10.5
     - DJANGO_VERSION=1.11
+    - DJANGO_VERSION=2.0a1
 install: 
     - pip install -U setuptools six
-    - pip install -e .[dev] Django==$DJANGO_VERSION
+    - pip install --pre -e .[dev] Django==$DJANGO_VERSION
 before_script:
     - psql -c "CREATE USER test with PASSWORD 'test' CREATEDB SUPERUSER;" -U postgres
     - psql -c "CREATE DATABASE test;" -U postgres
@@ -25,6 +25,10 @@ script:
     - flake8
 after_success:
     - coveralls
+matrix:
+  exclude:
+    - python: "2.7"
+      env: DJANGO_VERSION=2.0a1
 notifications:
     email:
         - james@openstates.org
