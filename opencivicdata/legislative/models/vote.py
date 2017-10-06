@@ -21,10 +21,29 @@ class VoteEvent(OCDBase):
     end_date = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
 
     result = models.CharField(max_length=50, choices=common.VOTE_RESULT_CHOICES)
-    organization = models.ForeignKey(Organization, related_name='votes')
-    legislative_session = models.ForeignKey(LegislativeSession, related_name='votes')
-    bill = models.ForeignKey(Bill, related_name='votes', null=True)
-    bill_action = models.OneToOneField(BillAction, related_name='vote', null=True, default=None)
+    organization = models.ForeignKey(Organization,
+                                     related_name='votes',
+                                     # make parent org hard to protect
+                                     on_delete=models.PROTECT,
+                                     )
+    legislative_session = models.ForeignKey(LegislativeSession,
+                                            related_name='votes',
+                                            # make legislative session hard to delete
+                                            on_delete=models.PROTECT,
+                                            )
+    bill = models.ForeignKey(Bill, 
+                             related_name='votes',
+                             null=True,
+                             # if a bill was linked, the vote isn't meaningful without it
+                             on_delete=models.CASCADE,
+                             )
+    bill_action = models.OneToOneField(BillAction,
+                                       related_name='vote',
+                                       null=True,
+                                       default=None,
+                                       # if an action goes away - VoteEvent should stay
+                                       on_delete=models.SET_NULL,
+                                       )
 
     def __str__(self):
         if self.identifier:
@@ -42,7 +61,10 @@ class VoteEvent(OCDBase):
 
 @python_2_unicode_compatible
 class VoteCount(RelatedBase):
-    vote_event = models.ForeignKey(VoteEvent, related_name='counts')
+    vote_event = models.ForeignKey(VoteEvent,
+                                   related_name='counts',
+                                   on_delete=models.CASCADE,
+                                   )
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     value = models.PositiveIntegerField()
 
@@ -55,10 +77,18 @@ class VoteCount(RelatedBase):
 
 @python_2_unicode_compatible
 class PersonVote(RelatedBase):
-    vote_event = models.ForeignKey(VoteEvent, related_name='votes')
+    vote_event = models.ForeignKey(VoteEvent,
+                                   related_name='votes',
+                                   on_delete=models.CASCADE,
+                                   )
     option = models.CharField(max_length=50, choices=common.VOTE_OPTION_CHOICES)
     voter_name = models.CharField(max_length=300)
-    voter = models.ForeignKey(Person, related_name='votes', null=True)
+    voter = models.ForeignKey(Person,
+                              related_name='votes',
+                              null=True,
+                              # unresolve person if they go away
+                              on_delete=models.SET_NULL,
+                              )
     note = models.TextField(blank=True)
 
     def __str__(self):
@@ -69,7 +99,10 @@ class PersonVote(RelatedBase):
 
 
 class VoteSource(LinkBase):
-    vote_event = models.ForeignKey(VoteEvent, related_name='sources')
+    vote_event = models.ForeignKey(VoteEvent,
+                                   related_name='sources',
+                                   on_delete=models.CASCADE,
+                                   )
 
     class Meta:
         db_table = 'opencivicdata_votesource'

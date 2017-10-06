@@ -14,12 +14,21 @@ from ... import common
 @python_2_unicode_compatible
 class Bill(OCDBase):
     id = OCDIDField(ocd_type='bill')
-    legislative_session = models.ForeignKey(LegislativeSession, related_name='bills')
+    legislative_session = models.ForeignKey(LegislativeSession,
+                                            related_name='bills',
+                                            # sessions should be hard to delete
+                                            on_delete=models.PROTECT,
+                                            )
     identifier = models.CharField(max_length=100)
 
     title = models.TextField()
 
-    from_organization = models.ForeignKey(Organization, related_name='bills', null=True)
+    from_organization = models.ForeignKey(Organization,
+                                          related_name='bills',
+                                          null=True,
+                                          # chambers should be hard to delete
+                                          on_delete=models.PROTECT,
+                                          )
     # check that array values are in enum?
     classification = ArrayField(base_field=models.TextField(), blank=True,
                                 default=list)
@@ -37,7 +46,7 @@ class Bill(OCDBase):
 
 @python_2_unicode_compatible
 class BillAbstract(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='abstracts')
+    bill = models.ForeignKey(Bill, related_name='abstracts', on_delete=models.CASCADE)
     abstract = models.TextField()
     note = models.TextField(blank=True)
     date = models.TextField(max_length=10, blank=True)  # YYYY[-MM[-DD]]
@@ -51,7 +60,7 @@ class BillAbstract(RelatedBase):
 
 @python_2_unicode_compatible
 class BillTitle(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='other_titles')
+    bill = models.ForeignKey(Bill, related_name='other_titles', on_delete=models.CASCADE)
     title = models.TextField()
     note = models.TextField(blank=True)
 
@@ -63,7 +72,7 @@ class BillTitle(RelatedBase):
 
 
 class BillIdentifier(IdentifierBase):
-    bill = models.ForeignKey(Bill, related_name='other_identifiers')
+    bill = models.ForeignKey(Bill, related_name='other_identifiers', on_delete=models.CASCADE)
     note = models.TextField(blank=True)
 
     class Meta:
@@ -72,8 +81,13 @@ class BillIdentifier(IdentifierBase):
 
 @python_2_unicode_compatible
 class BillAction(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='actions')
-    organization = models.ForeignKey(Organization, related_name='actions')
+    bill = models.ForeignKey(Bill,
+                             related_name='actions',
+                             on_delete=models.CASCADE)
+    organization = models.ForeignKey(Organization,
+                                     related_name='actions',
+                                     # don't let an org delete wipe out a bunch of bill actions
+                                     on_delete=models.PROTECT)
     description = models.TextField()
     date = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
     classification = ArrayField(base_field=models.TextField(), blank=True, default=list)     # enum
@@ -90,7 +104,10 @@ class BillAction(RelatedBase):
 
 @python_2_unicode_compatible
 class BillActionRelatedEntity(RelatedEntityBase):
-    action = models.ForeignKey(BillAction, related_name='related_entities')
+    action = models.ForeignKey(BillAction,
+                               related_name='related_entities',
+                               on_delete=models.CASCADE,
+                               )
 
     def __str__(self):
         return '{0} related to {1}'.format(self.entity_name, self.action)
@@ -101,8 +118,16 @@ class BillActionRelatedEntity(RelatedEntityBase):
 
 @python_2_unicode_compatible
 class RelatedBill(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='related_bills')
-    related_bill = models.ForeignKey(Bill, related_name='related_bills_reverse', null=True)
+    bill = models.ForeignKey(Bill,
+                             related_name='related_bills',
+                             on_delete=models.CASCADE,
+                             )
+    related_bill = models.ForeignKey(Bill,
+                                     related_name='related_bills_reverse',
+                                     null=True,
+                                     # if related bill goes away, just unlink the relationship
+                                     on_delete=models.SET_NULL,
+                                     )
     identifier = models.CharField(max_length=100)
     # not a FK in case we don't know the session yet
     legislative_session = models.CharField(max_length=100)
@@ -118,7 +143,7 @@ class RelatedBill(RelatedBase):
 
 @python_2_unicode_compatible
 class BillSponsorship(RelatedEntityBase):
-    bill = models.ForeignKey(Bill, related_name='sponsorships')
+    bill = models.ForeignKey(Bill, related_name='sponsorships', on_delete=models.CASCADE)
     primary = models.BooleanField(default=False)
     classification = models.CharField(max_length=100)   # enum?
 
@@ -131,7 +156,7 @@ class BillSponsorship(RelatedEntityBase):
 
 @python_2_unicode_compatible
 class BillDocument(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='documents')
+    bill = models.ForeignKey(Bill, related_name='documents', on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
@@ -144,7 +169,7 @@ class BillDocument(RelatedBase):
 
 @python_2_unicode_compatible
 class BillVersion(RelatedBase):
-    bill = models.ForeignKey(Bill, related_name='versions')
+    bill = models.ForeignKey(Bill, related_name='versions', on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
 
@@ -157,7 +182,7 @@ class BillVersion(RelatedBase):
 
 @python_2_unicode_compatible
 class BillDocumentLink(MimetypeLinkBase):
-    document = models.ForeignKey(BillDocument, related_name='links')
+    document = models.ForeignKey(BillDocument, related_name='links', on_delete=models.CASCADE)
 
     def __str__(self):
         return '{0} for {1}'.format(self.url, self.document.bill)
@@ -168,7 +193,7 @@ class BillDocumentLink(MimetypeLinkBase):
 
 @python_2_unicode_compatible
 class BillVersionLink(MimetypeLinkBase):
-    version = models.ForeignKey(BillVersion, related_name='links')
+    version = models.ForeignKey(BillVersion, related_name='links', on_delete=models.CASCADE)
 
     def __str__(self):
         return '{0} for {1}'.format(self.url, self.version)
@@ -178,7 +203,7 @@ class BillVersionLink(MimetypeLinkBase):
 
 
 class BillSource(LinkBase):
-    bill = models.ForeignKey(Bill, related_name='sources')
+    bill = models.ForeignKey(Bill, related_name='sources', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'opencivicdata_billsource'

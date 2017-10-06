@@ -95,12 +95,16 @@ class Organization(OCDBase):
         'self',
         related_name='children',
         null=True,
+        # parent can be deleted w/o affecting children
+        on_delete=models.SET_NULL,
         help_text="A link to another Organization that serves as this Organization's parent."
     )
     jurisdiction = models.ForeignKey(
         Jurisdiction,
         related_name='organizations',
         null=True,
+        # deletion of a jurisdiction should be hard
+        on_delete=models.PROTECT,
         help_text="A link to the Jurisdiction that contains this Organization.",
     )
     classification = models.CharField(
@@ -162,6 +166,7 @@ class OrganizationIdentifier(IdentifierBase):
         Organization,
         related_name='identifiers',
         help_text="Reference to the Organization identified by this alternative identifier.",
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):
@@ -180,6 +185,7 @@ class OrganizationName(OtherNameBase):
         Organization,
         related_name='other_names',
         help_text="A link to the Organization with this alternative name.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -193,7 +199,8 @@ class OrganizationContactDetail(ContactDetailBase):
     organization = models.ForeignKey(
         Organization,
         related_name='contact_details',
-        help_text="A link to the Organization connected to this contact."
+        help_text="A link to the Organization connected to this contact.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -207,7 +214,8 @@ class OrganizationLink(LinkBase):
     organization = models.ForeignKey(
         Organization,
         related_name='links',
-        help_text="A reference to the Organization connected to this link."
+        help_text="A reference to the Organization connected to this link.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -221,7 +229,8 @@ class OrganizationSource(LinkBase):
     organization = models.ForeignKey(
         Organization,
         related_name='sources',
-        help_text="A link to the Organization connected to this source."
+        help_text="A link to the Organization connected to this source.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -243,7 +252,8 @@ class Post(OCDBase):
     organization = models.ForeignKey(
         Organization,
         related_name='posts',
-        help_text="The Organization in which the post is held."
+        help_text="The Organization in which the post is held.",
+        on_delete=models.CASCADE,
     )
     division = models.ForeignKey(
         Division,
@@ -251,7 +261,9 @@ class Post(OCDBase):
         null=True,
         blank=True,
         default=None,
-        help_text="The Division where the post exists."
+        help_text="The Division where the post exists.",
+        # if the division goes away the post is just jurisdiction-less
+        on_delete=models.SET_NULL,
     )
     start_date = models.CharField(
         max_length=10,
@@ -285,7 +297,8 @@ class PostContactDetail(ContactDetailBase):
     post = models.ForeignKey(
         Post,
         related_name='contact_details',
-        help_text="A link to the Post connected to this contact."
+        help_text="A link to the Post connected to this contact.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -299,6 +312,7 @@ class PostLink(LinkBase):
     post = models.ForeignKey(
         Post,
         related_name='links',
+        on_delete=models.CASCADE,
         help_text="A reference to the Post connected to this link."
     )
 
@@ -409,6 +423,7 @@ class PersonIdentifier(IdentifierBase):
     person = models.ForeignKey(
         Person,
         related_name='identifiers',
+        on_delete=models.CASCADE,
         help_text="A link to the Person connected to this alternative identifier."
     )
 
@@ -423,6 +438,7 @@ class PersonName(OtherNameBase):
     person = models.ForeignKey(
         Person,
         related_name='other_names',
+        on_delete=models.CASCADE,
         help_text="A link to the Person connected to this alternative name."
     )
 
@@ -437,6 +453,7 @@ class PersonContactDetail(ContactDetailBase):
     person = models.ForeignKey(
         Person,
         related_name='contact_details',
+        on_delete=models.CASCADE,
         help_text="A link to the Person connected to this contact."
     )
 
@@ -451,6 +468,7 @@ class PersonLink(LinkBase):
     person = models.ForeignKey(
         Person,
         related_name='links',
+        on_delete=models.CASCADE,
         help_text="A reference to the Person connected to this link."
     )
 
@@ -465,6 +483,7 @@ class PersonSource(LinkBase):
     person = models.ForeignKey(
         Person,
         related_name='sources',
+        on_delete=models.CASCADE,
         help_text="A link to the Person connected to this source."
     )
 
@@ -481,12 +500,16 @@ class Membership(OCDBase):
     organization = models.ForeignKey(
         Organization,
         related_name='memberships',
+        # memberships will go away if the org does
+        on_delete=models.CASCADE,
         help_text="A link to the Organization in which the Person is a member."
     )
     person = models.ForeignKey(
         Person,
         related_name='memberships',
         null=True,
+        # Membership will just unlink if the person goes away
+        on_delete=models.SET_NULL,
         help_text="A link to the Person that is a member of the Organization."
     )
     person_name = models.CharField(
@@ -499,13 +522,17 @@ class Membership(OCDBase):
         Post,
         related_name='memberships',
         null=True,
+        # Membership will just unlink if the post goes away
+        on_delete=models.SET_NULL,
         help_text="	The Post held by the member in the Organization."
     )
     on_behalf_of = models.ForeignKey(
         Organization,
         related_name='memberships_on_behalf_of',
         null=True,
-        help_text="The Organization on whose behalf the Person is a member of the Organization."
+        help_text="The Organization on whose behalf the Person is a member of the Organization.",
+        # Membership will just unlink if the org goes away
+        on_delete=models.SET_NULL,
     )
     label = models.CharField(
         max_length=300,
@@ -545,7 +572,8 @@ class MembershipContactDetail(ContactDetailBase):
     membership = models.ForeignKey(
         Membership,
         related_name='contact_details',
-        help_text="A link to the Membership connected to this contact."
+        help_text="A link to the Membership connected to this contact.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:
@@ -559,7 +587,8 @@ class MembershipLink(LinkBase):
     membership = models.ForeignKey(
         Membership,
         related_name='links',
-        help_text="A reference to the Membership connected to this link."
+        help_text="A reference to the Membership connected to this link.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:

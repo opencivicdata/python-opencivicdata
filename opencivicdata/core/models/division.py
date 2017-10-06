@@ -47,7 +47,8 @@ class Division(models.Model):
 
     id = models.CharField(max_length=300, primary_key=True)
     name = models.CharField(max_length=300, help_text="The name of the division.")
-    redirect = models.ForeignKey('self', null=True)
+    # cascade is SET_NULL, will un-redirect if deletion happens
+    redirect = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
     country = models.CharField(
         max_length=2,
         help_text="An ISO-3166-1 alpha-2 code identifying the county where this division is found."
