@@ -36,6 +36,7 @@ class BallotMeasureContest(ContestBase):
         'self',
         related_name='runoff_contest',
         null=True,
+        on_delete=models.CASCADE,
         help_text="If this contest is a runoff to determine the outcome of a "
                   "previously undecided contest, reference to that "
                   "BallotMeasureContest.",
@@ -53,6 +54,7 @@ class BallotMeasureContestOption(models.Model):
     contest = models.ForeignKey(
         BallotMeasureContest,
         related_name="options",
+        on_delete=models.CASCADE,
         help_text="Reference to the BallotMeasureContest.",
     )
     text = models.CharField(
@@ -78,6 +80,7 @@ class BallotMeasureContestIdentifier(IdentifierBase):
     contest = models.ForeignKey(
         BallotMeasureContest,
         related_name="identifiers",
+        on_delete=models.CASCADE,
         help_text="Reference to the BallotMeasureContest linked to the upstream "
                   "identifier.",
     )
@@ -97,6 +100,7 @@ class BallotMeasureContestSource(LinkBase):
     contest = models.ForeignKey(
         BallotMeasureContest,
         related_name='sources',
+        on_delete=models.CASCADE,
         help_text="Reference to the BallotMeasureContest assembled from the source.",
     )
 
@@ -124,6 +128,7 @@ class RetentionContest(ContestBase):
         'self',
         related_name='runoff_contest',
         null=True,
+        on_delete=models.CASCADE,
         help_text="If this contest is a runoff to determine the outcome of a previously "
                   "undecided contest, reference to that RetentionContest.",
     )
@@ -131,6 +136,7 @@ class RetentionContest(ContestBase):
         Membership,
         help_text="Reference to the Membership that represents the tenure of a "
                   "person in a specific public office.",
+        on_delete=models.CASCADE,
     )
 
     class Meta(ContestBase.Meta):
@@ -146,6 +152,7 @@ class RetentionContestOption(models.Model):
         RetentionContest,
         related_name="options",
         help_text="Reference to the RetentionContest.",
+        on_delete=models.CASCADE,
     )
     text = models.CharField(
         max_length=300,
@@ -172,6 +179,7 @@ class RetentionContestIdentifier(IdentifierBase):
         related_name="identifiers",
         help_text="Reference to the RetentionContest linked to the upstream "
                   "identifier.",
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):
@@ -190,6 +198,7 @@ class RetentionContestSource(LinkBase):
         RetentionContest,
         related_name='sources',
         help_text="Reference to the RetentionContest assembled from the source.",
+        on_delete=models.CASCADE,
     )
 
     class Meta:

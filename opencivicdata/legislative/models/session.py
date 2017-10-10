@@ -8,7 +8,11 @@ from ...common import SESSION_CLASSIFICATION_CHOICES
 
 @python_2_unicode_compatible
 class LegislativeSession(RelatedBase):
-    jurisdiction = models.ForeignKey(Jurisdiction, related_name='legislative_sessions')
+    jurisdiction = models.ForeignKey(Jurisdiction,
+                                     related_name='legislative_sessions',
+                                     # should be hard to delete Jurisdiction
+                                     on_delete=models.PROTECT
+                                     )
     identifier = models.CharField(max_length=100)
     name = models.CharField(max_length=300)
     classification = models.CharField(max_length=100, choices=SESSION_CLASSIFICATION_CHOICES,

@@ -32,9 +32,10 @@ class EventLocation(RelatedBase):
     name = models.CharField(max_length=200)
     url = models.URLField(blank=True, max_length=2000)
     coordinates = models.PointField(null=True)
-    jurisdiction = models.ForeignKey(Jurisdiction, related_name='event_locations')
-
-    objects = models.GeoManager()
+    jurisdiction = models.ForeignKey(Jurisdiction,
+                                     related_name='event_locations',
+                                     on_delete=models.CASCADE,
+                                     )
 
     def __str__(self):
         return self.name
@@ -47,14 +48,18 @@ class EventLocation(RelatedBase):
 class Event(OCDBase):
     id = OCDIDField(ocd_type='event')
     name = models.CharField(max_length=300)
-    jurisdiction = models.ForeignKey(Jurisdiction, related_name='events')
+    jurisdiction = models.ForeignKey(Jurisdiction,
+                                     related_name='events',
+                                     # jurisdictions hard to delete
+                                     on_delete=models.PROTECT,
+                                     )
     description = models.TextField()
     classification = models.CharField(max_length=100)
     start_date = models.CharField(max_length=25)                # YYYY-MM-DD HH:MM:SS+HH:MM
     end_date = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
     all_day = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=EVENT_STATUS_CHOICES)
-    location = models.ForeignKey(EventLocation, null=True)
+    location = models.ForeignKey(EventLocation, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return '{0} ({1})'.format(self.name, self.start_date)
@@ -68,7 +73,7 @@ class Event(OCDBase):
 
 @python_2_unicode_compatible
 class EventMedia(EventMediaBase):
-    event = models.ForeignKey(Event, related_name='media')
+    event = models.ForeignKey(Event, related_name='media', on_delete=models.CASCADE)
 
     def __str__(self):
         return '%s for %s' % (self.note, self.event)
@@ -79,7 +84,7 @@ class EventMedia(EventMediaBase):
 
 @python_2_unicode_compatible
 class EventMediaLink(MimetypeLinkBase):
-    media = models.ForeignKey(EventMedia, related_name='links')
+    media = models.ForeignKey(EventMedia, related_name='links', on_delete=models.CASCADE)
 
     def __str__(self):
         return '{0} for {1}'.format(self.url, self.media.event)
@@ -90,7 +95,7 @@ class EventMediaLink(MimetypeLinkBase):
 
 @python_2_unicode_compatible
 class EventDocument(MimetypeLinkBase):
-    event = models.ForeignKey(Event, related_name='documents')
+    event = models.ForeignKey(Event, related_name='documents', on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)
 
@@ -104,7 +109,7 @@ class EventDocument(MimetypeLinkBase):
 
 @python_2_unicode_compatible
 class EventDocumentLink(MimetypeLinkBase):
-    document = models.ForeignKey(EventDocument, related_name='links')
+    document = models.ForeignKey(EventDocument, related_name='links', on_delete=models.CASCADE)
 
     def __str__(self):
         return '{0} for {1}'.format(self.url, self.document)
@@ -114,14 +119,14 @@ class EventDocumentLink(MimetypeLinkBase):
 
 
 class EventLink(LinkBase):
-    event = models.ForeignKey(Event, related_name='links')
+    event = models.ForeignKey(Event, related_name='links', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'opencivicdata_eventlink'
 
 
 class EventSource(LinkBase):
-    event = models.ForeignKey(Event, related_name='sources')
+    event = models.ForeignKey(Event, related_name='sources', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'opencivicdata_eventsource'
@@ -129,7 +134,7 @@ class EventSource(LinkBase):
 
 @python_2_unicode_compatible
 class EventParticipant(RelatedEntityBase):
-    event = models.ForeignKey(Event, related_name='participants')
+    event = models.ForeignKey(Event, related_name='participants', on_delete=models.CASCADE)
     note = models.TextField()
 
     def __str__(self):
@@ -147,7 +152,7 @@ class EventAgendaItem(RelatedBase):
     order = models.CharField(max_length=100, blank=True)
     subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
     notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
-    event = models.ForeignKey(Event, related_name='agenda')
+    event = models.ForeignKey(Event, related_name='agenda', on_delete=models.CASCADE)
     extras = JSONField(default=dict, blank=True)
 
     def __str__(self):
@@ -161,9 +166,13 @@ class EventAgendaItem(RelatedBase):
 
 @python_2_unicode_compatible
 class EventRelatedEntity(RelatedEntityBase):
-    agenda_item = models.ForeignKey(EventAgendaItem, related_name='related_entities')
-    bill = models.ForeignKey(Bill, null=True)
-    vote_event = models.ForeignKey(VoteEvent, null=True)
+    agenda_item = models.ForeignKey(EventAgendaItem,
+                                    related_name='related_entities',
+                                    on_delete=models.CASCADE,
+                                    )
+    # will just unresolve if needed
+    bill = models.ForeignKey(Bill, null=True, on_delete=models.SET_NULL)
+    vote_event = models.ForeignKey(VoteEvent, null=True, on_delete=models.SET_NULL)
     note = models.TextField()
 
     def __str__(self):
@@ -192,7 +201,10 @@ class EventRelatedEntity(RelatedEntityBase):
 
 @python_2_unicode_compatible
 class EventAgendaMedia(EventMediaBase):
-    agenda_item = models.ForeignKey(EventAgendaItem, related_name='media')
+    agenda_item = models.ForeignKey(EventAgendaItem,
+                                    related_name='media',
+                                    on_delete=models.CASCADE,
+                                    )
 
     def __str__(self):
         return '{0} for {1}'.format(self.note, self.agenda_item)
@@ -203,7 +215,10 @@ class EventAgendaMedia(EventMediaBase):
 
 @python_2_unicode_compatible
 class EventAgendaMediaLink(MimetypeLinkBase):
-    media = models.ForeignKey(EventAgendaMedia, related_name='links')
+    media = models.ForeignKey(EventAgendaMedia,
+                              related_name='links',
+                              on_delete=models.CASCADE,
+                              )
 
     def __str__(self):
         return '{0} for {1}'.format(self.url, self.media)
