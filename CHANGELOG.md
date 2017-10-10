@@ -2,6 +2,11 @@
 
 ## WIP
 
+Improvements requiring migrations:
+
+* added missing migration for help_text
+* update models to have explicit on_delete settings for Foreign Keys (required by Django 2.0)
+
 ## 2.0.0 (2017-07-19)
 
 Backwards-incompatible changes:
