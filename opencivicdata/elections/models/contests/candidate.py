@@ -39,7 +39,7 @@ class CandidateContest(ContestBase):
         'self',
         related_name='runoff_contest',
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         help_text="If this contest is a runoff to determine the outcome of a "
                   "previously undecided contest, reference to that CandidateContest.",
     )

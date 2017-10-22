@@ -36,7 +36,7 @@ class BallotMeasureContest(ContestBase):
         'self',
         related_name='runoff_contest',
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         help_text="If this contest is a runoff to determine the outcome of a "
                   "previously undecided contest, reference to that "
                   "BallotMeasureContest.",
@@ -128,7 +128,7 @@ class RetentionContest(ContestBase):
         'self',
         related_name='runoff_contest',
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         help_text="If this contest is a runoff to determine the outcome of a previously "
                   "undecided contest, reference to that RetentionContest.",
     )
@@ -136,7 +136,7 @@ class RetentionContest(ContestBase):
         Membership,
         help_text="Reference to the Membership that represents the tenure of a "
                   "person in a specific public office.",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
 
     class Meta(ContestBase.Meta):

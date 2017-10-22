@@ -38,7 +38,7 @@ class Candidacy(OCDBase):
         related_name='candidacies',
         help_text='Reference to Post representing the public office for which '
                   'the candidate is seeking election.',
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     contest = models.ForeignKey(
         'elections.CandidateContest',
@@ -86,7 +86,7 @@ class Candidacy(OCDBase):
         'self',
         related_name="ticket",
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         help_text="If the candidate is running as part of ticket, e.g., a Vice "
                   "Presidential candidate running with a Presidential candidate, "
                   "reference to candidacy at the top of the ticket."

@@ -22,7 +22,7 @@ class PartyContest(ContestBase):
     runoff_for_contest = models.OneToOneField(
         'self',
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         help_text="If this contest is a runoff to determine the outcome of a previously "
                   "undecided contest, reference to that PartyContest.",
     )

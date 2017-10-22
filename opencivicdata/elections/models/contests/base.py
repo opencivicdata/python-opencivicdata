@@ -35,7 +35,7 @@ class ContestBase(OCDBase):
                   "geography of the contest, e.g., a specific Congressional or "
                   "State Senate district. Should be a subdivision of the Division "
                   "referenced by the contest's Election.",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     election = models.ForeignKey(
         Election,
