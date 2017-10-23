@@ -74,8 +74,8 @@ class TestPersonMerge(TestCase):
         person2 = Person.objects.create(name='Barack Obama')
         d = Division.objects.create(id='ocd-division/country:us', name='US')
         j = Jurisdiction.objects.create(name='US', division=d)
-        l = j.legislative_sessions.create(name='2015')
-        b = Bill.objects.create(identifier='HB 1', legislative_session=l)
+        session = j.legislative_sessions.create(name='2015')
+        b = Bill.objects.create(identifier='HB 1', legislative_session=session)
         sp = BillSponsorship.objects.create(bill=b, person=person2)
 
         merge(person1, person2)
