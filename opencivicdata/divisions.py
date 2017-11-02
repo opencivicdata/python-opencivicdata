@@ -13,8 +13,6 @@ else:
     from urllib.request import urlopen
 
 PWD = os.path.abspath(os.path.dirname(__file__))
-OCD_DIVISION_CSV = os.environ.get('OCD_DIVISION_CSV',
-                                  os.path.join(PWD, 'division-ids/identifiers/country-{}.csv'))
 OCD_REMOTE_URL = ('https://raw.githubusercontent.com/opencivicdata/ocd-division-ids/master/'
                   'identifiers/country-{}.csv')
 
@@ -24,18 +22,18 @@ class Division(object):
 
     @classmethod
     def all(self, country, from_csv=None):
-
         file_handle = None
 
-        # check for environment variable
-        if not from_csv and 'OCD_DIVISION_CSV' in os.environ:
-            from_csv = os.environ.get('OCD_DIVISION_CSV').format(country)
+        # Load from CSV if `from_csv` or `OCD_DIVISION_CSV` are set.
+        if from_csv or 'OCD_DIVISION_CSV' in os.environ:
+            if not from_csv:
+                from_csv = os.environ.get('OCD_DIVISION_CSV').format(country)
             try:
                 file_handle = io.open(from_csv, encoding='utf8')
             except FileNotFoundError:
-                raise ValueError("Unknown country in OCD ID")
+                raise ValueError("Couldn't open CSV file {}".format(from_csv))
 
-        # going to the remote URL
+        # Load from URL otherwise.
         if not file_handle:
             file_handle = io.StringIO(urlopen(OCD_REMOTE_URL.format(country)
                                               ).read().decode('utf-8'))
@@ -46,13 +44,12 @@ class Division(object):
     @classmethod
     def get(self, division, from_csv=None):
         if division not in self._cache:
-            # figure out the source
-            if not from_csv:
-                if not re.match(r"ocd-division/country:\w{2}", division):
-                    raise ValueError("Invalid OCD format.")
-                country = re.findall(r'country:(\w{2})', division)[0]
+            # Figure out the country.
+            if not re.match(r"ocd-division/country:\w{2}", division):
+                raise ValueError("Invalid OCD format.")
+            country = re.findall(r'country:(\w{2})', division)[0]
 
-            # just load all divisions into cache
+            # Load all divisions into cache.
             for d in self.all(country, from_csv):
                 pass
 
