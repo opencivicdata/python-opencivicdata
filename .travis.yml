@@ -11,7 +11,7 @@ python:
     - "3.6"
 env:
     - DJANGO_VERSION=1.11
-    - DJANGO_VERSION=2.0a1
+    - DJANGO_VERSION=2.0
 install: 
     - pip install -U setuptools six
     - pip install --pre -e .[dev] Django==$DJANGO_VERSION
@@ -27,7 +27,7 @@ after_success:
 matrix:
   exclude:
     - python: "2.7"
-      env: DJANGO_VERSION=2.0a1
+      env: DJANGO_VERSION=2.0
 notifications:
     email:
         - james@openstates.org
