@@ -1,11 +1,16 @@
 # Changelog
 
-## WIP
+## 2.1.0 (2017-12-04)
 
 Improvements requiring migrations:
 
 * added missing migration for help_text
 * update models to have explicit on_delete settings for Foreign Keys (required by Django 2.0)
+
+Bugfixes: 
+
+* add missing help_text for opencivicdata.elections
+* fixes for some opencivicdata.elections migration issues
 
 ## 2.0.0 (2017-07-19)
 
