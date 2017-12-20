@@ -1,4 +1,4 @@
-from django.core import urlresolvers
+from django.urls import reverse
 from django.contrib import admin
 from .. import models
 from .base import (ModelAdmin, ReadOnlyTabularInline, IdentifierInline,
@@ -64,8 +64,7 @@ class PersonAdmin(ModelAdmin):
         SHOW_N = 5
         for memb in memberships[:SHOW_N]:
             org = memb.organization
-            admin_url = urlresolvers.reverse('admin:core_organization_change',
-                                             args=(org.pk,))
+            admin_url = reverse('admin:core_organization_change', args=(org.pk,))
             tmpl = '<a href="%s">%s%s</a>\n'
             html.append(tmpl % (
                 admin_url,

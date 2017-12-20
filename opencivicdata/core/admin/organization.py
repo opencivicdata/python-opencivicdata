@@ -1,4 +1,4 @@
-from django.core import urlresolvers
+from django.urls import reverse
 from django.contrib import admin
 from .. import models
 from .base import (ModelAdmin, ReadOnlyTabularInline, IdentifierInline, LinkInline,
@@ -82,8 +82,7 @@ class OrganizationAdmin(ModelAdmin):
     def get_jurisdiction(self, obj):
         jurisdiction = obj.jurisdiction
         if jurisdiction:
-            admin_url = urlresolvers.reverse('admin:core_jurisdiction_change',
-                                             args=(jurisdiction.pk,))
+            admin_url = reverse('admin:core_jurisdiction_change', args=(jurisdiction.pk,))
             tmpl = '<a href="%s">%s</a>'
             return tmpl % (admin_url, jurisdiction.name)
 

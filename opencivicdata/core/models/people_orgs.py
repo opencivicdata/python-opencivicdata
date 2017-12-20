@@ -321,7 +321,8 @@ class PostLink(LinkBase):
 
 
 class PersonQuerySet(QuerySet):
-    def member_of(self, organization_name, current_only=True):
+    def member_of(self, organization_name, current_only=True,
+                  *, post=None):
         filter_params = []
 
         if current_only:
@@ -332,6 +333,9 @@ class PersonQuerySet(QuerySet):
                              Q(memberships__end_date='') |
                              Q(memberships__end_date__gte=today),
                              ]
+        if post:
+            filter_params.append(Q(memberships__post__label=post))
+
         if organization_name.startswith('ocd-organization/'):
             qs = self.filter(*filter_params,
                              memberships__organization_id=organization_name)

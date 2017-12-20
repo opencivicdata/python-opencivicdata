@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
-from django.core import urlresolvers
+from django.urls import reverse
 from django.http import HttpResponseBadRequest
 from django.contrib import messages
 from ..models import Person
@@ -54,6 +54,4 @@ def merge_confirm(request):
                          'merged {} with {}'.format(person1.id, person2.id)
                          )
 
-    return redirect(urlresolvers.reverse('admin:core_person_change',
-                                         args=(person1.id,))
-                    )
+    return redirect(reverse('admin:core_person_change', args=(person1.id,)))
