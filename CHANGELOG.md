@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.1 (2017-12-20)
+
+Bugfixes:
+
+* fix urlresolvers.reverse import location for Django 2.0
+
 ## 2.1.0 (2017-12-04)
 
 Improvements requiring migrations:
