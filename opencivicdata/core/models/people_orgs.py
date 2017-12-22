@@ -321,8 +321,7 @@ class PostLink(LinkBase):
 
 
 class PersonQuerySet(QuerySet):
-    def member_of(self, organization_name, current_only=True,
-                  *, post=None):
+    def member_of(self, organization_name, current_only=True, post=None):
         filter_params = []
 
         if current_only:

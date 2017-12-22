@@ -1,6 +1,16 @@
 # Changelog
 
+## 2.1.2 
+
+Bugfixes:
+
+* Fix accidentally broken Python 2 compatibility
+
 ## 2.1.1 (2017-12-20)
+
+Improvements:
+
+* add post argument to Person.objects.memberOf
 
 Bugfixes:
 
