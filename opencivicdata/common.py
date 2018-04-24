@@ -133,6 +133,7 @@ BILL_ACTION_CLASSIFICATION_CHOICES = (
     ('executive-signature', 'Signed By Executive'),
     ('executive-veto', 'Veto By Executive'),
     ('executive-veto-line-item', 'Line Item Veto By Executive'),
+    ('became-law', 'Became Law'),
     ('veto-override-passage', 'Veto Override Passage'),
     ('veto-override-failure', 'Veto Override Failure'),
     ('deferral', 'Deferred or Tabled'),
