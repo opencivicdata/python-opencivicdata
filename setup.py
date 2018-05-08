@@ -28,7 +28,7 @@ else:
     extras_require[":python_version<='2.7'"] = ["backports.csv"]
 
 setup(name="opencivicdata",
-      version='2.1.1',
+      version='2.1.2',
       author="James Turk",
       author_email='james@openstates.org',
       license="BSD",

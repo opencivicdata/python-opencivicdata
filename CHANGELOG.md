@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.1.2 
+## 2.1.2 (2018-05-08)
+
+Improvements:
+
+* Add 'became-law' action classification.
 
 Bugfixes:
 
