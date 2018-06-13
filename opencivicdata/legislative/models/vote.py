@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.utils.encoding import python_2_unicode_compatible
 
 from opencivicdata.core.models.base import OCDBase, LinkBase, OCDIDField, RelatedBase
@@ -44,6 +44,8 @@ class VoteEvent(OCDBase):
                                        # if an action goes away - VoteEvent should stay
                                        on_delete=models.SET_NULL,
                                        )
+
+    extras = JSONField(default=dict, blank=True)
 
     def __str__(self):
         if self.identifier:
