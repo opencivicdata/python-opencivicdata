@@ -172,6 +172,7 @@ class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='versions', on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)    # YYYY[-MM[-DD]]
+    extras = JSONField(default=dict, blank=True)
 
     def __str__(self):
         return '{0} version of {1}'.format(self.date, self.bill)
