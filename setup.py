@@ -11,7 +11,7 @@ install_requires = [
 
 extras_require = {
     'dev': [
-      'pytest>=2.9',
+      'pytest>=3.6',
       'pytest-cov',
       'pytest-django',
       'coveralls',
