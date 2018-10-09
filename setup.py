@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 install_requires = [
     'six',
     'Django>=1.11',
-    'psycopg2',
+    'psycopg2-binary',
 ]
 
 extras_require = {
@@ -28,7 +28,7 @@ else:
     extras_require[":python_version<='2.7'"] = ["backports.csv"]
 
 setup(name="opencivicdata",
-      version='2.1.2',
+      version='2.2.0',
       author="James Turk",
       author_email='james@openstates.org',
       license="BSD",

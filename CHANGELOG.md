@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.0 (2018-10-09)
+
+Improvements requiring migrations:
+
+* add extras field to bill versions
+
+Improvements:
+
+* updated obsolete dependencies
+
 ## 2.1.2 (2018-05-08)
 
 Improvements:
