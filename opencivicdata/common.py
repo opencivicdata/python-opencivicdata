@@ -98,6 +98,7 @@ BILL_CLASSIFICATION_CHOICES = (
     ('motion', 'Motion'),
     ('study request', 'Study Request'),
     ('concurrent study request', 'Concurrent Study Request'),
+    ('bill of address', 'Bill of Address'),
 )
 BILL_CLASSIFICATIONS = _keys(BILL_CLASSIFICATION_CHOICES)
 

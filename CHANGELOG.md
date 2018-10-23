@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.1
+
+Improvements:
+
+* new 'bill of address' classification
+
 ## 2.2.0 (2018-10-09)
 
 Improvements requiring migrations:
