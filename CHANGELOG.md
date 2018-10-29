@@ -2,6 +2,10 @@
 
 ## 2.2.1
 
+Bugfixes:
+
+* Fix missing migrations
+
 Improvements:
 
 * new 'bill of address' classification
