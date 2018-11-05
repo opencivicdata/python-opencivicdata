@@ -47,7 +47,7 @@ class EventLocation(RelatedBase):
 @python_2_unicode_compatible
 class Event(OCDBase):
     id = OCDIDField(ocd_type='event')
-    name = models.CharField(max_length=600)
+    name = models.CharField(max_length=1000)
     jurisdiction = models.ForeignKey(Jurisdiction,
                                      related_name='events',
                                      # jurisdictions hard to delete

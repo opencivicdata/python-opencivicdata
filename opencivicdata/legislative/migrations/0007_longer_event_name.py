@@ -11,6 +11,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='event',
             name='name',
-            field=models.CharField(max_length=600),
+            field=models.CharField(max_length=1000),
         ),
     ]
