@@ -4,7 +4,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('legislative', '0006_billversion_extras'),
+        ('legislative', '0007_auto_20181029_1527.py'),
     ]
 
     operations = [
