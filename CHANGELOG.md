@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.0
+
+Improvements:
+
+* recommended Postgres version is now 10.x (>= 9.4 should still work but will no longer be tested)
+
+Improvements requiring migrations:
+
+* adjusted length of Event.name
+
 ## 2.2.1 (2018-10-29)
 
 Bugfixes:
