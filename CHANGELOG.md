@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.3.0
+## 2.3.0 (2018-12-04)
 
 Improvements requiring migrations:
 
