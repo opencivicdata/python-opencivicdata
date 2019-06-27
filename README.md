@@ -1,7 +1,7 @@
 python-opencivicdata
 ====================
 
-[![Build Status](https://travis-ci.org/opencivicdata/python-opencivicdata.svg?branch=master)](https://travis-ci.org/opencivicdata/python-opencivicdata)
+[![Build Status](https://travis-ci.com/opencivicdata/python-opencivicdata.svg?branch=master)](https://travis-ci.com/opencivicdata/python-opencivicdata)
 [![Coverage Status](https://coveralls.io/repos/opencivicdata/python-opencivicdata/badge.png?branch=master)](https://coveralls.io/r/opencivicdata/python-opencivicdata?branch=master)
 [![PyPI](https://img.shields.io/pypi/v/opencivicdata.svg)](https://pypi.python.org/pypi/opencivicdata)
 
