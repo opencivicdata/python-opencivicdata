@@ -221,8 +221,17 @@ class SearchableBill(models.Model):
 
     We'll also store error results, assuming that they're somewhat persistent.
     """
-    bill = models.OneToOneField(Bill, related_name="searchable", null=True, on_delete=models.CASCADE)
-    version = models.OneToOneField(BillVersionLink, related_name="searchable", on_delete=models.CASCADE)
+    bill = models.OneToOneField(
+        Bill,
+        related_name="searchable",
+        null=True,
+        on_delete=models.CASCADE
+    )
+    version = models.OneToOneField(
+        BillVersionLink,
+        related_name="searchable",
+        on_delete=models.CASCADE
+    )
 
     search_vector = SearchVectorField()
     raw_text = models.TextField()
