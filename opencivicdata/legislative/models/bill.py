@@ -227,14 +227,18 @@ class SearchableBill(models.Model):
         null=True,
         on_delete=models.CASCADE
     )
-    version = models.OneToOneField(
+    version_link = models.OneToOneField(
         BillVersionLink,
         related_name="searchable",
         on_delete=models.CASCADE
     )
 
-    search_vector = SearchVectorField()
-    raw_text = models.TextField()
+    search_vector = SearchVectorField(default=None)
+    all_titles = models.TextField(default="")
+    raw_text = models.TextField(default="")
     is_error = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'opencivicdata_searchablebill'
