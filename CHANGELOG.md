@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.0
+
+Improvements requiring migrations:
+
+* added experimental SearchableBill model
+
 ## 2.3.0 (2018-12-04)
 
 Improvements requiring migrations:
