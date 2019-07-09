@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
+from django.contrib.postgres.search import SearchVectorField
 from django.utils.encoding import python_2_unicode_compatible
 
 from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
@@ -208,3 +209,36 @@ class BillSource(LinkBase):
 
     class Meta:
         db_table = 'opencivicdata_billsource'
+
+
+class SearchableBill(models.Model):
+    """
+    This model associates a single version's text with a given bill.
+
+    This is done for a few reasons:
+        * bills with multiple versions aren't weighted more heavily than others
+        * this makes querying quite a bit more efficient (no need to deduplicate results)
+
+    We'll also store error results, assuming that they're somewhat persistent.
+    """
+    bill = models.OneToOneField(
+        Bill,
+        related_name="searchable",
+        null=True,
+        on_delete=models.CASCADE
+    )
+    version_link = models.OneToOneField(
+        BillVersionLink,
+        related_name="searchable",
+        on_delete=models.CASCADE
+    )
+
+    search_vector = SearchVectorField(default=None)
+    all_titles = models.TextField(default="")
+    raw_text = models.TextField(default="")
+    is_error = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'opencivicdata_searchablebill'
