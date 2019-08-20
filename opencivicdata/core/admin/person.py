@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from .. import models
 from .base import (ModelAdmin, ReadOnlyTabularInline, IdentifierInline,
                    ContactDetailInline, OtherNameInline)
@@ -29,8 +30,9 @@ class PersonSourceInline(ReadOnlyTabularInline):
 
 class MembershipInline(ReadOnlyTabularInline):
     model = models.Membership
-    readonly_fields = ('id', 'organization', 'post', 'label', 'role', 'start_date',)
-    fields = readonly_fields + ('end_date',)
+    readonly_fields = ('organization', 'post', 'label', 'role', 'start_date',)
+    fields = ('id',) + readonly_fields + ('end_date',)
+    exclude = ('id',)
     extra = 0
     can_delete = False
 
@@ -74,9 +76,8 @@ class PersonAdmin(ModelAdmin):
         more = len(memberships) - SHOW_N
         if 0 < more:
             html.append('And %d more' % more)
-        return '<br/>'.join(html)
+        return mark_safe('<br/>'.join(html))
 
     get_memberships.short_description = 'Memberships'
-    get_memberships.allow_tags = True
 
     list_display = ('name', 'id', 'get_memberships')
