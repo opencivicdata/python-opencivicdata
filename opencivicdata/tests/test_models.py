@@ -421,7 +421,6 @@ def test_event_document_w_links(event):
     e_d = event.documents.create(
         date="2014-04-12",
         note="Agenda",
-        media_type="application/pdf",
     )
     assert "Agenda" in str(e_d)
     assert event.name in str(e_d)
