@@ -79,7 +79,6 @@ class EventMedia(EventMediaBase):
                                       choices=EVENT_MEDIA_CLASSIFICATION_CHOICES,
                                       blank=True)
 
-
     def __str__(self):
         return '%s for %s' % (self.note, self.event)
 
