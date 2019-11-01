@@ -8,7 +8,8 @@ from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
 from opencivicdata.core.models import Jurisdiction
 from .bill import Bill
 from .vote import VoteEvent
-
+from ...common import (EVENT_MEDIA_CLASSIFICATION_CHOICES,
+                       EVENT_DOCUMENT_CLASSIFICATION_CHOICES)
 
 EVENT_STATUS_CHOICES = (
     ('cancelled', 'Cancelled'),
@@ -20,7 +21,7 @@ EVENT_STATUS_CHOICES = (
 
 class EventMediaBase(RelatedBase):
     note = models.CharField(max_length=300)
-    date = models.CharField(max_length=10, blank=True)    # YYYY[-MM[-DD]]
+    date = models.CharField(max_length=25, blank=True)    # YYYY-MM-DD HH:MM:SS+HH:MM
     offset = models.PositiveIntegerField(null=True)
 
     class Meta:
@@ -74,6 +75,9 @@ class Event(OCDBase):
 @python_2_unicode_compatible
 class EventMedia(EventMediaBase):
     event = models.ForeignKey(Event, related_name='media', on_delete=models.CASCADE)
+    classification = models.CharField(max_length=50,
+                                      choices=EVENT_MEDIA_CLASSIFICATION_CHOICES,
+                                      blank=True)
 
     def __str__(self):
         return '%s for %s' % (self.note, self.event)
@@ -94,10 +98,13 @@ class EventMediaLink(MimetypeLinkBase):
 
 
 @python_2_unicode_compatible
-class EventDocument(MimetypeLinkBase):
+class EventDocument(RelatedBase):
     event = models.ForeignKey(Event, related_name='documents', on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
-    date = models.CharField(max_length=10)
+    date = models.CharField(max_length=25, blank=True)      # YYYY-MM-DD HH:MM:SS+HH:MM
+    classification = models.CharField(max_length=50,
+                                      choices=EVENT_DOCUMENT_CLASSIFICATION_CHOICES,
+                                      blank=True)
 
     def __str__(self):
         tmpl = '{doc.note} for event {doc.event}'

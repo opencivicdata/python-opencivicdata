@@ -171,3 +171,19 @@ VOTE_RESULT_CHOICES = (
     ('fail', 'Fail'),
 )
 VOTE_RESULTS = _keys(VOTE_RESULT_CHOICES)
+
+EVENT_MEDIA_CLASSIFICATION_CHOICES = (
+    ('audio recording', 'Audio Recording'),
+    ('video recording', 'Video Recording'),
+)
+
+EVENT_MEDIA_CLASSIFICATIONS = _keys(EVENT_MEDIA_CLASSIFICATION_CHOICES)
+
+EVENT_DOCUMENT_CLASSIFICATION_CHOICES = (
+    ('agenda', 'Agenda'),
+    ('minutes', 'Minutes'),
+    ('transcript', 'Transcript'),
+    ('testimony', 'Testimony'),
+)
+
+EVENT_DOCUMENT_CLASSIFICATIONS = _keys(EVENT_DOCUMENT_CLASSIFICATION_CHOICES)
