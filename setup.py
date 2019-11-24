@@ -2,8 +2,7 @@
 from setuptools import setup, find_packages
 
 install_requires = [
-    'six',
-    'Django>=1.11',
+    'Django>=2.2',
     'psycopg2-binary',
 ]
 

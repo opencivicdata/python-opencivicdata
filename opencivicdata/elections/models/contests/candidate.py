@@ -3,9 +3,7 @@
 """
 CandidateContest-related models.
 """
-from __future__ import unicode_literals
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import IdentifierBase, LinkBase
 from opencivicdata.core.models import Organization, Post
 from .base import ContestBase
@@ -48,7 +46,6 @@ class CandidateContest(ContestBase):
         db_table = 'opencivicdata_candidatecontest'
 
 
-@python_2_unicode_compatible
 class CandidateContestPost(models.Model):
     """
     A public office (i.e., Post) at stake in a CandidateContest.
@@ -91,7 +88,6 @@ class CandidateContestPost(models.Model):
         db_table = 'opencivicdata_candidatecontestpost'
 
 
-@python_2_unicode_compatible
 class CandidateContestIdentifier(IdentifierBase):
     """
     Upstream identifiers of a CandidateContest.

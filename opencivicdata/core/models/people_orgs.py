@@ -1,8 +1,6 @@
-from __future__ import unicode_literals
 import datetime
 from django.db import models
 from django.db.models import Q, QuerySet
-from django.utils.encoding import python_2_unicode_compatible
 from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
 from .division import Division
 from .jurisdiction import Jurisdiction
@@ -11,7 +9,6 @@ from ... import common
 # abstract models
 
 
-@python_2_unicode_compatible
 class ContactDetailBase(RelatedBase):
     """
     A base class for ContactDetail models.
@@ -43,7 +40,6 @@ class ContactDetailBase(RelatedBase):
         return '{}: {}'.format(self.get_type_display(), self.value)
 
 
-@python_2_unicode_compatible
 class OtherNameBase(RelatedBase):
     """
     A base class for OtherName models.
@@ -79,7 +75,6 @@ class OtherNameBase(RelatedBase):
 
 # the actual models
 
-@python_2_unicode_compatible
 class Organization(OCDBase):
     """
     A group of people, typically in a legislative or rule-making context.
@@ -157,7 +152,6 @@ class Organization(OCDBase):
         ]
 
 
-@python_2_unicode_compatible
 class OrganizationIdentifier(IdentifierBase):
     """
     Upstream identifiers of an Organization.
@@ -237,7 +231,6 @@ class OrganizationSource(LinkBase):
         db_table = 'opencivicdata_organizationsource'
 
 
-@python_2_unicode_compatible
 class Post(OCDBase):
     """
     A position in an organization that exists independently of the person holding it.
@@ -344,7 +337,6 @@ class PersonQuerySet(QuerySet):
         return qs
 
 
-@python_2_unicode_compatible
 class Person(OCDBase):
     """
     An individual that has served in a political office.
@@ -494,7 +486,6 @@ class PersonSource(LinkBase):
         db_table = 'opencivicdata_personsource'
 
 
-@python_2_unicode_compatible
 class Membership(OCDBase):
     """
     A relationship between a Person and an Organization, possibly including a Post.

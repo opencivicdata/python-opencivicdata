@@ -3,9 +3,7 @@
 """
 Election-related models.
 """
-from __future__ import unicode_literals
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import (
     OCDBase,
     IdentifierBase,
@@ -18,7 +16,6 @@ from opencivicdata.core.models import (
 )
 
 
-@python_2_unicode_compatible
 class Election(OCDBase):
     """
     A collection of political contests set to be decided on the same date within a Division.
@@ -65,7 +62,6 @@ class Election(OCDBase):
         ordering = ("-date",)
 
 
-@python_2_unicode_compatible
 class ElectionIdentifier(IdentifierBase):
     """
     Upstream identifiers of a Election.

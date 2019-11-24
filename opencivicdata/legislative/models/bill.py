@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.contrib.postgres.search import SearchVectorField
-from django.utils.encoding import python_2_unicode_compatible
 
 from opencivicdata.core.models.base import (OCDBase, LinkBase, OCDIDField,
                                             RelatedBase, RelatedEntityBase,
@@ -12,7 +11,6 @@ from .session import LegislativeSession
 from ... import common
 
 
-@python_2_unicode_compatible
 class Bill(OCDBase):
     id = OCDIDField(ocd_type='bill')
     legislative_session = models.ForeignKey(LegislativeSession,
@@ -45,7 +43,6 @@ class Bill(OCDBase):
         ]
 
 
-@python_2_unicode_compatible
 class BillAbstract(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='abstracts', on_delete=models.CASCADE)
     abstract = models.TextField()
@@ -59,7 +56,6 @@ class BillAbstract(RelatedBase):
         db_table = 'opencivicdata_billabstract'
 
 
-@python_2_unicode_compatible
 class BillTitle(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='other_titles', on_delete=models.CASCADE)
     title = models.TextField()
@@ -80,7 +76,6 @@ class BillIdentifier(IdentifierBase):
         db_table = 'opencivicdata_billidentifier'
 
 
-@python_2_unicode_compatible
 class BillAction(RelatedBase):
     bill = models.ForeignKey(Bill,
                              related_name='actions',
@@ -103,7 +98,6 @@ class BillAction(RelatedBase):
         return '{0} action on {1}'.format(self.bill.identifier, self.date)
 
 
-@python_2_unicode_compatible
 class BillActionRelatedEntity(RelatedEntityBase):
     action = models.ForeignKey(BillAction,
                                related_name='related_entities',
@@ -117,7 +111,6 @@ class BillActionRelatedEntity(RelatedEntityBase):
         db_table = 'opencivicdata_billactionrelatedentity'
 
 
-@python_2_unicode_compatible
 class RelatedBill(RelatedBase):
     bill = models.ForeignKey(Bill,
                              related_name='related_bills',
@@ -142,7 +135,6 @@ class RelatedBill(RelatedBase):
         db_table = 'opencivicdata_relatedbill'
 
 
-@python_2_unicode_compatible
 class BillSponsorship(RelatedEntityBase):
     bill = models.ForeignKey(Bill, related_name='sponsorships', on_delete=models.CASCADE)
     primary = models.BooleanField(default=False)
@@ -155,7 +147,6 @@ class BillSponsorship(RelatedEntityBase):
         db_table = 'opencivicdata_billsponsorship'
 
 
-@python_2_unicode_compatible
 class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='documents', on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
@@ -168,7 +159,6 @@ class BillDocument(RelatedBase):
         db_table = 'opencivicdata_billdocument'
 
 
-@python_2_unicode_compatible
 class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name='versions', on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
@@ -182,7 +172,6 @@ class BillVersion(RelatedBase):
         db_table = 'opencivicdata_billversion'
 
 
-@python_2_unicode_compatible
 class BillDocumentLink(MimetypeLinkBase):
     document = models.ForeignKey(BillDocument, related_name='links', on_delete=models.CASCADE)
 
@@ -193,7 +182,6 @@ class BillDocumentLink(MimetypeLinkBase):
         db_table = 'opencivicdata_billdocumentlink'
 
 
-@python_2_unicode_compatible
 class BillVersionLink(MimetypeLinkBase):
     version = models.ForeignKey(BillVersion, related_name='links', on_delete=models.CASCADE)
 
