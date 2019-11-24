@@ -230,6 +230,7 @@ class SearchableBill(models.Model):
     version_link = models.OneToOneField(
         BillVersionLink,
         related_name="searchable",
+        null=True,
         on_delete=models.CASCADE
     )
 
