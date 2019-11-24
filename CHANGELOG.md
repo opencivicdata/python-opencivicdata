@@ -5,6 +5,15 @@
 Improvements requiring migrations:
 
 * added experimental SearchableBill model
+* bugfix changes to EventDocument and EventMediaBase
+
+Bugfixes:
+
+* Fix PersonAdmin memberships display
+
+Other:
+
+* add event classification choices
 
 ## 2.3.0 (2018-12-04)
 
