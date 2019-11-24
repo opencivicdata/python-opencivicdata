@@ -3,15 +3,12 @@
 """
 Base classes for contest-related models.
 """
-from __future__ import unicode_literals
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import OCDBase, OCDIDField
 from opencivicdata.core.models import Division
 from ..election import Election
 
 
-@python_2_unicode_compatible
 class ContestBase(OCDBase):
     """
     A base class for representing a specific decision set before voters in an election.

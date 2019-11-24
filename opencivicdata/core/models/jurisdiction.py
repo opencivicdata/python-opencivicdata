@@ -1,14 +1,11 @@
-from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from django.utils.encoding import python_2_unicode_compatible
 
 from ...common import JURISDICTION_CLASSIFICATION_CHOICES
 from .base import OCDBase, OCDIDField
 from .division import Division
 
 
-@python_2_unicode_compatible
 class Jurisdiction(OCDBase):
     """
     A Jurisdiction represents a logical unit of governance.

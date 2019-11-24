@@ -1,18 +1,15 @@
 language: python
-dist: xenial
+dist: bionic
 addons:
     postgresql: "10"
     apt:
         packages:
-            - "postgresql-10-postgis-2.4"
+            - "postgresql-10-postgis-2.5"
 sudo: false
 python:
-    - "2.7"
-    - "3.5"
     - "3.7"
+    - "3.8"
 env:
-    - DJANGO_VERSION=1.11
-    - DJANGO_VERSION=2.1
     - DJANGO_VERSION=2.2
     - DJANGO_VERSION=3.0rc1
 install: 
@@ -27,12 +24,6 @@ script:
     - flake8
 after_success:
     - coveralls
-matrix:
-  exclude:
-    - python: "2.7"
-      env: DJANGO_VERSION=2.1
-    - python: "2.7"
-      env: DJANGO_VERSION=2.2
 notifications:
     email:
         - james@openstates.org

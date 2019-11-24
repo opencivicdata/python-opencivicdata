@@ -3,9 +3,7 @@
 """
 Candidacy-related models.
 """
-from __future__ import unicode_literals
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import (
     OCDBase,
     LinkBase,
@@ -18,7 +16,6 @@ from opencivicdata.core.models import (
 )
 
 
-@python_2_unicode_compatible
 class Candidacy(OCDBase):
     """
     A person seeking election to hold a specific public office for a term.

@@ -3,9 +3,7 @@
 """
 BallotMeasureContest-related models.
 """
-from __future__ import unicode_literals
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import IdentifierBase, LinkBase
 from opencivicdata.core.models import Membership
 from .base import ContestBase
@@ -46,7 +44,6 @@ class BallotMeasureContest(ContestBase):
         db_table = 'opencivicdata_ballotmeasurecontest'
 
 
-@python_2_unicode_compatible
 class BallotMeasureContestOption(models.Model):
     """
     An option voters may choose in a BallotMeasureContest.
@@ -69,7 +66,6 @@ class BallotMeasureContestOption(models.Model):
         db_table = 'opencivicdata_ballotmeasurecontestoption'
 
 
-@python_2_unicode_compatible
 class BallotMeasureContestIdentifier(IdentifierBase):
     """
     Upstream identifiers of a BallotMeasureContest.
@@ -143,7 +139,6 @@ class RetentionContest(ContestBase):
         db_table = 'opencivicdata_retentioncontest'
 
 
-@python_2_unicode_compatible
 class RetentionContestOption(models.Model):
     """
     An option voters may choose in a RetentionContest.
@@ -166,7 +161,6 @@ class RetentionContestOption(models.Model):
         db_table = 'opencivicdata_retentioncontestoption'
 
 
-@python_2_unicode_compatible
 class RetentionContestIdentifier(IdentifierBase):
     """
     Upstream identifiers of a RetentionContest.

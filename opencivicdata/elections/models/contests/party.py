@@ -3,9 +3,7 @@
 """
 PartyContest-related models.
 """
-from __future__ import unicode_literals
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from opencivicdata.core.models.base import IdentifierBase, LinkBase
 from opencivicdata.core.models import Organization
 from .base import ContestBase
@@ -31,7 +29,6 @@ class PartyContest(ContestBase):
         db_table = 'opencivicdata_partycontest'
 
 
-@python_2_unicode_compatible
 class PartyContestOption(models.Model):
     """
     A party (i.e., Organization) voters choose in a PartyContest.
@@ -65,7 +62,6 @@ class PartyContestOption(models.Model):
         ordering = ("contest", "party",)
 
 
-@python_2_unicode_compatible
 class PartyContestIdentifier(IdentifierBase):
     """
     Upstream identifiers of a PartyMeasureContest.
