@@ -10,8 +10,6 @@ Open Civic Data specification.
 
 **Requires Django >=2.2 and Python >= 3.6**
 
-**As of 3.0 we recommend Postgres >= 11**
-
 The Organization, Person, Membership, Post, and VoteEvent models and related models are based on the [Popolo specification](http://popoloproject.com/).
 
 To run tests on this project: ./run-tests.sh

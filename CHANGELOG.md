@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0
+
+Drops support for Python 2, Django versions before < 2.2 LTS.
+
 ## 2.5.0 (2019-11-24)
 
 Improvements requiring migrations:
