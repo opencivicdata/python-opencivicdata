@@ -8,7 +8,7 @@ python-opencivicdata
 Python utilities (including Django models) for implementing the
 Open Civic Data specification.
 
-**Requires Django >=2.2 and Python >= 3.6**
+**Requires Django >=2.2 and Python >= 3.6, pin to <3.0 for older versions**
 
 The Organization, Person, Membership, Post, and VoteEvent models and related models are based on the [Popolo specification](http://popoloproject.com/).
 

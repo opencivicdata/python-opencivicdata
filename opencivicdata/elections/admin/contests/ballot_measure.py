@@ -3,7 +3,6 @@
 """
 Custom administration panels for OpenCivicData election contest models.
 """
-from django import VERSION as django_version
 from django.contrib import admin
 from opencivicdata.core.admin import base
 from ... import models
@@ -58,9 +57,7 @@ class BallotMeasureContestAdmin(base.ModelAdmin):
     )
     search_fields = ('name', 'election__name', )
     list_filter = ('updated_at', 'classification', )
-    # date_hierarchy across relations was added to django 1.11
-    if django_version[0] >= 1 and django_version[1] >= 11:
-        date_hierarchy = 'election__date'
+    date_hierarchy = 'election__date'
 
     def division_name(self, obj):
         """
@@ -128,9 +125,7 @@ class RetentionContestBaseAdmin(base.ModelAdmin):
         'election__name',
     )
     list_filter = ('updated_at', )
-    # date_hierarchy across relations was added to django 1.11
-    if django_version[0] >= 1 and django_version[1] >= 11:
-        date_hierarchy = 'election__date'
+    date_hierarchy = 'election__date'
 
     inlines = [
         RetentionContestOptionInline,

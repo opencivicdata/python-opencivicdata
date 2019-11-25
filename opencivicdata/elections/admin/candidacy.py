@@ -3,7 +3,6 @@
 """
 Custom administration panels for Candidacy-related models.
 """
-from django import VERSION as django_version
 from django.contrib import admin
 from opencivicdata.core.admin import base
 from .. import models
@@ -51,9 +50,7 @@ class CandidacyAdmin(base.ModelAdmin):
         'registration_status',
         'updated_at',
     )
-    # date_hierarchy across relations was added to django 1.11
-    if django_version[0] >= 1 and django_version[1] >= 11:
-        date_hierarchy = 'contest__election__date'
+    date_hierarchy = 'contest__election__date'
 
     inlines = [
         CandidacySourceInline,

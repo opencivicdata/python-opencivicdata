@@ -1,16 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
 import os
 import re
 import io
-if sys.version_info[0:2] == (2, 7):
-    from backports import csv
-    from urllib2 import urlopen
-    FileNotFoundError = IOError
-else:
-    import csv
-    from urllib.request import urlopen
+import csv
+from urllib.request import urlopen
 
 PWD = os.path.abspath(os.path.dirname(__file__))
 OCD_REMOTE_URL = ('https://raw.githubusercontent.com/opencivicdata/ocd-division-ids/master/'
