@@ -16,487 +16,1186 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        ('core', '0001_initial'),
-    ]
+    dependencies = [("core", "0001_initial")]
 
     operations = [
         migrations.CreateModel(
-            name='Bill',
+            name="Bill",
             fields=[
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict)),
-                ('locked_fields', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('id', opencivicdata.core.models.base.OCDIDField(ocd_type='bill', serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
-                ('identifier', models.CharField(max_length=100)),
-                ('title', models.TextField()),
-                ('classification', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('subject', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('from_organization', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='bills', to='core.Organization')),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "extras",
+                    django.contrib.postgres.fields.jsonb.JSONField(
+                        blank=True, default=dict
+                    ),
+                ),
+                (
+                    "locked_fields",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                (
+                    "id",
+                    opencivicdata.core.models.base.OCDIDField(
+                        ocd_type="bill",
+                        serialize=False,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                flags=32,
+                                message="ID must match ^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                                regex="^ocd-bill/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                            )
+                        ],
+                    ),
+                ),
+                ("identifier", models.CharField(max_length=100)),
+                ("title", models.TextField()),
+                (
+                    "classification",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                (
+                    "subject",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                (
+                    "from_organization",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bills",
+                        to="core.Organization",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_bill',
-            },
+            options={"db_table": "opencivicdata_bill"},
         ),
         migrations.CreateModel(
-            name='BillAbstract',
+            name="BillAbstract",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('abstract', models.TextField()),
-                ('note', models.TextField(blank=True)),
-                ('date', models.TextField(blank=True, max_length=10)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='abstracts', to='legislative.Bill')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("abstract", models.TextField()),
+                ("note", models.TextField(blank=True)),
+                ("date", models.TextField(blank=True, max_length=10)),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="abstracts",
+                        to="legislative.Bill",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billabstract',
-            },
+            options={"db_table": "opencivicdata_billabstract"},
         ),
         migrations.CreateModel(
-            name='BillAction',
+            name="BillAction",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('description', models.TextField()),
-                ('date', models.CharField(max_length=10)),
-                ('classification', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('order', models.PositiveIntegerField()),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='actions', to='legislative.Bill')),
-                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='actions', to='core.Organization')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("date", models.CharField(max_length=10)),
+                (
+                    "classification",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                ("order", models.PositiveIntegerField()),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="actions",
+                        to="legislative.Bill",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="actions",
+                        to="core.Organization",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billaction',
-                'ordering': ['order'],
-            },
+            options={"db_table": "opencivicdata_billaction", "ordering": ["order"]},
         ),
         migrations.CreateModel(
-            name='BillActionRelatedEntity',
+            name="BillActionRelatedEntity",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=2000)),
-                ('entity_type', models.CharField(blank=True, max_length=20)),
-                ('action', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='related_entities', to='legislative.BillAction')),
-                ('organization', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Organization')),
-                ('person', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Person')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=2000)),
+                ("entity_type", models.CharField(blank=True, max_length=20)),
+                (
+                    "action",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="related_entities",
+                        to="legislative.BillAction",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Organization",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Person",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billactionrelatedentity',
-            },
+            options={"db_table": "opencivicdata_billactionrelatedentity"},
         ),
         migrations.CreateModel(
-            name='BillDocument',
+            name="BillDocument",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(max_length=300)),
-                ('date', models.CharField(max_length=10)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='documents', to='legislative.Bill')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(max_length=300)),
+                ("date", models.CharField(max_length=10)),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="documents",
+                        to="legislative.Bill",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billdocument',
-            },
+            options={"db_table": "opencivicdata_billdocument"},
         ),
         migrations.CreateModel(
-            name='BillDocumentLink',
+            name="BillDocumentLink",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('media_type', models.CharField(max_length=100)),
-                ('url', models.URLField(max_length=2000)),
-                ('text', models.TextField(blank=True, default='')),
-                ('document', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='links', to='legislative.BillDocument')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("media_type", models.CharField(max_length=100)),
+                ("url", models.URLField(max_length=2000)),
+                ("text", models.TextField(blank=True, default="")),
+                (
+                    "document",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="links",
+                        to="legislative.BillDocument",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billdocumentlink',
-            },
+            options={"db_table": "opencivicdata_billdocumentlink"},
         ),
         migrations.CreateModel(
-            name='BillIdentifier',
+            name="BillIdentifier",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('identifier', models.CharField(max_length=300)),
-                ('scheme', models.CharField(max_length=300)),
-                ('note', models.TextField(blank=True)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='other_identifiers', to='legislative.Bill')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("identifier", models.CharField(max_length=300)),
+                ("scheme", models.CharField(max_length=300)),
+                ("note", models.TextField(blank=True)),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="other_identifiers",
+                        to="legislative.Bill",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billidentifier',
-            },
+            options={"db_table": "opencivicdata_billidentifier"},
         ),
         migrations.CreateModel(
-            name='BillSource',
+            name="BillSource",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(blank=True, max_length=300)),
-                ('url', models.URLField(max_length=2000)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sources', to='legislative.Bill')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(blank=True, max_length=300)),
+                ("url", models.URLField(max_length=2000)),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sources",
+                        to="legislative.Bill",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billsource',
-            },
+            options={"db_table": "opencivicdata_billsource"},
         ),
         migrations.CreateModel(
-            name='BillSponsorship',
+            name="BillSponsorship",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=2000)),
-                ('entity_type', models.CharField(blank=True, max_length=20)),
-                ('primary', models.BooleanField(default=False)),
-                ('classification', models.CharField(max_length=100)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sponsorships', to='legislative.Bill')),
-                ('organization', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Organization')),
-                ('person', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Person')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=2000)),
+                ("entity_type", models.CharField(blank=True, max_length=20)),
+                ("primary", models.BooleanField(default=False)),
+                ("classification", models.CharField(max_length=100)),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sponsorships",
+                        to="legislative.Bill",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Organization",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Person",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billsponsorship',
-            },
+            options={"db_table": "opencivicdata_billsponsorship"},
         ),
         migrations.CreateModel(
-            name='BillTitle',
+            name="BillTitle",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('title', models.TextField()),
-                ('note', models.TextField(blank=True)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='other_titles', to='legislative.Bill')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("title", models.TextField()),
+                ("note", models.TextField(blank=True)),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="other_titles",
+                        to="legislative.Bill",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billtitle',
-            },
+            options={"db_table": "opencivicdata_billtitle"},
         ),
         migrations.CreateModel(
-            name='BillVersion',
+            name="BillVersion",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(max_length=300)),
-                ('date', models.CharField(max_length=10)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='versions', to='legislative.Bill')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(max_length=300)),
+                ("date", models.CharField(max_length=10)),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="versions",
+                        to="legislative.Bill",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billversion',
-            },
+            options={"db_table": "opencivicdata_billversion"},
         ),
         migrations.CreateModel(
-            name='BillVersionLink',
+            name="BillVersionLink",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('media_type', models.CharField(max_length=100)),
-                ('url', models.URLField(max_length=2000)),
-                ('text', models.TextField(blank=True, default='')),
-                ('version', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='links', to='legislative.BillVersion')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("media_type", models.CharField(max_length=100)),
+                ("url", models.URLField(max_length=2000)),
+                ("text", models.TextField(blank=True, default="")),
+                (
+                    "version",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="links",
+                        to="legislative.BillVersion",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_billversionlink',
-            },
+            options={"db_table": "opencivicdata_billversionlink"},
         ),
         migrations.CreateModel(
-            name='Event',
+            name="Event",
             fields=[
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict)),
-                ('locked_fields', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('id', opencivicdata.core.models.base.OCDIDField(ocd_type='event', serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
-                ('name', models.CharField(max_length=300)),
-                ('description', models.TextField()),
-                ('classification', models.CharField(max_length=100)),
-                ('start_time', models.DateTimeField()),
-                ('timezone', models.CharField(max_length=300)),
-                ('end_time', models.DateTimeField(null=True)),
-                ('all_day', models.BooleanField(default=False)),
-                ('status', models.CharField(choices=[('cancelled', 'Cancelled'), ('tentative', 'Tentative'), ('confirmed', 'Confirmed'), ('passed', 'Passed')], max_length=20)),
-                ('jurisdiction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='events', to='core.Jurisdiction')),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "extras",
+                    django.contrib.postgres.fields.jsonb.JSONField(
+                        blank=True, default=dict
+                    ),
+                ),
+                (
+                    "locked_fields",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                (
+                    "id",
+                    opencivicdata.core.models.base.OCDIDField(
+                        ocd_type="event",
+                        serialize=False,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                flags=32,
+                                message="ID must match ^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                                regex="^ocd-event/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                            )
+                        ],
+                    ),
+                ),
+                ("name", models.CharField(max_length=300)),
+                ("description", models.TextField()),
+                ("classification", models.CharField(max_length=100)),
+                ("start_time", models.DateTimeField()),
+                ("timezone", models.CharField(max_length=300)),
+                ("end_time", models.DateTimeField(null=True)),
+                ("all_day", models.BooleanField(default=False)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("cancelled", "Cancelled"),
+                            ("tentative", "Tentative"),
+                            ("confirmed", "Confirmed"),
+                            ("passed", "Passed"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "jurisdiction",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="events",
+                        to="core.Jurisdiction",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_event',
-            },
+            options={"db_table": "opencivicdata_event"},
         ),
         migrations.CreateModel(
-            name='EventAgendaItem',
+            name="EventAgendaItem",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('description', models.TextField()),
-                ('classification', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('order', models.CharField(blank=True, max_length=100)),
-                ('subjects', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('notes', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='agenda', to='legislative.Event')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("description", models.TextField()),
+                (
+                    "classification",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                ("order", models.CharField(blank=True, max_length=100)),
+                (
+                    "subjects",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                (
+                    "notes",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="agenda",
+                        to="legislative.Event",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventagendaitem',
-            },
+            options={"db_table": "opencivicdata_eventagendaitem"},
         ),
         migrations.CreateModel(
-            name='EventAgendaMedia',
+            name="EventAgendaMedia",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(max_length=300)),
-                ('date', models.CharField(blank=True, max_length=10)),
-                ('offset', models.PositiveIntegerField(null=True)),
-                ('agenda_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='media', to='legislative.EventAgendaItem')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(max_length=300)),
+                ("date", models.CharField(blank=True, max_length=10)),
+                ("offset", models.PositiveIntegerField(null=True)),
+                (
+                    "agenda_item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="media",
+                        to="legislative.EventAgendaItem",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventagendamedia',
-            },
+            options={"db_table": "opencivicdata_eventagendamedia"},
         ),
         migrations.CreateModel(
-            name='EventAgendaMediaLink',
+            name="EventAgendaMediaLink",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('media_type', models.CharField(max_length=100)),
-                ('url', models.URLField(max_length=2000)),
-                ('text', models.TextField(blank=True, default='')),
-                ('media', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='links', to='legislative.EventAgendaMedia')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("media_type", models.CharField(max_length=100)),
+                ("url", models.URLField(max_length=2000)),
+                ("text", models.TextField(blank=True, default="")),
+                (
+                    "media",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="links",
+                        to="legislative.EventAgendaMedia",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventagendamedialink',
-            },
+            options={"db_table": "opencivicdata_eventagendamedialink"},
         ),
         migrations.CreateModel(
-            name='EventDocument',
+            name="EventDocument",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('media_type', models.CharField(max_length=100)),
-                ('url', models.URLField(max_length=2000)),
-                ('text', models.TextField(blank=True, default='')),
-                ('note', models.CharField(max_length=300)),
-                ('date', models.CharField(max_length=10)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='documents', to='legislative.Event')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("media_type", models.CharField(max_length=100)),
+                ("url", models.URLField(max_length=2000)),
+                ("text", models.TextField(blank=True, default="")),
+                ("note", models.CharField(max_length=300)),
+                ("date", models.CharField(max_length=10)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="documents",
+                        to="legislative.Event",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventdocument',
-            },
+            options={"db_table": "opencivicdata_eventdocument"},
         ),
         migrations.CreateModel(
-            name='EventDocumentLink',
+            name="EventDocumentLink",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('media_type', models.CharField(max_length=100)),
-                ('url', models.URLField(max_length=2000)),
-                ('text', models.TextField(blank=True, default='')),
-                ('document', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='links', to='legislative.EventDocument')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("media_type", models.CharField(max_length=100)),
+                ("url", models.URLField(max_length=2000)),
+                ("text", models.TextField(blank=True, default="")),
+                (
+                    "document",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="links",
+                        to="legislative.EventDocument",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventdocumentlink',
-            },
+            options={"db_table": "opencivicdata_eventdocumentlink"},
         ),
         migrations.CreateModel(
-            name='EventLink',
+            name="EventLink",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(blank=True, max_length=300)),
-                ('url', models.URLField(max_length=2000)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='links', to='legislative.Event')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(blank=True, max_length=300)),
+                ("url", models.URLField(max_length=2000)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="links",
+                        to="legislative.Event",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventlink',
-            },
+            options={"db_table": "opencivicdata_eventlink"},
         ),
         migrations.CreateModel(
-            name='EventLocation',
+            name="EventLocation",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=200)),
-                ('url', models.URLField(blank=True, max_length=2000)),
-                ('coordinates', django.contrib.gis.db.models.fields.PointField(null=True, srid=4326)),
-                ('jurisdiction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_locations', to='core.Jurisdiction')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("url", models.URLField(blank=True, max_length=2000)),
+                (
+                    "coordinates",
+                    django.contrib.gis.db.models.fields.PointField(
+                        null=True, srid=4326
+                    ),
+                ),
+                (
+                    "jurisdiction",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="event_locations",
+                        to="core.Jurisdiction",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventlocation',
-            },
+            options={"db_table": "opencivicdata_eventlocation"},
         ),
         migrations.CreateModel(
-            name='EventMedia',
+            name="EventMedia",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(max_length=300)),
-                ('date', models.CharField(blank=True, max_length=10)),
-                ('offset', models.PositiveIntegerField(null=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='media', to='legislative.Event')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(max_length=300)),
+                ("date", models.CharField(blank=True, max_length=10)),
+                ("offset", models.PositiveIntegerField(null=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="media",
+                        to="legislative.Event",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventmedia',
-            },
+            options={"db_table": "opencivicdata_eventmedia"},
         ),
         migrations.CreateModel(
-            name='EventMediaLink',
+            name="EventMediaLink",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('media_type', models.CharField(max_length=100)),
-                ('url', models.URLField(max_length=2000)),
-                ('text', models.TextField(blank=True, default='')),
-                ('media', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='links', to='legislative.EventMedia')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("media_type", models.CharField(max_length=100)),
+                ("url", models.URLField(max_length=2000)),
+                ("text", models.TextField(blank=True, default="")),
+                (
+                    "media",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="links",
+                        to="legislative.EventMedia",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventmedialink',
-            },
+            options={"db_table": "opencivicdata_eventmedialink"},
         ),
         migrations.CreateModel(
-            name='EventParticipant',
+            name="EventParticipant",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=2000)),
-                ('entity_type', models.CharField(blank=True, max_length=20)),
-                ('note', models.TextField()),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='participants', to='legislative.Event')),
-                ('organization', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Organization')),
-                ('person', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Person')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=2000)),
+                ("entity_type", models.CharField(blank=True, max_length=20)),
+                ("note", models.TextField()),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="participants",
+                        to="legislative.Event",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Organization",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Person",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventparticipant',
-            },
+            options={"db_table": "opencivicdata_eventparticipant"},
         ),
         migrations.CreateModel(
-            name='EventRelatedEntity',
+            name="EventRelatedEntity",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=2000)),
-                ('entity_type', models.CharField(blank=True, max_length=20)),
-                ('note', models.TextField()),
-                ('agenda_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='related_entities', to='legislative.EventAgendaItem')),
-                ('bill', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='legislative.Bill')),
-                ('organization', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Organization')),
-                ('person', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Person')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=2000)),
+                ("entity_type", models.CharField(blank=True, max_length=20)),
+                ("note", models.TextField()),
+                (
+                    "agenda_item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="related_entities",
+                        to="legislative.EventAgendaItem",
+                    ),
+                ),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="legislative.Bill",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Organization",
+                    ),
+                ),
+                (
+                    "person",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="core.Person",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventrelatedentity',
-            },
+            options={"db_table": "opencivicdata_eventrelatedentity"},
         ),
         migrations.CreateModel(
-            name='EventSource',
+            name="EventSource",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(blank=True, max_length=300)),
-                ('url', models.URLField(max_length=2000)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sources', to='legislative.Event')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(blank=True, max_length=300)),
+                ("url", models.URLField(max_length=2000)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sources",
+                        to="legislative.Event",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_eventsource',
-            },
+            options={"db_table": "opencivicdata_eventsource"},
         ),
         migrations.CreateModel(
-            name='LegislativeSession',
+            name="LegislativeSession",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('identifier', models.CharField(max_length=100)),
-                ('name', models.CharField(max_length=300)),
-                ('classification', models.CharField(blank=True, choices=[('primary', 'Primary'), ('special', 'Special')], max_length=100)),
-                ('start_date', models.CharField(max_length=10)),
-                ('end_date', models.CharField(max_length=10)),
-                ('jurisdiction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='legislative_sessions', to='core.Jurisdiction')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("identifier", models.CharField(max_length=100)),
+                ("name", models.CharField(max_length=300)),
+                (
+                    "classification",
+                    models.CharField(
+                        blank=True,
+                        choices=[("primary", "Primary"), ("special", "Special")],
+                        max_length=100,
+                    ),
+                ),
+                ("start_date", models.CharField(max_length=10)),
+                ("end_date", models.CharField(max_length=10)),
+                (
+                    "jurisdiction",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="legislative_sessions",
+                        to="core.Jurisdiction",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_legislativesession',
-            },
+            options={"db_table": "opencivicdata_legislativesession"},
         ),
         migrations.CreateModel(
-            name='PersonVote',
+            name="PersonVote",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('option', models.CharField(choices=[('yes', 'Yes'), ('no', 'No'), ('absent', 'Absent'), ('abstain', 'Abstain'), ('not voting', 'Not Voting'), ('paired', 'Paired'), ('excused', 'Excused'), ('other', 'Other')], max_length=50)),
-                ('voter_name', models.CharField(max_length=300)),
-                ('note', models.TextField(blank=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "option",
+                    models.CharField(
+                        choices=[
+                            ("yes", "Yes"),
+                            ("no", "No"),
+                            ("absent", "Absent"),
+                            ("abstain", "Abstain"),
+                            ("not voting", "Not Voting"),
+                            ("paired", "Paired"),
+                            ("excused", "Excused"),
+                            ("other", "Other"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                ("voter_name", models.CharField(max_length=300)),
+                ("note", models.TextField(blank=True)),
             ],
-            options={
-                'db_table': 'opencivicdata_personvote',
-            },
+            options={"db_table": "opencivicdata_personvote"},
         ),
         migrations.CreateModel(
-            name='RelatedBill',
+            name="RelatedBill",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('identifier', models.CharField(max_length=100)),
-                ('legislative_session', models.CharField(max_length=100)),
-                ('relation_type', models.CharField(choices=[('companion', 'Companion'), ('prior-session', 'Prior Session'), ('replaced-by', 'Replaced By'), ('replaces', 'Replaces')], max_length=100)),
-                ('bill', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='related_bills', to='legislative.Bill')),
-                ('related_bill', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='related_bills_reverse', to='legislative.Bill')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("identifier", models.CharField(max_length=100)),
+                ("legislative_session", models.CharField(max_length=100)),
+                (
+                    "relation_type",
+                    models.CharField(
+                        choices=[
+                            ("companion", "Companion"),
+                            ("prior-session", "Prior Session"),
+                            ("replaced-by", "Replaced By"),
+                            ("replaces", "Replaces"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="related_bills",
+                        to="legislative.Bill",
+                    ),
+                ),
+                (
+                    "related_bill",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="related_bills_reverse",
+                        to="legislative.Bill",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_relatedbill',
-            },
+            options={"db_table": "opencivicdata_relatedbill"},
         ),
         migrations.CreateModel(
-            name='VoteCount',
+            name="VoteCount",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('option', models.CharField(choices=[('yes', 'Yes'), ('no', 'No'), ('absent', 'Absent'), ('abstain', 'Abstain'), ('not voting', 'Not Voting'), ('paired', 'Paired'), ('excused', 'Excused'), ('other', 'Other')], max_length=50)),
-                ('value', models.PositiveIntegerField()),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "option",
+                    models.CharField(
+                        choices=[
+                            ("yes", "Yes"),
+                            ("no", "No"),
+                            ("absent", "Absent"),
+                            ("abstain", "Abstain"),
+                            ("not voting", "Not Voting"),
+                            ("paired", "Paired"),
+                            ("excused", "Excused"),
+                            ("other", "Other"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                ("value", models.PositiveIntegerField()),
             ],
-            options={
-                'db_table': 'opencivicdata_votecount',
-            },
+            options={"db_table": "opencivicdata_votecount"},
         ),
         migrations.CreateModel(
-            name='VoteEvent',
+            name="VoteEvent",
             fields=[
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('extras', django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict)),
-                ('locked_fields', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('id', opencivicdata.core.models.base.OCDIDField(ocd_type='vote', serialize=False, validators=[django.core.validators.RegexValidator(flags=32, message='ID must match ^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$', regex='^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$')])),
-                ('identifier', models.CharField(blank=True, max_length=300)),
-                ('motion_text', models.TextField()),
-                ('motion_classification', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, default=list, size=None)),
-                ('start_date', models.CharField(max_length=19)),
-                ('end_date', models.CharField(blank=True, max_length=19)),
-                ('result', models.CharField(choices=[('pass', 'Pass'), ('fail', 'Fail')], max_length=50)),
-                ('bill', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='legislative.Bill')),
-                ('bill_action', models.OneToOneField(default=None, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='vote', to='legislative.BillAction')),
-                ('legislative_session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='legislative.LegislativeSession')),
-                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='core.Organization')),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "extras",
+                    django.contrib.postgres.fields.jsonb.JSONField(
+                        blank=True, default=dict
+                    ),
+                ),
+                (
+                    "locked_fields",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                (
+                    "id",
+                    opencivicdata.core.models.base.OCDIDField(
+                        ocd_type="vote",
+                        serialize=False,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                flags=32,
+                                message="ID must match ^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                                regex="^ocd-vote/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                            )
+                        ],
+                    ),
+                ),
+                ("identifier", models.CharField(blank=True, max_length=300)),
+                ("motion_text", models.TextField()),
+                (
+                    "motion_classification",
+                    django.contrib.postgres.fields.ArrayField(
+                        base_field=models.TextField(),
+                        blank=True,
+                        default=list,
+                        size=None,
+                    ),
+                ),
+                ("start_date", models.CharField(max_length=19)),
+                ("end_date", models.CharField(blank=True, max_length=19)),
+                (
+                    "result",
+                    models.CharField(
+                        choices=[("pass", "Pass"), ("fail", "Fail")], max_length=50
+                    ),
+                ),
+                (
+                    "bill",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="votes",
+                        to="legislative.Bill",
+                    ),
+                ),
+                (
+                    "bill_action",
+                    models.OneToOneField(
+                        default=None,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="vote",
+                        to="legislative.BillAction",
+                    ),
+                ),
+                (
+                    "legislative_session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="votes",
+                        to="legislative.LegislativeSession",
+                    ),
+                ),
+                (
+                    "organization",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="votes",
+                        to="core.Organization",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_voteevent',
-            },
+            options={"db_table": "opencivicdata_voteevent"},
         ),
         migrations.CreateModel(
-            name='VoteSource',
+            name="VoteSource",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('note', models.CharField(blank=True, max_length=300)),
-                ('url', models.URLField(max_length=2000)),
-                ('vote_event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sources', to='legislative.VoteEvent')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("note", models.CharField(blank=True, max_length=300)),
+                ("url", models.URLField(max_length=2000)),
+                (
+                    "vote_event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sources",
+                        to="legislative.VoteEvent",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_votesource',
-            },
+            options={"db_table": "opencivicdata_votesource"},
         ),
         migrations.AddField(
-            model_name='votecount',
-            name='vote_event',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='counts', to='legislative.VoteEvent'),
+            model_name="votecount",
+            name="vote_event",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="counts",
+                to="legislative.VoteEvent",
+            ),
         ),
         migrations.AddField(
-            model_name='personvote',
-            name='vote_event',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='legislative.VoteEvent'),
+            model_name="personvote",
+            name="vote_event",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="votes",
+                to="legislative.VoteEvent",
+            ),
         ),
         migrations.AddField(
-            model_name='personvote',
-            name='voter',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='votes', to='core.Person'),
+            model_name="personvote",
+            name="voter",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="votes",
+                to="core.Person",
+            ),
         ),
         migrations.AddField(
-            model_name='eventrelatedentity',
-            name='vote_event',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='legislative.VoteEvent'),
+            model_name="eventrelatedentity",
+            name="vote_event",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="legislative.VoteEvent",
+            ),
         ),
         migrations.AddField(
-            model_name='event',
-            name='location',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='legislative.EventLocation'),
+            model_name="event",
+            name="location",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="legislative.EventLocation",
+            ),
         ),
         migrations.AddField(
-            model_name='bill',
-            name='legislative_session',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bills', to='legislative.LegislativeSession'),
+            model_name="bill",
+            name="legislative_session",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="bills",
+                to="legislative.LegislativeSession",
+            ),
         ),
         migrations.AlterIndexTogether(
-            name='voteevent',
-            index_together=set([('legislative_session', 'bill'), ('legislative_session', 'identifier', 'bill')]),
+            name="voteevent",
+            index_together=set(
+                [
+                    ("legislative_session", "bill"),
+                    ("legislative_session", "identifier", "bill"),
+                ]
+            ),
         ),
         migrations.AlterIndexTogether(
-            name='event',
-            index_together=set([('jurisdiction', 'start_time', 'name')]),
+            name="event", index_together=set([("jurisdiction", "start_time", "name")])
         ),
         migrations.AlterIndexTogether(
-            name='bill',
-            index_together=set([('from_organization', 'legislative_session', 'identifier')]),
+            name="bill",
+            index_together=set(
+                [("from_organization", "legislative_session", "identifier")]
+            ),
         ),
     ]

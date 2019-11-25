@@ -48,7 +48,9 @@ def test_ballot_measure_contest_str(ballot_measure_contest):
 
 @pytest.mark.django_db
 def test_ballot_measure_contest_identifier_str(ballot_measure_contest_identifier):
-    assert ballot_measure_contest_identifier.identifier in str(ballot_measure_contest_identifier)
+    assert ballot_measure_contest_identifier.identifier in str(
+        ballot_measure_contest_identifier
+    )
 
 
 @pytest.mark.django_db

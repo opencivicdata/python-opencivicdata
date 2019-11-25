@@ -7,21 +7,16 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('elections', '0001_initial'),
-    ]
+    dependencies = [("elections", "0001_initial")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='ballotmeasurecontest',
-            options={'ordering': ('election', 'name')},
+            name="ballotmeasurecontest", options={"ordering": ("election", "name")}
         ),
         migrations.AlterModelOptions(
-            name='candidatecontest',
-            options={'ordering': ('election', 'name')},
+            name="candidatecontest", options={"ordering": ("election", "name")}
         ),
         migrations.AlterModelOptions(
-            name='retentioncontest',
-            options={'ordering': ('election', 'name')},
+            name="retentioncontest", options={"ordering": ("election", "name")}
         ),
     ]

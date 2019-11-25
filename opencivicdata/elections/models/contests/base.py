@@ -16,6 +16,7 @@ class ContestBase(OCDBase):
     Includes properties shared by all contest types: BallotMeasureContest,
     CandidateContest, PartyContest and RetentionContest.
     """
+
     id = OCDIDField(
         ocd_type="contest",
         help_text="Open Civic Data-style id in the format ``ocd-contest/{{uuid}}``.",
@@ -29,9 +30,9 @@ class ContestBase(OCDBase):
         related_name="%(class)ss",
         related_query_name="%(class)ss",
         help_text="Reference to the Division that defines the political "
-                  "geography of the contest, e.g., a specific Congressional or "
-                  "State Senate district. Should be a subdivision of the Division "
-                  "referenced by the contest's Election.",
+        "geography of the contest, e.g., a specific Congressional or "
+        "State Senate district. Should be a subdivision of the Division "
+        "referenced by the contest's Election.",
         on_delete=models.PROTECT,
     )
     election = models.ForeignKey(
@@ -49,5 +50,6 @@ class ContestBase(OCDBase):
         """
         Model options.
         """
-        ordering = ("election", "name",)
+
+        ordering = ("election", "name")
         abstract = True

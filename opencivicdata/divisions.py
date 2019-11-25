@@ -7,8 +7,10 @@ import csv
 from urllib.request import urlopen
 
 PWD = os.path.abspath(os.path.dirname(__file__))
-OCD_REMOTE_URL = ('https://raw.githubusercontent.com/opencivicdata/ocd-division-ids/master/'
-                  'identifiers/country-{}.csv')
+OCD_REMOTE_URL = (
+    "https://raw.githubusercontent.com/opencivicdata/ocd-division-ids/master/"
+    "identifiers/country-{}.csv"
+)
 
 
 class Division(object):
@@ -19,18 +21,19 @@ class Division(object):
         file_handle = None
 
         # Load from CSV if `from_csv` or `OCD_DIVISION_CSV` are set.
-        if from_csv or 'OCD_DIVISION_CSV' in os.environ:
+        if from_csv or "OCD_DIVISION_CSV" in os.environ:
             if not from_csv:
-                from_csv = os.environ.get('OCD_DIVISION_CSV').format(country)
+                from_csv = os.environ.get("OCD_DIVISION_CSV").format(country)
             try:
-                file_handle = io.open(from_csv, encoding='utf8')
+                file_handle = io.open(from_csv, encoding="utf8")
             except FileNotFoundError:
                 raise ValueError("Couldn't open CSV file {}".format(from_csv))
 
         # Load from URL otherwise.
         if not file_handle:
-            file_handle = io.StringIO(urlopen(OCD_REMOTE_URL.format(country)
-                                              ).read().decode('utf-8'))
+            file_handle = io.StringIO(
+                urlopen(OCD_REMOTE_URL.format(country)).read().decode("utf-8")
+            )
 
         for row in csv.DictReader(file_handle):
             yield Division(**row)
@@ -41,7 +44,7 @@ class Division(object):
             # Figure out the country.
             if not re.match(r"ocd-division/country:\w{2}", division):
                 raise ValueError("Invalid OCD format.")
-            country = re.findall(r'country:(\w{2})', division)[0]
+            country = re.findall(r"country:(\w{2})", division)[0]
 
             # Load all divisions into cache.
             for d in self.all(country, from_csv):
@@ -56,14 +59,14 @@ class Division(object):
         self._cache[id] = self
         self.id = id
         self.name = name
-        self.sameAs = kwargs.pop('sameAs', None)
-        valid_through = kwargs.pop('validThrough', None)
+        self.sameAs = kwargs.pop("sameAs", None)
+        valid_through = kwargs.pop("validThrough", None)
         if valid_through:
             self.valid_through = valid_through
 
         # set parent and _type
-        parent, own_id = id.rsplit('/', 1)
-        if parent == 'ocd-division':
+        parent, own_id = id.rsplit("/", 1)
+        if parent == "ocd-division":
             self.parent = None
         else:
             self.parent = self._cache.get(parent)
@@ -73,7 +76,7 @@ class Division(object):
                 # TODO: keep a list of unassigned parents for later reconciliation
                 pass
 
-        self._type = own_id.split(':')[0]
+        self._type = own_id.split(":")[0]
 
         # other attrs
         self.attrs = kwargs
@@ -89,4 +92,4 @@ class Division(object):
                         yield c
 
     def __str__(self):
-        return '{} - {}'.format(self.id, self.name)
+        return "{} - {}".format(self.id, self.name)

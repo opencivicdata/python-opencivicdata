@@ -38,8 +38,7 @@ from opencivicdata.elections.models import (
 @pytest.fixture
 def division():
     div = Division.objects.create(
-        id='ocd-division/country:us/state:mo',
-        name='Missouri'
+        id="ocd-division/country:us/state:mo", name="Missouri"
     )
     return div
 
@@ -111,8 +110,8 @@ def event(jurisdiction, event_location):
         name="Meeting of the Committee on Energy",
         jurisdiction=jurisdiction,
         description="To discuss the pros/cons of wind farming.",
-        classification='committee-meeting',
-        start_date=datetime.utcnow().isoformat().split('.')[0],
+        classification="committee-meeting",
+        start_date=datetime.utcnow().isoformat().split(".")[0],
         status="passed",
         location=event_location,
     )
@@ -121,44 +120,34 @@ def event(jurisdiction, event_location):
 
 @pytest.fixture
 def party():
-    p = Organization.objects.create(name='Republican', classification='party')
+    p = Organization.objects.create(name="Republican", classification="party")
     return p
 
 
 @pytest.fixture
 def person():
     p = Person.objects.create(
-        name='Arnold Schwarzenegger',
-        sort_name='Schwarzenegger, Arnold',
+        name="Arnold Schwarzenegger", sort_name="Schwarzenegger, Arnold"
     )
     return p
 
 
 @pytest.fixture
 def post(organization):
-    p = Post.objects.create(
-        organization=organization,
-        label='Governor',
-    )
+    p = Post.objects.create(organization=organization, label="Governor")
     return p
 
 
 @pytest.fixture
 def membership(organization, post, person):
-    m = Membership.objects.create(
-        organization=organization,
-        post=post,
-        person=person,
-    )
+    m = Membership.objects.create(organization=organization, post=post, person=person)
     return m
 
 
 @pytest.fixture
 def election(division):
     elec = Election.objects.create(
-        name="2016 General",
-        date=date(2016, 11, 8),
-        division=division,
+        name="2016 General", date=date(2016, 11, 8), division=division
     )
     return elec
 
@@ -166,9 +155,7 @@ def election(division):
 @pytest.fixture
 def election_identifier(election):
     elec_id = ElectionIdentifier.objects.create(
-        election=election,
-        scheme="calaccess_election_id",
-        identifier="65"
+        election=election, scheme="calaccess_election_id", identifier="65"
     )
     return elec_id
 
@@ -176,20 +163,14 @@ def election_identifier(election):
 @pytest.fixture
 def candidate_contest(election, division):
     cc = CandidateContest.objects.create(
-        name="Governor",
-        division=division,
-        election=election,
-        number_elected=1,
+        name="Governor", division=division, election=election, number_elected=1
     )
     return cc
 
 
 @pytest.fixture
 def candidate_contest_post(candidate_contest, post):
-    ccp = CandidateContestPost.objects.create(
-        contest=candidate_contest,
-        post=post,
-    )
+    ccp = CandidateContestPost.objects.create(contest=candidate_contest, post=post)
     return ccp
 
 
@@ -208,9 +189,7 @@ def candidacy(candidate_contest, post, person, party):
 @pytest.fixture
 def candidate_contest_identifier(candidate_contest):
     cc_id = CandidateContestIdentifier.objects.create(
-        contest=candidate_contest,
-        scheme="calaccess_contest_id",
-        identifier="GOV"
+        contest=candidate_contest, scheme="calaccess_contest_id", identifier="GOV"
     )
     return cc_id
 
@@ -230,7 +209,7 @@ def ballot_measure_contest_identifier(ballot_measure_contest):
     bmc_id = BallotMeasureContestIdentifier.objects.create(
         contest=ballot_measure_contest,
         scheme="calaccess_measure_id",
-        identifier="1376195"
+        identifier="1376195",
     )
     return bmc_id
 
@@ -238,8 +217,7 @@ def ballot_measure_contest_identifier(ballot_measure_contest):
 @pytest.fixture
 def ballot_measure_contest_option(ballot_measure_contest):
     opt = BallotMeasureContestOption.objects.create(
-        contest=ballot_measure_contest,
-        text='yes',
+        contest=ballot_measure_contest, text="yes"
     )
     return opt
 
@@ -258,28 +236,21 @@ def retention_contest(election, division, membership):
 @pytest.fixture
 def retention_contest_identifier(retention_contest):
     rc_id = RetentionContestIdentifier.objects.create(
-        contest=retention_contest,
-        scheme="calaccess_measure_id",
-        identifier="1256382",
+        contest=retention_contest, scheme="calaccess_measure_id", identifier="1256382"
     )
     return rc_id
 
 
 @pytest.fixture
 def retention_contest_option(retention_contest):
-    opt = RetentionContestOption.objects.create(
-        contest=retention_contest,
-        text='yes',
-    )
+    opt = RetentionContestOption.objects.create(contest=retention_contest, text="yes")
     return opt
 
 
 @pytest.fixture
 def party_contest(election, division):
     pc = PartyContest.objects.create(
-        name="Elections for the 20th Knesset",
-        division=division,
-        election=election,
+        name="Elections for the 20th Knesset", division=division, election=election
     )
     return pc
 
@@ -287,17 +258,12 @@ def party_contest(election, division):
 @pytest.fixture
 def party_contest_identifier(party_contest):
     pc_id = PartyContestIdentifier.objects.create(
-        contest=party_contest,
-        scheme="party_contest_id",
-        identifier="pc09",
+        contest=party_contest, scheme="party_contest_id", identifier="pc09"
     )
     return pc_id
 
 
 @pytest.fixture
 def party_contest_option(party_contest, party):
-    opt = PartyContestOption.objects.create(
-        contest=party_contest,
-        party=party,
-    )
+    opt = PartyContestOption.objects.create(contest=party_contest, party=party)
     return opt

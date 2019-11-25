@@ -8,104 +8,156 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('legislative', '0003_time_changes'),
-    ]
+    dependencies = [("legislative", "0003_time_changes")]
 
     operations = [
         migrations.AlterField(
-            model_name='bill',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of creation.'),
+            model_name="bill",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of creation."
+            ),
         ),
         migrations.AlterField(
-            model_name='bill',
-            name='extras',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict, help_text='A key-value store for storing arbitrary information not covered elsewhere.'),
+            model_name="bill",
+            name="extras",
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True,
+                default=dict,
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+            ),
         ),
         migrations.AlterField(
-            model_name='bill',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True, help_text='The date and time of the last update.'),
+            model_name="bill",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='billidentifier',
-            name='identifier',
-            field=models.CharField(help_text='A unique identifier developed by an upstream or third party source.', max_length=300),
+            model_name="billidentifier",
+            name="identifier",
+            field=models.CharField(
+                help_text="A unique identifier developed by an upstream or third party source.",
+                max_length=300,
+            ),
         ),
         migrations.AlterField(
-            model_name='billidentifier',
-            name='scheme',
-            field=models.CharField(help_text='The name of the service that created the identifier.', max_length=300),
+            model_name="billidentifier",
+            name="scheme",
+            field=models.CharField(
+                help_text="The name of the service that created the identifier.",
+                max_length=300,
+            ),
         ),
         migrations.AlterField(
-            model_name='billsource',
-            name='note',
-            field=models.CharField(blank=True, help_text='A short, optional note related to an object.', max_length=300),
+            model_name="billsource",
+            name="note",
+            field=models.CharField(
+                blank=True,
+                help_text="A short, optional note related to an object.",
+                max_length=300,
+            ),
         ),
         migrations.AlterField(
-            model_name='billsource',
-            name='url',
-            field=models.URLField(help_text='A hyperlink related to an object.', max_length=2000),
+            model_name="billsource",
+            name="url",
+            field=models.URLField(
+                help_text="A hyperlink related to an object.", max_length=2000
+            ),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of creation.'),
+            model_name="event",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of creation."
+            ),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='extras',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict, help_text='A key-value store for storing arbitrary information not covered elsewhere.'),
+            model_name="event",
+            name="extras",
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True,
+                default=dict,
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+            ),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True, help_text='The date and time of the last update.'),
+            model_name="event",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='eventlink',
-            name='note',
-            field=models.CharField(blank=True, help_text='A short, optional note related to an object.', max_length=300),
+            model_name="eventlink",
+            name="note",
+            field=models.CharField(
+                blank=True,
+                help_text="A short, optional note related to an object.",
+                max_length=300,
+            ),
         ),
         migrations.AlterField(
-            model_name='eventlink',
-            name='url',
-            field=models.URLField(help_text='A hyperlink related to an object.', max_length=2000),
+            model_name="eventlink",
+            name="url",
+            field=models.URLField(
+                help_text="A hyperlink related to an object.", max_length=2000
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsource',
-            name='note',
-            field=models.CharField(blank=True, help_text='A short, optional note related to an object.', max_length=300),
+            model_name="eventsource",
+            name="note",
+            field=models.CharField(
+                blank=True,
+                help_text="A short, optional note related to an object.",
+                max_length=300,
+            ),
         ),
         migrations.AlterField(
-            model_name='eventsource',
-            name='url',
-            field=models.URLField(help_text='A hyperlink related to an object.', max_length=2000),
+            model_name="eventsource",
+            name="url",
+            field=models.URLField(
+                help_text="A hyperlink related to an object.", max_length=2000
+            ),
         ),
         migrations.AlterField(
-            model_name='voteevent',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of creation.'),
+            model_name="voteevent",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of creation."
+            ),
         ),
         migrations.AlterField(
-            model_name='voteevent',
-            name='extras',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict, help_text='A key-value store for storing arbitrary information not covered elsewhere.'),
+            model_name="voteevent",
+            name="extras",
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True,
+                default=dict,
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+            ),
         ),
         migrations.AlterField(
-            model_name='voteevent',
-            name='updated_at',
-            field=models.DateTimeField(auto_now=True, help_text='The date and time of the last update.'),
+            model_name="voteevent",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='votesource',
-            name='note',
-            field=models.CharField(blank=True, help_text='A short, optional note related to an object.', max_length=300),
+            model_name="votesource",
+            name="note",
+            field=models.CharField(
+                blank=True,
+                help_text="A short, optional note related to an object.",
+                max_length=300,
+            ),
         ),
         migrations.AlterField(
-            model_name='votesource',
-            name='url',
-            field=models.URLField(help_text='A hyperlink related to an object.', max_length=2000),
+            model_name="votesource",
+            name="url",
+            field=models.URLField(
+                help_text="A hyperlink related to an object.", max_length=2000
+            ),
         ),
     ]

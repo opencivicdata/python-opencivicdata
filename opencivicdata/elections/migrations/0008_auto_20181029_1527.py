@@ -6,24 +6,42 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('elections', '0007_auto_20171022_0234'),
-    ]
+    dependencies = [("elections", "0007_auto_20171022_0234")]
 
     operations = [
         migrations.AlterField(
-            model_name='candidacy',
-            name='party',
-            field=models.ForeignKey(help_text='Reference to the Organization representing the political party that nominated the candidate or would nominate the candidate (as in the case of a partisan primary).', limit_choices_to={'classification': 'party'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='candidacies', to='core.Organization'),
+            model_name="candidacy",
+            name="party",
+            field=models.ForeignKey(
+                help_text="Reference to the Organization representing the political party that nominated the candidate or would nominate the candidate (as in the case of a partisan primary).",
+                limit_choices_to={"classification": "party"},
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="candidacies",
+                to="core.Organization",
+            ),
         ),
         migrations.AlterField(
-            model_name='candidatecontest',
-            name='party',
-            field=models.ForeignKey(help_text='If the contest is among candidates of the same political party, e.g., a partisan primary election, reference to the Organization representing that party.', limit_choices_to={'classification': 'party'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='candidate_contests', to='core.Organization'),
+            model_name="candidatecontest",
+            name="party",
+            field=models.ForeignKey(
+                help_text="If the contest is among candidates of the same political party, e.g., a partisan primary election, reference to the Organization representing that party.",
+                limit_choices_to={"classification": "party"},
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="candidate_contests",
+                to="core.Organization",
+            ),
         ),
         migrations.AlterField(
-            model_name='partycontestoption',
-            name='party',
-            field=models.ForeignKey(help_text='Reference to an Organization representing a political party voters may choose in the contest.', limit_choices_to={'classification': 'party'}, on_delete=django.db.models.deletion.CASCADE, related_name='party_contests', to='core.Organization'),
+            model_name="partycontestoption",
+            name="party",
+            field=models.ForeignKey(
+                help_text="Reference to an Organization representing a political party voters may choose in the contest.",
+                limit_choices_to={"classification": "party"},
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="party_contests",
+                to="core.Organization",
+            ),
         ),
     ]

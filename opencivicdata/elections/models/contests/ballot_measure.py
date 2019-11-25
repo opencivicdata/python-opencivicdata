@@ -13,9 +13,10 @@ class BallotMeasureContest(ContestBase):
     """
     A contest in which voters select from among options proposed in a ballot measure.
     """
+
     description = models.TextField(
         help_text="Text describing the purpose and/or potential outcomes of the "
-                  "ballot measure, not necessarily as it appears on the ballot.",
+        "ballot measure, not necessarily as it appears on the ballot."
     )
     requirement = models.CharField(
         max_length=300,
@@ -26,28 +27,29 @@ class BallotMeasureContest(ContestBase):
     classification = models.CharField(
         max_length=300,
         blank=True,
-        help_text='Describes the origin and/or potential outcome of the ballot '
-                  'measure, e.g., "initiative statute", "legislative constitutional '
-                  'amendment".',
+        help_text="Describes the origin and/or potential outcome of the ballot "
+        'measure, e.g., "initiative statute", "legislative constitutional '
+        'amendment".',
     )
     runoff_for_contest = models.OneToOneField(
-        'self',
-        related_name='runoff_contest',
+        "self",
+        related_name="runoff_contest",
         null=True,
         on_delete=models.SET_NULL,
         help_text="If this contest is a runoff to determine the outcome of a "
-                  "previously undecided contest, reference to that "
-                  "BallotMeasureContest.",
+        "previously undecided contest, reference to that "
+        "BallotMeasureContest.",
     )
 
     class Meta(ContestBase.Meta):
-        db_table = 'opencivicdata_ballotmeasurecontest'
+        db_table = "opencivicdata_ballotmeasurecontest"
 
 
 class BallotMeasureContestOption(models.Model):
     """
     An option voters may choose in a BallotMeasureContest.
     """
+
     contest = models.ForeignKey(
         BallotMeasureContest,
         related_name="options",
@@ -63,7 +65,7 @@ class BallotMeasureContestOption(models.Model):
         return "{0} on {1}".format(self.text, self.contest)
 
     class Meta:
-        db_table = 'opencivicdata_ballotmeasurecontestoption'
+        db_table = "opencivicdata_ballotmeasurecontestoption"
 
 
 class BallotMeasureContestIdentifier(IdentifierBase):
@@ -73,35 +75,37 @@ class BallotMeasureContestIdentifier(IdentifierBase):
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
     """
+
     contest = models.ForeignKey(
         BallotMeasureContest,
         related_name="identifiers",
         on_delete=models.CASCADE,
         help_text="Reference to the BallotMeasureContest linked to the upstream "
-                  "identifier.",
+        "identifier.",
     )
 
     def __str__(self):
-        tmpl = '%s identifies %s'
+        tmpl = "%s identifies %s"
         return tmpl % (self.identifier, self.contest)
 
     class Meta:
-        db_table = 'opencivicdata_ballotmeasurecontestidentifier'
+        db_table = "opencivicdata_ballotmeasurecontestidentifier"
 
 
 class BallotMeasureContestSource(LinkBase):
     """
     Source used in assembling a BallotMeasureContest.
     """
+
     contest = models.ForeignKey(
         BallotMeasureContest,
-        related_name='sources',
+        related_name="sources",
         on_delete=models.CASCADE,
         help_text="Reference to the BallotMeasureContest assembled from the source.",
     )
 
     class Meta:
-        db_table = 'opencivicdata_ballotmeasurecontestsource'
+        db_table = "opencivicdata_ballotmeasurecontestsource"
 
 
 class RetentionContest(ContestBase):
@@ -110,9 +114,10 @@ class RetentionContest(ContestBase):
 
     These contests include judicial retention or recall elections.
     """
+
     description = models.TextField(
         help_text="Text describing the purpose and/or potential outcomes of the "
-                  "contest, not necessarily as it appears on the ballot.",
+        "contest, not necessarily as it appears on the ballot."
     )
     requirement = models.CharField(
         max_length=300,
@@ -121,28 +126,29 @@ class RetentionContest(ContestBase):
         help_text="The threshold of votes need in order to retain the officeholder.",
     )
     runoff_for_contest = models.OneToOneField(
-        'self',
-        related_name='runoff_contest',
+        "self",
+        related_name="runoff_contest",
         null=True,
         on_delete=models.SET_NULL,
         help_text="If this contest is a runoff to determine the outcome of a previously "
-                  "undecided contest, reference to that RetentionContest.",
+        "undecided contest, reference to that RetentionContest.",
     )
     membership = models.ForeignKey(
         Membership,
         help_text="Reference to the Membership that represents the tenure of a "
-                  "person in a specific public office.",
+        "person in a specific public office.",
         on_delete=models.PROTECT,
     )
 
     class Meta(ContestBase.Meta):
-        db_table = 'opencivicdata_retentioncontest'
+        db_table = "opencivicdata_retentioncontest"
 
 
 class RetentionContestOption(models.Model):
     """
     An option voters may choose in a RetentionContest.
     """
+
     contest = models.ForeignKey(
         RetentionContest,
         related_name="options",
@@ -158,7 +164,7 @@ class RetentionContestOption(models.Model):
         return "{0} on {1}".format(self.text, self.contest)
 
     class Meta:
-        db_table = 'opencivicdata_retentioncontestoption'
+        db_table = "opencivicdata_retentioncontestoption"
 
 
 class RetentionContestIdentifier(IdentifierBase):
@@ -168,32 +174,34 @@ class RetentionContestIdentifier(IdentifierBase):
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
     """
+
     contest = models.ForeignKey(
         RetentionContest,
         related_name="identifiers",
         help_text="Reference to the RetentionContest linked to the upstream "
-                  "identifier.",
+        "identifier.",
         on_delete=models.CASCADE,
     )
 
     def __str__(self):
-        tmpl = '%s identifies %s'
+        tmpl = "%s identifies %s"
         return tmpl % (self.identifier, self.contest)
 
     class Meta:
-        db_table = 'opencivicdata_retentionidentifier'
+        db_table = "opencivicdata_retentionidentifier"
 
 
 class RetentionContestSource(LinkBase):
     """
     Source used in assembling a RetentionContest.
     """
+
     contest = models.ForeignKey(
         RetentionContest,
-        related_name='sources',
+        related_name="sources",
         help_text="Reference to the RetentionContest assembled from the source.",
         on_delete=models.CASCADE,
     )
 
     class Meta:
-        db_table = 'opencivicdata_retentionsource'
+        db_table = "opencivicdata_retentionsource"

@@ -7,25 +7,47 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('legislative', '0008_longer_event_name'),
-    ]
+    dependencies = [("legislative", "0008_longer_event_name")]
 
     operations = [
         migrations.CreateModel(
-            name='SearchableBill',
+            name="SearchableBill",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('search_vector', django.contrib.postgres.search.SearchVectorField(default=None)),
-                ('all_titles', models.TextField(default='')),
-                ('raw_text', models.TextField(default='')),
-                ('is_error', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('bill', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='searchable', to='legislative.Bill')),
-                ('version_link', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='searchable', to='legislative.BillVersionLink')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "search_vector",
+                    django.contrib.postgres.search.SearchVectorField(default=None),
+                ),
+                ("all_titles", models.TextField(default="")),
+                ("raw_text", models.TextField(default="")),
+                ("is_error", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "bill",
+                    models.OneToOneField(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="searchable",
+                        to="legislative.Bill",
+                    ),
+                ),
+                (
+                    "version_link",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="searchable",
+                        to="legislative.BillVersionLink",
+                    ),
+                ),
             ],
-            options={
-                'db_table': 'opencivicdata_searchablebill',
-            },
-        ),
+            options={"db_table": "opencivicdata_searchablebill"},
+        )
     ]

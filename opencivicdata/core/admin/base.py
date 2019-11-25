@@ -5,6 +5,7 @@ from django.contrib import admin
 
 class ModelAdmin(admin.ModelAdmin):
     """ deletion of top level objects is evil """
+
     actions = None
 
     def has_delete_permission(self, request, obj=None):
@@ -23,11 +24,12 @@ class ModelAdmin(admin.ModelAdmin):
 class ReadOnlyTabularInline(admin.TabularInline):
     def has_add_permission(self, request):
         return False
+
     can_delete = False
 
 
 class IdentifierInline(admin.TabularInline):
-    fields = readonly_fields = ('identifier', 'scheme')
+    fields = readonly_fields = ("identifier", "scheme")
     extra = 0
     can_delete = False
     verbose_name = "ID from another system"
@@ -38,12 +40,12 @@ class IdentifierInline(admin.TabularInline):
 
 
 class LinkInline(admin.TabularInline):
-    fields = ('url', 'note')
+    fields = ("url", "note")
     extra = 0
 
 
 class ContactDetailInline(admin.TabularInline):
-    fields = ('type', 'value', 'note', 'label')
+    fields = ("type", "value", "note", "label")
     extra = 0
     verbose_name = "Piece of contact information"
     verbose_name_plural = "Contact information"
@@ -56,8 +58,8 @@ class OtherNameInline(admin.TabularInline):
 
 
 class MimetypeLinkInline(admin.TabularInline):
-    fields = ('media_type', 'url')
+    fields = ("media_type", "url")
 
 
 class RelatedEntityInline(admin.TabularInline):
-    fields = ('name', 'entity_type', 'organization', 'person')
+    fields = ("name", "entity_type", "organization", "person")

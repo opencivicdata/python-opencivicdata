@@ -17,22 +17,24 @@ class PartyContest(ContestBase):
     voting for candidates endorsed by that party (as in the case of party-list
     proportional representation).
     """
+
     runoff_for_contest = models.OneToOneField(
-        'self',
+        "self",
         null=True,
         on_delete=models.SET_NULL,
         help_text="If this contest is a runoff to determine the outcome of a previously "
-                  "undecided contest, reference to that PartyContest.",
+        "undecided contest, reference to that PartyContest.",
     )
 
     class Meta:
-        db_table = 'opencivicdata_partycontest'
+        db_table = "opencivicdata_partycontest"
 
 
 class PartyContestOption(models.Model):
     """
     A party (i.e., Organization) voters choose in a PartyContest.
     """
+
     contest = models.ForeignKey(
         PartyContest,
         related_name="parties",
@@ -41,14 +43,14 @@ class PartyContestOption(models.Model):
     )
     party = models.ForeignKey(
         Organization,
-        related_name='party_contests',
+        related_name="party_contests",
         on_delete=models.CASCADE,
-        limit_choices_to={'classification': 'party'},
+        limit_choices_to={"classification": "party"},
         help_text="Reference to an Organization representing a political party "
-                  "voters may choose in the contest.",
+        "voters may choose in the contest.",
     )
     is_incumbent = models.NullBooleanField(
-        help_text="Indicates whether the party currently holds majority power.",
+        help_text="Indicates whether the party currently holds majority power."
     )
 
     def __str__(self):
@@ -58,8 +60,9 @@ class PartyContestOption(models.Model):
         """
         Model options.
         """
-        db_table = 'opencivicdata_partycontestoption'
-        ordering = ("contest", "party",)
+
+        db_table = "opencivicdata_partycontestoption"
+        ordering = ("contest", "party")
 
 
 class PartyContestIdentifier(IdentifierBase):
@@ -69,32 +72,33 @@ class PartyContestIdentifier(IdentifierBase):
     For example, identfiers assigned by a Secretary of State, county or city
     elections office.
     """
+
     contest = models.ForeignKey(
         PartyContest,
         related_name="identifiers",
         on_delete=models.CASCADE,
-        help_text="Reference to the PartyContest linked to the upstream "
-                  "identifier.",
+        help_text="Reference to the PartyContest linked to the upstream " "identifier.",
     )
 
     def __str__(self):
-        tmpl = '%s identifies %s'
+        tmpl = "%s identifies %s"
         return tmpl % (self.identifier, self.contest)
 
     class Meta:
-        db_table = 'opencivicdata_partyidentifier'
+        db_table = "opencivicdata_partyidentifier"
 
 
 class PartyContestSource(LinkBase):
     """
     Source used in assembling a PartyContest.
     """
+
     contest = models.ForeignKey(
         PartyContest,
-        related_name='sources',
+        related_name="sources",
         on_delete=models.CASCADE,
         help_text="Reference to the PartyContest assembled from the source.",
     )
 
     class Meta:
-        db_table = 'opencivicdata_partysource'
+        db_table = "opencivicdata_partysource"

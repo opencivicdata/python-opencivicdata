@@ -1,1 +1,1 @@
-from . import other, organization, person   # noqa
+from . import other, organization, person  # noqa

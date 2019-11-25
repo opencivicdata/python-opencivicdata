@@ -5,46 +5,51 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('legislative', '0009_searchablebill'),
-    ]
+    dependencies = [("legislative", "0009_searchablebill")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='eventdocument',
-            name='media_type',
-        ),
-        migrations.RemoveField(
-            model_name='eventdocument',
-            name='text',
-        ),
-        migrations.RemoveField(
-            model_name='eventdocument',
-            name='url',
+        migrations.RemoveField(model_name="eventdocument", name="media_type"),
+        migrations.RemoveField(model_name="eventdocument", name="text"),
+        migrations.RemoveField(model_name="eventdocument", name="url"),
+        migrations.AddField(
+            model_name="eventdocument",
+            name="classification",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("agenda", "Agenda"),
+                    ("minutes", "Minutes"),
+                    ("transcript", "Transcript"),
+                    ("testimony", "Testimony"),
+                ],
+                max_length=50,
+            ),
         ),
         migrations.AddField(
-            model_name='eventdocument',
-            name='classification',
-            field=models.CharField(blank=True, choices=[('agenda', 'Agenda'), ('minutes', 'Minutes'), ('transcript', 'Transcript'), ('testimony', 'Testimony')], max_length=50),
-        ),
-        migrations.AddField(
-            model_name='eventmedia',
-            name='classification',
-            field=models.CharField(blank=True, choices=[('audio recording', 'Audio Recording'), ('video recording', 'Video Recording')], max_length=50),
+            model_name="eventmedia",
+            name="classification",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("audio recording", "Audio Recording"),
+                    ("video recording", "Video Recording"),
+                ],
+                max_length=50,
+            ),
         ),
         migrations.AlterField(
-            model_name='eventagendamedia',
-            name='date',
+            model_name="eventagendamedia",
+            name="date",
             field=models.CharField(blank=True, max_length=25),
         ),
         migrations.AlterField(
-            model_name='eventdocument',
-            name='date',
+            model_name="eventdocument",
+            name="date",
             field=models.CharField(blank=True, max_length=25),
         ),
         migrations.AlterField(
-            model_name='eventmedia',
-            name='date',
+            model_name="eventmedia",
+            name="date",
             field=models.CharField(blank=True, max_length=25),
         ),
     ]

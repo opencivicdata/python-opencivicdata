@@ -1,1 +1,1 @@
-from . import bill, vote, event     # noqa
+from . import bill, vote, event  # noqa

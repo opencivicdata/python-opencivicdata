@@ -6,14 +6,17 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('legislative', '0010_auto_20191031_1507'),
-    ]
+    dependencies = [("legislative", "0010_auto_20191031_1507")]
 
     operations = [
         migrations.AlterField(
-            model_name='searchablebill',
-            name='version_link',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='searchable', to='legislative.BillVersionLink'),
-        ),
+            model_name="searchablebill",
+            name="version_link",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="searchable",
+                to="legislative.BillVersionLink",
+            ),
+        )
     ]

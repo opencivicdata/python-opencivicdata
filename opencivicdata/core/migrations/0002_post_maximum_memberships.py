@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('core', '0001_initial'),
-    ]
+    dependencies = [("core", "0001_initial")]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='maximum_memberships',
+            model_name="post",
+            name="maximum_memberships",
             field=models.PositiveIntegerField(default=1),
-        ),
+        )
     ]

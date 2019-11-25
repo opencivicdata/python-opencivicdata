@@ -6,14 +6,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('legislative', '0006_billversion_extras'),
-    ]
+    dependencies = [("legislative", "0006_billversion_extras")]
 
     operations = [
         migrations.AlterField(
-            model_name='voteevent',
-            name='extras',
-            field=django.contrib.postgres.fields.jsonb.JSONField(blank=True, default=dict),
-        ),
+            model_name="voteevent",
+            name="extras",
+            field=django.contrib.postgres.fields.jsonb.JSONField(
+                blank=True, default=dict
+            ),
+        )
     ]
