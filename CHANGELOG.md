@@ -2,7 +2,9 @@
 
 ## 3.0.0
 
-Drops support for Python 2, Django versions before < 2.2 LTS.
+* Drops support for Python 2, Django versions before < 2.2 LTS.
+* Change behavior of loaddivisions management command to require --bulk if
+  deletion & re-creation is desired.
 
 ## 2.5.0 (2019-11-24)
 
