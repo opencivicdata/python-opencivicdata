@@ -54,7 +54,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('countries', nargs='+', type=str)
-        parser.add_argument('--bulk', action='store_true', help='Use bulk_create to add divisions.  *Warning* This deletes any existing divisions')
+        parser.add_argument(
+            '--bulk', action='store_true',
+            help='Use bulk_create to add divisions. *Warning* This deletes any existing divisions'
+        )
 
     def handle(self, *args, **options):
         for country in options['countries']:
