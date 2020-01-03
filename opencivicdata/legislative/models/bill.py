@@ -168,6 +168,7 @@ class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name="documents", on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)  # YYYY[-MM[-DD]]
+    extras = JSONField(default=dict, blank=True)
 
     def __str__(self):
         return "{0} document of {1}".format(self.date, self.bill)
