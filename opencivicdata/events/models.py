@@ -9,9 +9,8 @@ from opencivicdata.core.models.base import (
     MimetypeLinkBase,
 )
 from opencivicdata.core.models import Jurisdiction
-from .bill import Bill
-from .vote import VoteEvent
-from ...common import (
+from opencivicdata.legislative.models import Bill, VoteEvent
+from ..common import (
     EVENT_MEDIA_CLASSIFICATION_CHOICES,
     EVENT_DOCUMENT_CLASSIFICATION_CHOICES,
 )

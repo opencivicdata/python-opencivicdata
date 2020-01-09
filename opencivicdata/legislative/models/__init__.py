@@ -17,18 +17,3 @@ from .bill import (
     SearchableBill,
 )
 from .vote import VoteEvent, VoteCount, PersonVote, VoteSource
-from .event import (
-    Event,
-    EventLocation,
-    EventMedia,
-    EventMediaLink,
-    EventDocument,
-    EventLink,
-    EventSource,
-    EventParticipant,
-    EventAgendaItem,
-    EventRelatedEntity,
-    EventAgendaMedia,
-    EventAgendaMediaLink,
-    EventDocumentLink,
-)

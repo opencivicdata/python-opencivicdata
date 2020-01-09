@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.template import defaultfilters
 from opencivicdata.core.admin import base
-from .. import models
+from . import models
 
 
 @admin.register(models.EventLocation)
