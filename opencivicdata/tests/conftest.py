@@ -11,11 +11,10 @@ from opencivicdata.core.models import (
 )
 from opencivicdata.legislative.models import (
     LegislativeSession,
-    Event,
-    EventLocation,
     VoteEvent,
     Bill,
 )
+from opencivicdata.events.models import Event, EventLocation
 from opencivicdata.elections.models import (
     Election,
     ElectionIdentifier,

@@ -3,6 +3,7 @@ SECRET_KEY = "test"
 INSTALLED_APPS = (
     "opencivicdata.core.apps.BaseConfig",
     "opencivicdata.legislative.apps.BaseConfig",
+    "opencivicdata.events.apps.BaseConfig",
     "opencivicdata.elections.apps.BaseConfig",
 )
 DATABASES = {
