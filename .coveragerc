@@ -2,3 +2,4 @@
 omit =  opencivicdata/tests/*
         opencivicdata/*/migrations/*
         opencivicdata/*/admin/*
+        opencivicdata/events/admin.py
