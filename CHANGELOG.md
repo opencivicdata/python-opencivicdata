@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0 (2020-01-28)
+
+* Add billaction.extras field (requires migration)
+
 ## 3.0.0 (2019-11-25)
 
 * Drops support for Python 2, Django versions before < 2.2 LTS.
