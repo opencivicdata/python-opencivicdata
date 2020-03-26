@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.0 (2020-03-26)
+
+* add GinIndex for search (requires migration)
+* add 'enrolled' bill status
+
 ## 3.1.0 (2020-01-28)
 
 * Add billaction.extras field (requires migration)

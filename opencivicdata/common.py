@@ -111,6 +111,7 @@ BILL_RELATION_TYPES = _keys(BILL_RELATION_TYPE_CHOICES)
 BILL_ACTION_CLASSIFICATION_CHOICES = (
     ("filing", "Filing"),
     ("introduction", "Introduced"),
+    ("enrolled", "Enrolled"),
     ("reading-1", "First Reading"),
     ("reading-2", "Second Reading"),
     ("reading-3", "Third Reading"),
