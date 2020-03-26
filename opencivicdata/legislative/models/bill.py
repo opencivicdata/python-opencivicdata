@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.indexes import GinIndex
+
 
 from opencivicdata.core.models.base import (
     OCDBase,
@@ -248,3 +250,4 @@ class SearchableBill(models.Model):
 
     class Meta:
         db_table = "opencivicdata_searchablebill"
+        indexes = [GinIndex(name="search_index", fields=["search_vector"])]
