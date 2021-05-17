@@ -32,6 +32,8 @@ def load_divisions(country, bulk=False):
 
     if set(objects) == set(existing_divisions):
         print("The CSV and the DB contents are exactly the same; no work to be done!")
+    elif set(objects).issubset(existing_divisions):
+        print("The DB contains all CSV contents; no work to be done!")
     else:
         if bulk:
             # delete old ids and add new ones all at once
