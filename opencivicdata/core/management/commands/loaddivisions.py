@@ -30,9 +30,12 @@ def load_divisions(country, bulk=False):
         )
     )
 
-    if set(objects) == set(existing_divisions):
+    objects_set = set(objects)
+    existing_divisions_set = set(existing_divisions)
+
+    if objects_set == existing_divisions_set:
         print("The CSV and the DB contents are exactly the same; no work to be done!")
-    elif set(objects).issubset(existing_divisions):
+    elif objects_set.issubset(existing_divisions_set):
         print("The DB contains all CSV contents; no work to be done!")
     else:
         if bulk:
@@ -42,8 +45,8 @@ def load_divisions(country, bulk=False):
                 Division.objects.bulk_create(objects, batch_size=10000)
             print("{} divisions created".format(len(objects)))
         else:
-            to_create = set(objects) - set(existing_divisions)
-            to_delete = set(existing_divisions) - set(objects)
+            to_create = objects_set - existing_divisions_set
+            to_delete = existing_divisions_set - objects_set
             # delete removed ids and add new ones all at once
             with transaction.atomic():
                 for division in to_delete:
