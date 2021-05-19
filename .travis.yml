@@ -24,6 +24,3 @@ script:
     - flake8
 after_success:
     - coveralls
-notifications:
-    email:
-        - james@openstates.org
