@@ -44,3 +44,7 @@ def test_loaddivisions(capsys):
     last_message = out.splitlines()[-1]
 
     assert last_message == "The DB contains all CSV contents; no work to be done!"
+
+    # Unset the CSV environment variable so subsequent division tests reload
+    # divisions from source instead of breaking.
+    os.environ.pop("OCD_DIVISION_CSV")
