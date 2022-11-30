@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 (
                     "description",
                     models.TextField(
-                        help_text="Text describing the purpose and/or potential outcomes of the ballot measure, not necessarily as it appears on the ballot."
+                        help_text="Text describing the purpose and/or potential outcomes of the ballot measure, not necessarily as it appears on the ballot." # noqa
                     ),
                 ),
                 (
