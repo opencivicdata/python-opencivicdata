@@ -80,8 +80,8 @@ class Migration(migrations.Migration):
                         validators=[
                             django.core.validators.RegexValidator(
                                 flags=32,
-                                message="ID must match ^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$",
-                                regex="^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$",
+                                message="ID must match ^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$", # noqa
+                                regex="^ocd-jurisdiction/country:[a-z]{2}(/[^\\W\\d]+:[\\w.~-]+)*/\\w+$", # noqa
                             )
                         ],
                     ),
@@ -154,7 +154,7 @@ class Migration(migrations.Migration):
                         validators=[
                             django.core.validators.RegexValidator(
                                 flags=32,
-                                message="ID must match ^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                                message="ID must match ^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", # noqa
                                 regex="^ocd-membership/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
                             )
                         ],
@@ -267,8 +267,8 @@ class Migration(migrations.Migration):
                         validators=[
                             django.core.validators.RegexValidator(
                                 flags=32,
-                                message="ID must match ^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
-                                regex="^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                                message="ID must match ^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", # noqa
+                                regex="^ocd-organization/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", # noqa
                             )
                         ],
                     ),
@@ -490,7 +490,7 @@ class Migration(migrations.Migration):
                         validators=[
                             django.core.validators.RegexValidator(
                                 flags=32,
-                                message="ID must match ^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                                message="ID must match ^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", # noqa
                                 regex="^ocd-person/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
                             )
                         ],
@@ -686,7 +686,7 @@ class Migration(migrations.Migration):
                         validators=[
                             django.core.validators.RegexValidator(
                                 flags=32,
-                                message="ID must match ^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
+                                message="ID must match ^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$", # noqa
                                 regex="^ocd-post/[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$",
                             )
                         ],

@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             model_name="candidacy",
             name="party",
             field=models.ForeignKey(
-                help_text="Reference to the Organization representing the political party that nominated the candidate or would nominate the candidate (as in the case of a partisan primary).",
+                help_text="Reference to the Organization representing the political party that nominated the candidate or would nominate the candidate (as in the case of a partisan primary).", # noqa
                 limit_choices_to={"classification": "party"},
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             model_name="candidatecontest",
             name="party",
             field=models.ForeignKey(
-                help_text="If the contest is among candidates of the same political party, e.g., a partisan primary election, reference to the Organization representing that party.",
+                help_text="If the contest is among candidates of the same political party, e.g., a partisan primary election, reference to the Organization representing that party.", # noqa
                 limit_choices_to={"classification": "party"},
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
             model_name="partycontestoption",
             name="party",
             field=models.ForeignKey(
-                help_text="Reference to an Organization representing a political party voters may choose in the contest.",
+                help_text="Reference to an Organization representing a political party voters may choose in the contest.", # noqa
                 limit_choices_to={"classification": "party"},
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name="party_contests",
