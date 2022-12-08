@@ -6,38 +6,56 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('elections', '0008_auto_20181029_1527'),
+        ("elections", "0008_auto_20181029_1527"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ballotmeasurecontest',
-            name='last_seen',
-            field=models.DateTimeField(auto_now=True, help_text='The last time this object was seen in a scrape.'),
+            model_name="ballotmeasurecontest",
+            name="last_seen",
+            field=models.DateTimeField(
+                auto_now=True,
+                help_text="The last time this object was seen in a scrape.",
+            ),
         ),
         migrations.AddField(
-            model_name='candidacy',
-            name='last_seen',
-            field=models.DateTimeField(auto_now=True, help_text='The last time this object was seen in a scrape.'),
+            model_name="candidacy",
+            name="last_seen",
+            field=models.DateTimeField(
+                auto_now=True,
+                help_text="The last time this object was seen in a scrape.",
+            ),
         ),
         migrations.AddField(
-            model_name='candidatecontest',
-            name='last_seen',
-            field=models.DateTimeField(auto_now=True, help_text='The last time this object was seen in a scrape.'),
+            model_name="candidatecontest",
+            name="last_seen",
+            field=models.DateTimeField(
+                auto_now=True,
+                help_text="The last time this object was seen in a scrape.",
+            ),
         ),
         migrations.AddField(
-            model_name='election',
-            name='last_seen',
-            field=models.DateTimeField(auto_now=True, help_text='The last time this object was seen in a scrape.'),
+            model_name="election",
+            name="last_seen",
+            field=models.DateTimeField(
+                auto_now=True,
+                help_text="The last time this object was seen in a scrape.",
+            ),
         ),
         migrations.AddField(
-            model_name='partycontest',
-            name='last_seen',
-            field=models.DateTimeField(auto_now=True, help_text='The last time this object was seen in a scrape.'),
+            model_name="partycontest",
+            name="last_seen",
+            field=models.DateTimeField(
+                auto_now=True,
+                help_text="The last time this object was seen in a scrape.",
+            ),
         ),
         migrations.AddField(
-            model_name='retentioncontest',
-            name='last_seen',
-            field=models.DateTimeField(auto_now=True, help_text='The last time this object was seen in a scrape.'),
+            model_name="retentioncontest",
+            name="last_seen",
+            field=models.DateTimeField(
+                auto_now=True,
+                help_text="The last time this object was seen in a scrape.",
+            ),
         ),
     ]
