@@ -49,6 +49,10 @@ class OCDBase(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True, help_text="The date and time of the last update."
     )
+    last_seen = models.DateTimeField(
+        auto_now=True,
+        help_text="The last time this object was seen in a scrape."
+    )
     extras = JSONField(
         default=dict,
         blank=True,

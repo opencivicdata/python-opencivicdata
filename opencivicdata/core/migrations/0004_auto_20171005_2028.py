@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             model_name="membership",
             name="on_behalf_of",
             field=models.ForeignKey(
-                help_text="The Organization on whose behalf the Person is a member of the Organization.",
+                help_text="The Organization on whose behalf the Person is a member of the Organization.", # noqa
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
                 related_name="memberships_on_behalf_of",
@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
             model_name="organization",
             name="parent",
             field=models.ForeignKey(
-                help_text="A link to another Organization that serves as this Organization's parent.",
+                help_text="A link to another Organization that serves as this Organization's parent.", # noqa
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
                 related_name="children",

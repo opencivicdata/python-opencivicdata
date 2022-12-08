@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             model_name="division",
             name="country",
             field=models.CharField(
-                help_text="An ISO-3166-1 alpha-2 code identifying the county where this division is found.",
+                help_text="An ISO-3166-1 alpha-2 code identifying the county where this division is found.", # noqa
                 max_length=2,
             ),
         ),
@@ -197,7 +197,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
             ),
         ),
         migrations.AlterField(
@@ -245,7 +245,7 @@ class Migration(migrations.Migration):
             name="end_date",
             field=models.CharField(
                 blank=True,
-                help_text="The date on which the relationship ended in YYYY[-MM[-DD]] string format.",
+                help_text="The date on which the relationship ended in YYYY[-MM[-DD]] string format.", # noqa
                 max_length=10,
             ),
         ),
@@ -255,7 +255,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
             ),
         ),
         migrations.AlterField(
@@ -271,7 +271,7 @@ class Migration(migrations.Migration):
             model_name="membership",
             name="on_behalf_of",
             field=models.ForeignKey(
-                help_text="The Organization on whose behalf the Person is a member of the Organization.",
+                help_text="The Organization on whose behalf the Person is a member of the Organization.", # noqa
                 null=True,
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name="memberships_on_behalf_of",
@@ -334,7 +334,7 @@ class Migration(migrations.Migration):
             name="start_date",
             field=models.CharField(
                 blank=True,
-                help_text="The date on which the relationship began in YYYY[-MM[-DD]] string format.",
+                help_text="The date on which the relationship began in YYYY[-MM[-DD]] string format.", # noqa
                 max_length=10,
             ),
         ),
@@ -396,7 +396,7 @@ class Migration(migrations.Migration):
             model_name="membershipcontactdetail",
             name="value",
             field=models.CharField(
-                help_text="The content of the Contact information like a phone number or email address.",
+                help_text="The content of the Contact information like a phone number or email address.", # noqa
                 max_length=300,
             ),
         ),
@@ -459,7 +459,7 @@ class Migration(migrations.Migration):
             name="dissolution_date",
             field=models.CharField(
                 blank=True,
-                help_text="The dissolution date of the Organization in YYYY[-MM[-DD]] string format.",
+                help_text="The dissolution date of the Organization in YYYY[-MM[-DD]] string format.", # noqa
                 max_length=10,
             ),
         ),
@@ -469,7 +469,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
             ),
         ),
         migrations.AlterField(
@@ -512,7 +512,7 @@ class Migration(migrations.Migration):
             model_name="organization",
             name="parent",
             field=models.ForeignKey(
-                help_text="A link to another Organization that serves as this Organization's parent.",
+                help_text="A link to another Organization that serves as this Organization's parent.", # noqa
                 null=True,
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name="children",
@@ -577,7 +577,7 @@ class Migration(migrations.Migration):
             model_name="organizationcontactdetail",
             name="value",
             field=models.CharField(
-                help_text="The content of the Contact information like a phone number or email address.",
+                help_text="The content of the Contact information like a phone number or email address.", # noqa
                 max_length=300,
             ),
         ),
@@ -593,7 +593,7 @@ class Migration(migrations.Migration):
             model_name="organizationidentifier",
             name="organization",
             field=models.ForeignKey(
-                help_text="Reference to the Organization identified by this alternative identifier.",
+                help_text="Reference to the Organization identified by this alternative identifier.", # noqa
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name="identifiers",
                 to="core.Organization",
@@ -638,7 +638,7 @@ class Migration(migrations.Migration):
             name="end_date",
             field=models.CharField(
                 blank=True,
-                help_text="An optional end date for usage of the alternative name in YYYY[-MM[-DD]] string format.",
+                help_text="An optional end date for usage of the alternative name in YYYY[-MM[-DD]] string format.", # noqa
                 max_length=10,
             ),
         ),
@@ -673,7 +673,7 @@ class Migration(migrations.Migration):
             name="start_date",
             field=models.CharField(
                 blank=True,
-                help_text="An optional start date for usage of the alternative name in YYYY[-MM[-DD]] string format.",
+                help_text="An optional start date for usage of the alternative name in YYYY[-MM[-DD]] string format.", # noqa
                 max_length=10,
             ),
         ),
@@ -741,7 +741,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
             ),
         ),
         migrations.AlterField(
@@ -869,7 +869,7 @@ class Migration(migrations.Migration):
             model_name="personcontactdetail",
             name="value",
             field=models.CharField(
-                help_text="The content of the Contact information like a phone number or email address.",
+                help_text="The content of the Contact information like a phone number or email address.", # noqa
                 max_length=300,
             ),
         ),
@@ -930,7 +930,7 @@ class Migration(migrations.Migration):
             name="end_date",
             field=models.CharField(
                 blank=True,
-                help_text="An optional end date for usage of the alternative name in YYYY[-MM[-DD]] string format.",
+                help_text="An optional end date for usage of the alternative name in YYYY[-MM[-DD]] string format.", # noqa
                 max_length=10,
             ),
         ),
@@ -965,7 +965,7 @@ class Migration(migrations.Migration):
             name="start_date",
             field=models.CharField(
                 blank=True,
-                help_text="An optional start date for usage of the alternative name in YYYY[-MM[-DD]] string format.",
+                help_text="An optional start date for usage of the alternative name in YYYY[-MM[-DD]] string format.", # noqa
                 max_length=10,
             ),
         ),
@@ -1030,7 +1030,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.",
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
             ),
         ),
         migrations.AlterField(
@@ -1134,7 +1134,7 @@ class Migration(migrations.Migration):
             model_name="postcontactdetail",
             name="value",
             field=models.CharField(
-                help_text="The content of the Contact information like a phone number or email address.",
+                help_text="The content of the Contact information like a phone number or email address.", # noqa
                 max_length=300,
             ),
         ),
