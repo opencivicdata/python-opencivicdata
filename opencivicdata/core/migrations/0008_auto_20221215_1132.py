@@ -6,33 +6,43 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0007_jurisdiction_last_seen_membership_last_seen_and_more'),
+        ("core", "0007_jurisdiction_last_seen_membership_last_seen_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='jurisdiction',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="jurisdiction",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='membership',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="membership",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='organization',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="organization",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='person',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="person",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="post",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
     ]

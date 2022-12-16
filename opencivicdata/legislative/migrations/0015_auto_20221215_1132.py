@@ -6,23 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('legislative', '0014_bill_last_seen_event_last_seen_voteevent_last_seen'),
+        ("legislative", "0014_bill_last_seen_event_last_seen_voteevent_last_seen"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='bill',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="bill",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="event",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
         migrations.AlterField(
-            model_name='voteevent',
-            name='updated_at',
-            field=models.DateTimeField(auto_now_add=True, help_text='The date and time of the last update.'),
+            model_name="voteevent",
+            name="updated_at",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="The date and time of the last update."
+            ),
         ),
     ]
