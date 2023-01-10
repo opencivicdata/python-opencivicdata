@@ -47,7 +47,7 @@ class OCDBase(models.Model):
         auto_now_add=True, help_text="The date and time of creation."
     )
     updated_at = models.DateTimeField(
-        auto_now=True, help_text="The date and time of the last update."
+        auto_now_add=True, help_text="The date and time of the last update."
     )
     last_seen = models.DateTimeField(
         auto_now=True,
