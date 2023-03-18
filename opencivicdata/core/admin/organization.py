@@ -1,13 +1,14 @@
-from django.urls import reverse
 from django.contrib import admin
+from django.urls import reverse
+
 from .. import models
 from .base import (
-    ModelAdmin,
-    ReadOnlyTabularInline,
+    ContactDetailInline,
     IdentifierInline,
     LinkInline,
-    ContactDetailInline,
+    ModelAdmin,
     OtherNameInline,
+    ReadOnlyTabularInline,
 )
 
 
@@ -32,7 +33,7 @@ class OrganizationSourceInline(LinkInline):
 
 
 class PostInline(admin.TabularInline):
-    """ a read-only inline for posts here, with links to the real thing """
+    """a read-only inline for posts here, with links to the real thing"""
 
     model = models.Post
     extra = 0

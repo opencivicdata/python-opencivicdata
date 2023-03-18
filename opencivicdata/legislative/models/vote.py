@@ -1,11 +1,12 @@
-from django.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
+from django.db import models
 
-from opencivicdata.core.models.base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from opencivicdata.core.models import Organization, Person
-from .session import LegislativeSession
-from .bill import Bill, BillAction
+from opencivicdata.core.models.base import LinkBase, OCDBase, OCDIDField, RelatedBase
+
 from ... import common
+from .bill import Bill, BillAction
+from .session import LegislativeSession
 
 
 class VoteEvent(OCDBase):

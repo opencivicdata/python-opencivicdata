@@ -1,5 +1,7 @@
 from django.contrib import admin
+
 from opencivicdata.core.admin.base import ModelAdmin, ReadOnlyTabularInline
+
 from .. import models
 
 

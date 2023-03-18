@@ -4,7 +4,7 @@ from django.contrib import admin
 
 
 class ModelAdmin(admin.ModelAdmin):
-    """ deletion of top level objects is evil """
+    """deletion of top level objects is evil"""
 
     actions = None
 

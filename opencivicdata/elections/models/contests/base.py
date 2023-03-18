@@ -4,8 +4,10 @@
 Base classes for contest-related models.
 """
 from django.db import models
-from opencivicdata.core.models.base import OCDBase, OCDIDField
+
 from opencivicdata.core.models import Division
+from opencivicdata.core.models.base import OCDBase, OCDIDField
+
 from ..election import Election
 
 

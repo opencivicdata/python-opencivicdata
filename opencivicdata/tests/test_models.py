@@ -1,6 +1,7 @@
 import pytest
-from opencivicdata.core.models import Jurisdiction, Division, Organization, Person
 from django.core.exceptions import ValidationError
+
+from opencivicdata.core.models import Division, Jurisdiction, Organization, Person
 
 
 def test_division_subtypes_from_id():
@@ -109,7 +110,7 @@ def test_ocdid_default():
 
 @pytest.mark.django_db
 def test_ocdid_default_nondup():
-    """ ensure that defaults actually vary """
+    """ensure that defaults actually vary"""
     p1 = Person(name="test person 1")
     p2 = Person(name="test person 2")
     assert p1.id != p2.id

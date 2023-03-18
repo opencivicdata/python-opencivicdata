@@ -1,34 +1,34 @@
 # flake8: NOQA
-from .session import LegislativeSession
 from .bill import (
     Bill,
     BillAbstract,
-    BillTitle,
-    BillIdentifier,
-    RelatedBill,
-    BillSponsorship,
-    BillDocument,
-    BillVersion,
-    BillDocumentLink,
-    BillVersionLink,
-    BillSource,
-    BillActionRelatedEntity,
     BillAction,
+    BillActionRelatedEntity,
+    BillDocument,
+    BillDocumentLink,
+    BillIdentifier,
+    BillSource,
+    BillSponsorship,
+    BillTitle,
+    BillVersion,
+    BillVersionLink,
+    RelatedBill,
     SearchableBill,
 )
-from .vote import VoteEvent, VoteCount, PersonVote, VoteSource
 from .event import (
     Event,
+    EventAgendaItem,
+    EventAgendaMedia,
+    EventAgendaMediaLink,
+    EventDocument,
+    EventDocumentLink,
+    EventLink,
     EventLocation,
     EventMedia,
     EventMediaLink,
-    EventDocument,
-    EventLink,
-    EventSource,
     EventParticipant,
-    EventAgendaItem,
     EventRelatedEntity,
-    EventAgendaMedia,
-    EventAgendaMediaLink,
-    EventDocumentLink,
+    EventSource,
 )
+from .session import LegislativeSession
+from .vote import PersonVote, VoteCount, VoteEvent, VoteSource

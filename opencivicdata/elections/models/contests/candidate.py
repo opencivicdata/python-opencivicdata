@@ -4,8 +4,10 @@
 CandidateContest-related models.
 """
 from django.db import models
-from opencivicdata.core.models.base import IdentifierBase, LinkBase
+
 from opencivicdata.core.models import Organization, Post
+from opencivicdata.core.models.base import IdentifierBase, LinkBase
+
 from .base import ContestBase
 
 

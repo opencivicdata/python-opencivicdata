@@ -4,8 +4,9 @@
 Candidacy-related models.
 """
 from django.db import models
-from opencivicdata.core.models.base import OCDBase, LinkBase, OCDIDField
-from opencivicdata.core.models import Person, Post, Organization
+
+from opencivicdata.core.models import Organization, Person, Post
+from opencivicdata.core.models.base import LinkBase, OCDBase, OCDIDField
 
 
 class Candidacy(OCDBase):

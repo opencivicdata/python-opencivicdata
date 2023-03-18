@@ -1,20 +1,22 @@
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField, JSONField
+
+from opencivicdata.core.models import Jurisdiction
 from opencivicdata.core.models.base import (
-    OCDBase,
     LinkBase,
+    MimetypeLinkBase,
+    OCDBase,
     OCDIDField,
     RelatedBase,
     RelatedEntityBase,
-    MimetypeLinkBase,
 )
-from opencivicdata.core.models import Jurisdiction
+
+from ...common import (
+    EVENT_DOCUMENT_CLASSIFICATION_CHOICES,
+    EVENT_MEDIA_CLASSIFICATION_CHOICES,
+)
 from .bill import Bill
 from .vote import VoteEvent
-from ...common import (
-    EVENT_MEDIA_CLASSIFICATION_CHOICES,
-    EVENT_DOCUMENT_CLASSIFICATION_CHOICES,
-)
 
 EVENT_STATUS_CHOICES = (
     ("cancelled", "Cancelled"),

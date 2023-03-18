@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import csv
+import io
 import os
 import re
-import io
-import csv
 from urllib.request import urlopen
 
 PWD = os.path.abspath(os.path.dirname(__file__))

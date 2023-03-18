@@ -1,37 +1,39 @@
-import pytest
 from datetime import date, datetime
+
+import pytest
 from django.contrib.gis.geos import Point
+
 from opencivicdata.core.models import (
-    Jurisdiction,
     Division,
+    Jurisdiction,
     Membership,
     Organization,
     Person,
     Post,
 )
-from opencivicdata.legislative.models import (
-    LegislativeSession,
-    Event,
-    EventLocation,
-    VoteEvent,
-    Bill,
-)
 from opencivicdata.elections.models import (
-    Election,
-    ElectionIdentifier,
+    BallotMeasureContest,
+    BallotMeasureContestIdentifier,
+    BallotMeasureContestOption,
     Candidacy,
     CandidateContest,
-    CandidateContestPost,
     CandidateContestIdentifier,
-    BallotMeasureContest,
-    BallotMeasureContestOption,
-    BallotMeasureContestIdentifier,
-    RetentionContest,
-    RetentionContestOption,
-    RetentionContestIdentifier,
+    CandidateContestPost,
+    Election,
+    ElectionIdentifier,
     PartyContest,
-    PartyContestOption,
     PartyContestIdentifier,
+    PartyContestOption,
+    RetentionContest,
+    RetentionContestIdentifier,
+    RetentionContestOption,
+)
+from opencivicdata.legislative.models import (
+    Bill,
+    Event,
+    EventLocation,
+    LegislativeSession,
+    VoteEvent,
 )
 
 

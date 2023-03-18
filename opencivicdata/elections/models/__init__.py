@@ -1,26 +1,26 @@
 # flake8: NOQA
-from .election import Election, ElectionIdentifier, ElectionSource
 from .candidacy import Candidacy, CandidacySource
-from .contests.base import ContestBase
 from .contests.ballot_measure import (
     BallotMeasureContest,
-    BallotMeasureContestOption,
     BallotMeasureContestIdentifier,
+    BallotMeasureContestOption,
     BallotMeasureContestSource,
     RetentionContest,
-    RetentionContestOption,
     RetentionContestIdentifier,
+    RetentionContestOption,
     RetentionContestSource,
 )
+from .contests.base import ContestBase
 from .contests.candidate import (
     CandidateContest,
-    CandidateContestPost,
     CandidateContestIdentifier,
+    CandidateContestPost,
     CandidateContestSource,
 )
 from .contests.party import (
     PartyContest,
-    PartyContestOption,
     PartyContestIdentifier,
+    PartyContestOption,
     PartyContestSource,
 )
+from .election import Election, ElectionIdentifier, ElectionSource

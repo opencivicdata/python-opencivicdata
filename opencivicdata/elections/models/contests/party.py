@@ -4,8 +4,10 @@
 PartyContest-related models.
 """
 from django.db import models
-from opencivicdata.core.models.base import IdentifierBase, LinkBase
+
 from opencivicdata.core.models import Organization
+from opencivicdata.core.models.base import IdentifierBase, LinkBase
+
 from .base import ContestBase
 
 

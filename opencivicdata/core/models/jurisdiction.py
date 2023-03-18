@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.db import models
 
 from ...common import JURISDICTION_CLASSIFICATION_CHOICES
 from .base import OCDBase, OCDIDField

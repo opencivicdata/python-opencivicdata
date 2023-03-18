@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.template import defaultfilters
+
 from opencivicdata.core.admin.base import (
+    IdentifierInline,
     ModelAdmin,
     ReadOnlyTabularInline,
-    IdentifierInline,
 )
+
 from .. import models
 
 

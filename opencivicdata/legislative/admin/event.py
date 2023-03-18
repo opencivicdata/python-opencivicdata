@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.template import defaultfilters
+
 from opencivicdata.core.admin import base
+
 from .. import models
 
 
@@ -37,7 +39,7 @@ class EventAdmin(admin.ModelAdmin):
 
     def source_link(self, obj):
         source = obj.sources.filter(url__icontains="meetingdetail").get()
-        tmpl = u'<a href="{0}" target="_blank">View source</a>'
+        tmpl = '<a href="{0}" target="_blank">View source</a>'
         return tmpl.format(source.url)
 
     source_link.short_description = "View source"

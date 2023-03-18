@@ -4,7 +4,9 @@
 Custom administration panels for Candidacy-related models.
 """
 from django.contrib import admin
+
 from opencivicdata.core.admin import base
+
 from .. import models
 
 

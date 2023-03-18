@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
+
 import re
 import uuid
-from django.db import models
+
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core.validators import RegexValidator
+from django.db import models
 
 from ... import common
 
@@ -41,7 +43,7 @@ class OCDIDField(models.CharField):
 
 
 class OCDBase(models.Model):
-    """ common base fields across all top-level models """
+    """common base fields across all top-level models"""
 
     created_at = models.DateTimeField(
         auto_now_add=True, help_text="The date and time of creation."
@@ -50,8 +52,7 @@ class OCDBase(models.Model):
         auto_now_add=True, help_text="The date and time of the last update."
     )
     last_seen = models.DateTimeField(
-        auto_now=True,
-        help_text="The last time this object was seen in a scrape."
+        auto_now=True, help_text="The last time this object was seen in a scrape."
     )
     extras = JSONField(
         default=dict,

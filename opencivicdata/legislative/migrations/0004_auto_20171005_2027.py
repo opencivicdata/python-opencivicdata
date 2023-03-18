@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.",  # noqa
             ),
         ),
         migrations.AlterField(
@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.",  # noqa
             ),
         ),
         migrations.AlterField(
@@ -134,7 +134,7 @@ class Migration(migrations.Migration):
             field=django.contrib.postgres.fields.jsonb.JSONField(
                 blank=True,
                 default=dict,
-                help_text="A key-value store for storing arbitrary information not covered elsewhere.", # noqa
+                help_text="A key-value store for storing arbitrary information not covered elsewhere.",  # noqa
             ),
         ),
         migrations.AlterField(

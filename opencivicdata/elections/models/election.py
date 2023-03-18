@@ -4,8 +4,9 @@
 Election-related models.
 """
 from django.db import models
-from opencivicdata.core.models.base import OCDBase, IdentifierBase, LinkBase, OCDIDField
+
 from opencivicdata.core.models import Division, Organization
+from opencivicdata.core.models.base import IdentifierBase, LinkBase, OCDBase, OCDIDField
 
 
 class Election(OCDBase):

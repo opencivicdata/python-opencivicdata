@@ -1,23 +1,23 @@
 # flake8: NOQA
-from .jurisdiction import Jurisdiction
 from .division import Division
+from .jurisdiction import Jurisdiction
 from .people_orgs import (
+    Membership,
+    MembershipContactDetail,
+    MembershipLink,
     Organization,
-    OrganizationIdentifier,
-    OrganizationName,
     OrganizationContactDetail,
+    OrganizationIdentifier,
     OrganizationLink,
+    OrganizationName,
     OrganizationSource,
     Person,
-    PersonIdentifier,
-    PersonName,
     PersonContactDetail,
+    PersonIdentifier,
     PersonLink,
+    PersonName,
     PersonSource,
     Post,
     PostContactDetail,
     PostLink,
-    Membership,
-    MembershipContactDetail,
-    MembershipLink,
 )

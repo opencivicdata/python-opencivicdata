@@ -1,13 +1,14 @@
-from django.urls import reverse
 from django.contrib import admin
+from django.urls import reverse
 from django.utils.safestring import mark_safe
+
 from .. import models
 from .base import (
-    ModelAdmin,
-    ReadOnlyTabularInline,
-    IdentifierInline,
     ContactDetailInline,
+    IdentifierInline,
+    ModelAdmin,
     OtherNameInline,
+    ReadOnlyTabularInline,
 )
 
 

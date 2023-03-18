@@ -1,14 +1,15 @@
 from __future__ import print_function
 
-from django.db import transaction
 from django.core.management.base import BaseCommand
+from django.db import transaction
 
 from opencivicdata.divisions import Division as FileDivision
+
 from ...models import Division
 
 
 def to_db(fd):
-    """ convert a FileDivision to a Division """
+    """convert a FileDivision to a Division"""
     args, _ = Division.subtypes_from_id(fd.id)
     if fd.sameAs:
         args["redirect_id"] = fd.sameAs

@@ -4,7 +4,9 @@
 Custom administration panels for OpenCivicData election contest models.
 """
 from django.contrib import admin
+
 from opencivicdata.core.admin import base
+
 from ... import models
 
 

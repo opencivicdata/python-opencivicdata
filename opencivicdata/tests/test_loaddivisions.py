@@ -3,8 +3,8 @@ import os
 import pytest
 from django.core.management import call_command
 
-from opencivicdata.divisions import Division as FileDivision
 from opencivicdata.core.models import Division
+from opencivicdata.divisions import Division as FileDivision
 
 
 @pytest.mark.django_db

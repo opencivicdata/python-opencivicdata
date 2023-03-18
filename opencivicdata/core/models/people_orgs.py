@@ -1,10 +1,12 @@
 import datetime
+
 from django.db import models
 from django.db.models import Q, QuerySet
-from .base import OCDBase, LinkBase, OCDIDField, RelatedBase, IdentifierBase
+
+from ... import common
+from .base import IdentifierBase, LinkBase, OCDBase, OCDIDField, RelatedBase
 from .division import Division
 from .jurisdiction import Jurisdiction
-from ... import common
 
 # abstract models
 
@@ -135,7 +137,7 @@ class Organization(OCDBase):
                 break
 
     def get_current_members(self):
-        """ return all Person objects w/ current memberships to org """
+        """return all Person objects w/ current memberships to org"""
         today = datetime.date.today().isoformat()
 
         return Person.objects.filter(

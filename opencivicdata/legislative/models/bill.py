@@ -1,22 +1,23 @@
 from __future__ import unicode_literals
-from django.db import models
+
 from django.contrib.postgres.fields import ArrayField, JSONField
-from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVectorField
+from django.db import models
 
-
+from opencivicdata.core.models import Organization
 from opencivicdata.core.models.base import (
-    OCDBase,
+    IdentifierBase,
     LinkBase,
+    MimetypeLinkBase,
+    OCDBase,
     OCDIDField,
     RelatedBase,
     RelatedEntityBase,
-    MimetypeLinkBase,
-    IdentifierBase,
 )
-from opencivicdata.core.models import Organization
-from .session import LegislativeSession
+
 from ... import common
+from .session import LegislativeSession
 
 
 class Bill(OCDBase):
