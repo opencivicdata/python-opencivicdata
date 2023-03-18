@@ -1,8 +1,5 @@
 from __future__ import unicode_literals
 
-from django.contrib.postgres.fields import ArrayField, JSONField
-from django.contrib.postgres.indexes import GinIndex
-from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 
 from opencivicdata.core.models import Organization
@@ -40,8 +37,8 @@ class Bill(OCDBase):
         on_delete=models.PROTECT,
     )
     # check that array values are in enum?
-    classification = ArrayField(base_field=models.TextField(), blank=True, default=list)
-    subject = ArrayField(base_field=models.TextField(), blank=True, default=list)
+    classification = models.JSONField(blank=True, default=list)
+    subject = models.JSONField(blank=True, default=list)
 
     def __str__(self):
         return "{} in {}".format(self.identifier, self.legislative_session)
@@ -98,11 +95,9 @@ class BillAction(RelatedBase):
     )
     description = models.TextField()
     date = models.CharField(max_length=25)  # YYYY-MM-DD HH:MM:SS+HH:MM
-    classification = ArrayField(
-        base_field=models.TextField(), blank=True, default=list
-    )  # enum
+    classification = models.JSONField(blank=True, default=list)  # enum
     order = models.PositiveIntegerField()
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     class Meta:
         db_table = "opencivicdata_billaction"
@@ -171,7 +166,7 @@ class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name="documents", on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)  # YYYY[-MM[-DD]]
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return "{0} document of {1}".format(self.date, self.bill)
@@ -184,7 +179,7 @@ class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name="versions", on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)  # YYYY[-MM[-DD]]
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return "{0} version of {1}".format(self.date, self.bill)
@@ -222,33 +217,3 @@ class BillSource(LinkBase):
 
     class Meta:
         db_table = "opencivicdata_billsource"
-
-
-class SearchableBill(models.Model):
-    """
-    This model associates a single version's text with a given bill.
-
-    This is done for a few reasons:
-        * bills with multiple versions aren't weighted more heavily than others
-        * this makes querying quite a bit more efficient (no need to deduplicate results)
-
-    We'll also store error results, assuming that they're somewhat persistent.
-    """
-
-    bill = models.OneToOneField(
-        Bill, related_name="searchable", null=True, on_delete=models.CASCADE
-    )
-    version_link = models.OneToOneField(
-        BillVersionLink, related_name="searchable", null=True, on_delete=models.CASCADE
-    )
-
-    search_vector = SearchVectorField(default=None)
-    all_titles = models.TextField(default="")
-    raw_text = models.TextField(default="")
-    is_error = models.BooleanField(default=False)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = "opencivicdata_searchablebill"
-        indexes = [GinIndex(name="search_index", fields=["search_vector"])]

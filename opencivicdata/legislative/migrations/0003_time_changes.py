@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import migrations, models
+from django.db import connection, migrations, models
 
 
 class Migration(migrations.Migration):
 
     dependencies = [("legislative", "0002_more_extras")]
 
-    operations = [
-        migrations.RunSQL(
-            "SET CONSTRAINTS ALL IMMEDIATE", reverse_sql=migrations.RunSQL.noop
-        ),
+    if (
+        "postgresql" in connection.settings_dict["ENGINE"]
+        or "postgis" in connection.settings_dict["ENGINE"]
+    ):
+
+        operations = [
+            migrations.RunSQL(
+                "SET CONSTRAINTS ALL IMMEDIATE", reverse_sql=migrations.RunSQL.noop
+            )
+        ]
+    else:
+        operations = []
+
+    operations += [
         migrations.AlterField(
             model_name="voteevent",
             name="end_date",
@@ -44,7 +54,15 @@ class Migration(migrations.Migration):
             name="event", index_together=set([("jurisdiction", "start_date", "name")])
         ),
         migrations.RemoveField(model_name="event", name="timezone"),
-        migrations.RunSQL(
-            migrations.RunSQL.noop, reverse_sql="SET CONSTRAINTS ALL IMMEDIATE"
-        ),
     ]
+
+    if (
+        "postgresql" in connection.settings_dict["ENGINE"]
+        or "postgis" in connection.settings_dict["ENGINE"]
+    ):
+
+        operations += [
+            migrations.RunSQL(
+                migrations.RunSQL.noop, reverse_sql="SET CONSTRAINTS ALL IMMEDIATE"
+            ),
+        ]

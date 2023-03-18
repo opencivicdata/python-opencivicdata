@@ -4,9 +4,6 @@ from __future__ import unicode_literals
 
 import uuid
 
-import django.contrib.gis.db.models.fields
-import django.contrib.postgres.fields
-import django.contrib.postgres.fields.jsonb
 import django.core.validators
 import django.db.models.deletion
 from django.db import migrations, models
@@ -28,17 +25,13 @@ class Migration(migrations.Migration):
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "extras",
-                    django.contrib.postgres.fields.jsonb.JSONField(
-                        blank=True, default=dict
-                    ),
+                    models.JSONField(blank=True, default=dict),
                 ),
                 (
                     "locked_fields",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 (
@@ -59,20 +52,16 @@ class Migration(migrations.Migration):
                 ("title", models.TextField()),
                 (
                     "classification",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 (
                     "subject",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 (
@@ -129,11 +118,9 @@ class Migration(migrations.Migration):
                 ("date", models.CharField(max_length=10)),
                 (
                     "classification",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 ("order", models.PositiveIntegerField()),
@@ -425,17 +412,13 @@ class Migration(migrations.Migration):
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "extras",
-                    django.contrib.postgres.fields.jsonb.JSONField(
-                        blank=True, default=dict
-                    ),
+                    models.JSONField(blank=True, default=dict),
                 ),
                 (
                     "locked_fields",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 (
@@ -497,30 +480,24 @@ class Migration(migrations.Migration):
                 ("description", models.TextField()),
                 (
                     "classification",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 ("order", models.CharField(blank=True, max_length=100)),
                 (
                     "subjects",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 (
                     "notes",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 (
@@ -679,12 +656,6 @@ class Migration(migrations.Migration):
                 ),
                 ("name", models.CharField(max_length=200)),
                 ("url", models.URLField(blank=True, max_length=2000)),
-                (
-                    "coordinates",
-                    django.contrib.gis.db.models.fields.PointField(
-                        null=True, srid=4326
-                    ),
-                ),
                 (
                     "jurisdiction",
                     models.ForeignKey(
@@ -1018,17 +989,13 @@ class Migration(migrations.Migration):
                 ("updated_at", models.DateTimeField(auto_now=True)),
                 (
                     "extras",
-                    django.contrib.postgres.fields.jsonb.JSONField(
-                        blank=True, default=dict
-                    ),
+                    models.JSONField(blank=True, default=dict),
                 ),
                 (
                     "locked_fields",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 (
@@ -1049,11 +1016,9 @@ class Migration(migrations.Migration):
                 ("motion_text", models.TextField()),
                 (
                     "motion_classification",
-                    django.contrib.postgres.fields.ArrayField(
-                        base_field=models.TextField(),
+                    models.JSONField(
                         blank=True,
                         default=list,
-                        size=None,
                     ),
                 ),
                 ("start_date", models.CharField(max_length=19)),

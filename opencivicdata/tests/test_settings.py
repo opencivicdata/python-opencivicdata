@@ -7,7 +7,7 @@ INSTALLED_APPS = (
 )
 DATABASES = {
     "default": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "ENGINE": "django.db.backends.sqlite3",
         "NAME": "test",
         "USER": "test",
         "PASSWORD": "test",

@@ -13,7 +13,6 @@ from .bill import (
     BillVersion,
     BillVersionLink,
     RelatedBill,
-    SearchableBill,
 )
 from .event import (
     Event,

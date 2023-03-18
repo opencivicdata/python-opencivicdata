@@ -1,5 +1,4 @@
-from django.contrib.gis.db import models
-from django.contrib.postgres.fields import ArrayField, JSONField
+from django.db import models
 
 from opencivicdata.core.models import Jurisdiction
 from opencivicdata.core.models.base import (
@@ -38,7 +37,8 @@ class EventMediaBase(RelatedBase):
 class EventLocation(RelatedBase):
     name = models.CharField(max_length=200)
     url = models.URLField(blank=True, max_length=2000)
-    coordinates = models.PointField(null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
     jurisdiction = models.ForeignKey(
         Jurisdiction, related_name="event_locations", on_delete=models.CASCADE
     )
@@ -158,12 +158,12 @@ class EventParticipant(RelatedEntityBase):
 
 class EventAgendaItem(RelatedBase):
     description = models.TextField()
-    classification = ArrayField(base_field=models.TextField(), blank=True, default=list)
+    classification = models.JSONField(blank=True, default=list)
     order = models.CharField(max_length=100, blank=True)
-    subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
-    notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
+    subjects = models.JSONField(blank=True, default=list)
+    notes = models.JSONField(blank=True, default=list)
     event = models.ForeignKey(Event, related_name="agenda", on_delete=models.CASCADE)
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return "Agenda item {0} for {1}".format(self.order, self.event).replace(

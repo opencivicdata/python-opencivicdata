@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 import re
 import uuid
 
-from django.contrib.postgres.fields import ArrayField, JSONField
 from django.core.validators import RegexValidator
 from django.db import models
 
@@ -54,12 +53,12 @@ class OCDBase(models.Model):
     last_seen = models.DateTimeField(
         auto_now=True, help_text="The last time this object was seen in a scrape."
     )
-    extras = JSONField(
+    extras = models.JSONField(
         default=dict,
         blank=True,
         help_text="A key-value store for storing arbitrary information not covered elsewhere.",
     )
-    locked_fields = ArrayField(base_field=models.TextField(), blank=True, default=list)
+    locked_fields = models.JSONField(blank=True, default=list)
 
     class Meta:
         abstract = True

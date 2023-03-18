@@ -1,4 +1,3 @@
-from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 
 from opencivicdata.core.models import Organization, Person
@@ -14,9 +13,7 @@ class VoteEvent(OCDBase):
     identifier = models.CharField(max_length=300, blank=True)
     motion_text = models.TextField()
     # enum
-    motion_classification = ArrayField(
-        base_field=models.TextField(), blank=True, default=list
-    )
+    motion_classification = models.JSONField(blank=True, default=list)
     start_date = models.CharField(max_length=25)  # YYYY-MM-DD HH:MM:SS+HH:MM
     end_date = models.CharField(max_length=25, blank=True)  # YYYY-MM-DD HH:MM:SS+HH:MM
 
@@ -49,7 +46,7 @@ class VoteEvent(OCDBase):
         on_delete=models.SET_NULL,
     )
 
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         if self.identifier:

@@ -1,7 +1,6 @@
 from datetime import date, datetime
 
 import pytest
-from django.contrib.gis.geos import Point
 
 from opencivicdata.core.models import (
     Division,
@@ -100,7 +99,8 @@ def vote_event(legislative_session, organization):
 def event_location(jurisdiction):
     loc = EventLocation.objects.create(
         name="State Legislative Building",
-        coordinates=Point(33.448040, -112.097379),
+        latitude=33.448040,
+        longitude=-112.097379,
         jurisdiction=jurisdiction,
     )
     return loc

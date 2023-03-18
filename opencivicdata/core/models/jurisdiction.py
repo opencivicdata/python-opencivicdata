@@ -1,4 +1,3 @@
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from ...common import JURISDICTION_CLASSIFICATION_CHOICES
@@ -30,8 +29,7 @@ class Jurisdiction(OCDBase):
         db_index=True,
         help_text="The type of Jurisdiction being defined.",
     )
-    feature_flags = ArrayField(
-        base_field=models.TextField(),
+    feature_flags = models.JSONField(
         blank=True,
         default=list,
         help_text="A list of features that are present for data in this jurisdiction.",
