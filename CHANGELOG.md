@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.3.0 (2023-05-08)
+
+* Add last_seen field to database objects
+* Pupa now has "pupa clean" CLI command
+
 ## 3.2.0 (2020-03-26)
 
 * add GinIndex for search (requires migration)
