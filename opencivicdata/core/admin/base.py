@@ -12,7 +12,7 @@ class ModelAdmin(admin.ModelAdmin):
         return False
 
     # we probably don't want to add anything through the interface
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, obj=None):
         return False
 
     # To ignore `DisallowedModelAdminLookup` error because of non
@@ -22,7 +22,7 @@ class ModelAdmin(admin.ModelAdmin):
 
 
 class ReadOnlyTabularInline(admin.TabularInline):
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, obj=None):
         return False
 
     can_delete = False
@@ -35,7 +35,7 @@ class IdentifierInline(admin.TabularInline):
     verbose_name = "ID from another system"
     verbose_name_plural = "IDs from other systems"
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, obj=None):
         return False
 
 
