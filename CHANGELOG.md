@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Add a --sync flag to the loaddivisions management command, to delete divisions that are in the DB but not the CSV, even if the DB contains the CSV. This flag is relevant if you synchronize with a single CSV.
+
 ## 3.3.0 (2023-05-08)
 
 * Add last_seen field to database objects
