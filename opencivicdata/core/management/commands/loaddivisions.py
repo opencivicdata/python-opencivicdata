@@ -15,7 +15,7 @@ def to_db(fd):
     return Division(id=fd.id, name=fd.name, **args)
 
 
-def load_divisions(country, bulk=False):
+def load_divisions(country, bulk=False, sync=False):
     existing_divisions = Division.objects.filter(country=country)
 
     country_division = FileDivision.get("ocd-division/country:{}".format(country))
@@ -35,7 +35,7 @@ def load_divisions(country, bulk=False):
 
     if objects_set == existing_divisions_set:
         print("The CSV and the DB contents are exactly the same; no work to be done!")
-    elif objects_set.issubset(existing_divisions_set):
+    elif not sync and objects_set.issubset(existing_divisions_set):
         print("The DB contains all CSV contents; no work to be done!")
     else:
         if bulk:
@@ -65,9 +65,15 @@ class Command(BaseCommand):
         parser.add_argument(
             "--bulk",
             action="store_true",
-            help="Use bulk_create to add divisions. *Warning* This deletes any existing divisions",
+            help="Use bulk_create to add divisions. *Warning* This deletes any existing divisions.",
+        )
+        parser.add_argument(
+            "--sync",
+            action="store_true",
+            help="Add divisions from a CSV file, and delete existing divisions that are not in the "
+            "CSV file. This option only makes sense with a single country.",
         )
 
     def handle(self, *args, **options):
         for country in options["countries"]:
-            load_divisions(country, options["bulk"])
+            load_divisions(country, options["bulk"], options["sync"])
