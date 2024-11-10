@@ -2,7 +2,8 @@ from __future__ import unicode_literals
 import re
 import uuid
 from django.db import models
-from django.db.models import ArrayField, JSONField
+from django.db.models import JSONField
+from django.contrib.postgres.fields import ArrayField
 from django.core.validators import RegexValidator
 
 from ... import common
