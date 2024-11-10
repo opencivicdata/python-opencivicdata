@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
             model_name="event", old_name="start_time", new_name="start_date"
         ),
         migrations.AddIndex(
-            model_name="event", index=django.db.models.Index(fields=["jurisdiction", "start_date", "name"])
+            model_name="event", index=django.db.models.Index(name="event_juris_name", fields=["jurisdiction", "start_date", "name"])
         ),
         migrations.RemoveField(model_name="event", name="timezone"),
         migrations.RunSQL(

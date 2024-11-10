@@ -826,18 +826,18 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddIndex(
-            model_name="post", index=django.db.models.Index(fields=["organization", "label"])
+            model_name="post", index=django.db.models.Index(name="post", fields=["organization", "label"])
         ),
         migrations.AddIndex(
             model_name="organization",
-            index=django.db.models.Index(fields=["classification", "name"])
+            index=django.db.models.Index(name="organization_class_name", fields=["classification", "name"])
         ), 
         migrations.AddIndex(
             model_name="organization",
-            index=django.db.models.Index(fields=["jurisdiction", "classification", "name"])
+            index=django.db.models.Index(name="organization", fields=["jurisdiction", "classification", "name"])
         ),
         migrations.AddIndex(
             model_name="membership",
-            index=django.db.models.Index(fields=["organization", "person", "label", "post"])
+            index=django.db.models.Index(name="membership", fields=["organization", "person", "label", "post"])
         ),
     ]
