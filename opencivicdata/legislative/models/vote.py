@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField, JSONField
+from django.contrib.postgres.fields import ArrayField
 
 from opencivicdata.core.models.base import OCDBase, LinkBase, OCDIDField, RelatedBase
 from opencivicdata.core.models import Organization, Person
@@ -48,7 +48,7 @@ class VoteEvent(OCDBase):
         on_delete=models.SET_NULL,
     )
 
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         if self.identifier:
