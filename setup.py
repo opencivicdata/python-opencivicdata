@@ -9,7 +9,7 @@ extras_require = {
 
 setup(
     name="opencivicdata",
-    version="3.3.0",
+    version="3.4.0",
     author="James Turk",
     author_email="james@openstates.org",
     license="BSD",
