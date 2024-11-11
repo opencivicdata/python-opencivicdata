@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
-from django.contrib.postgres.fields import ArrayField, JSONField
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
 
@@ -101,7 +101,7 @@ class BillAction(RelatedBase):
         base_field=models.TextField(), blank=True, default=list
     )  # enum
     order = models.PositiveIntegerField()
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     class Meta:
         db_table = "opencivicdata_billaction"
@@ -170,7 +170,7 @@ class BillDocument(RelatedBase):
     bill = models.ForeignKey(Bill, related_name="documents", on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)  # YYYY[-MM[-DD]]
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return "{0} document of {1}".format(self.date, self.bill)
@@ -183,7 +183,7 @@ class BillVersion(RelatedBase):
     bill = models.ForeignKey(Bill, related_name="versions", on_delete=models.CASCADE)
     note = models.CharField(max_length=300)
     date = models.CharField(max_length=10)  # YYYY[-MM[-DD]]
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return "{0} version of {1}".format(self.date, self.bill)
