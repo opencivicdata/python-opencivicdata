@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from django.contrib.postgres.fields import ArrayField, JSONField
+from django.contrib.postgres.fields import ArrayField
 from opencivicdata.core.models.base import (
     OCDBase,
     LinkBase,
@@ -163,7 +163,7 @@ class EventAgendaItem(RelatedBase):
     subjects = ArrayField(base_field=models.TextField(), blank=True, default=list)
     notes = ArrayField(base_field=models.TextField(), blank=True, default=list)
     event = models.ForeignKey(Event, related_name="agenda", on_delete=models.CASCADE)
-    extras = JSONField(default=dict, blank=True)
+    extras = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return "Agenda item {0} for {1}".format(self.order, self.event).replace(

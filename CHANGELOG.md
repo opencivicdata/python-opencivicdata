@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## 3.4.0 (2024-11-11)
+
+* Add support for Python 3.9, 3.10, 3.11, 3.12 and Django 4.0, 4.2.
+* Drop support for Python 3.7, 3.8 and Django 2.2, 3.0.
+
+## 3.3.1 (2024-05-15)
 
 * Add a --sync flag to the loaddivisions management command, to delete divisions that are in the DB but not the CSV, even if the DB contains the CSV. This flag is relevant if you synchronize with a single CSV.
 

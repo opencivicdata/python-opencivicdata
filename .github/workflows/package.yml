@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
     services:
       postgres:
-        image: postgis/postgis:10-2.5
+        image: postgis/postgis:12-2.5
         env:
           POSTGRES_USER: test
           POSTGRES_DB: test
@@ -27,12 +27,12 @@ jobs:
           - 5432:5432
     strategy:
       matrix:
-        python-version: ['3.7', '3.8']
-        django-series: ['2.2', '3.0']
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+        django-series: ['3.2', '4.0', '4.2']
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -58,7 +58,7 @@ jobs:
     name: Build package and upload to PyPI
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Build and publish
       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
       env:

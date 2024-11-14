@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import re
 import uuid
 from django.db import models
-from django.db.models import JSONField
+
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import RegexValidator
 
@@ -54,7 +54,7 @@ class OCDBase(models.Model):
         auto_now=True,
         help_text="The last time this object was seen in a scrape."
     )
-    extras = JSONField(
+    extras = models.JSONField(
         default=dict,
         blank=True,
         help_text="A key-value store for storing arbitrary information not covered elsewhere.",
