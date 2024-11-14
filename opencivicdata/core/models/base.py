@@ -2,10 +2,7 @@ from __future__ import unicode_literals
 import re
 import uuid
 from django.db import models
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 from django.contrib.postgres.fields import ArrayField
 from django.core.validators import RegexValidator
 
