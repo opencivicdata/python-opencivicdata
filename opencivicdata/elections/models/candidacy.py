@@ -44,9 +44,10 @@ class Candidacy(OCDBase):
     filed_date = models.DateField(
         null=True, help_text="Specifies when the candidate filed for the contest."
     )
-    is_incumbent = models.NullBooleanField(
+    is_incumbent = models.BooleanField(
         help_text="Indicates whether the candidate is seeking re-election to a "
-        "public office he/she currently holds"
+        "public office he/she currently holds",
+        null=True
     )
     party = models.ForeignKey(
         Organization,

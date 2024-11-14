@@ -825,17 +825,19 @@ class Migration(migrations.Migration):
                 to="core.Post",
             ),
         ),
-        migrations.AlterIndexTogether(
-            name="post", index_together=set([("organization", "label")])
+        migrations.AddIndex(
+            model_name="post", index=django.db.models.Index(name="post", fields=["organization", "label"])
         ),
-        migrations.AlterIndexTogether(
-            name="organization",
-            index_together=set(
-                [("classification", "name"), ("jurisdiction", "classification", "name")]
-            ),
+        migrations.AddIndex(
+            model_name="organization",
+            index=django.db.models.Index(name="organization_class_name", fields=["classification", "name"])
+        ), 
+        migrations.AddIndex(
+            model_name="organization",
+            index=django.db.models.Index(name="organization", fields=["jurisdiction", "classification", "name"])
         ),
-        migrations.AlterIndexTogether(
-            name="membership",
-            index_together=set([("organization", "person", "label", "post")]),
+        migrations.AddIndex(
+            model_name="membership",
+            index=django.db.models.Index(name="membership", fields=["organization", "person", "label", "post"])
         ),
     ]

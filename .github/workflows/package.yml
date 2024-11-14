@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.9', '3.10', '3.11', '3.12']
-        django-series: ['3.2', '4.0', '4.2']
+        django-series: ['4.2', '5.1']
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}

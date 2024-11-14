@@ -40,8 +40,8 @@ class Migration(migrations.Migration):
         migrations.RenameField(
             model_name="event", old_name="start_time", new_name="start_date"
         ),
-        migrations.AlterIndexTogether(
-            name="event", index_together=set([("jurisdiction", "start_date", "name")])
+        migrations.AddIndex(
+            model_name="event", index=models.Index(name="event_juris_name", fields=["jurisdiction", "start_date", "name"])
         ),
         migrations.RemoveField(model_name="event", name="timezone"),
         migrations.RunSQL(

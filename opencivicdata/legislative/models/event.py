@@ -70,7 +70,9 @@ class Event(OCDBase):
 
     class Meta:
         db_table = "opencivicdata_event"
-        index_together = [["jurisdiction", "start_date", "name"]]
+        indexes = [
+            models.Index(fields=["jurisdiction", "start_date", "name"])
+        ]
 
 
 class EventMedia(EventMediaBase):

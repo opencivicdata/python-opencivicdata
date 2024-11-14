@@ -1180,22 +1180,20 @@ class Migration(migrations.Migration):
                 to="legislative.LegislativeSession",
             ),
         ),
-        migrations.AlterIndexTogether(
-            name="voteevent",
-            index_together=set(
-                [
-                    ("legislative_session", "bill"),
-                    ("legislative_session", "identifier", "bill"),
-                ]
-            ),
+        migrations.AddIndex(
+            model_name="voteevent",
+            index=django.db.models.Index(name="voteevent_session_bill", fields=["legislative_session", "bill"])
         ),
-        migrations.AlterIndexTogether(
-            name="event", index_together=set([("jurisdiction", "start_time", "name")])
+        migrations.AddIndex(
+            model_name="voteevent",
+            index=django.db.models.Index(name="voteevent_session_id_bill", fields=["legislative_session", "identifier", "bill"]),
         ),
-        migrations.AlterIndexTogether(
-            name="bill",
-            index_together=set(
-                [("from_organization", "legislative_session", "identifier")]
-            ),
+        migrations.AddIndex(
+            model_name="event", 
+            index=django.db.models.Index(name="event", fields=["jurisdiction", "start_time", "name"])
+        ),
+        migrations.AddIndex(
+            model_name="bill",
+            index=django.db.models.Index(name="bill", fields=["from_organization", "legislative_session", "identifier"])
         ),
     ]
