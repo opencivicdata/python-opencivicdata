@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+* Add support for Python 3.13, 3.14 and Django 5.2, 6.0.
+* Drop support for Python 3.9 and Django 3.2, 4.0, 4.1.
+* Replace `Meta.index_together` with named `Meta.indexes` (requires migration; existing indexes are renamed, not rebuilt).
+* Replace `NullBooleanField` with `BooleanField(null=True)` on `Candidacy.is_incumbent` and `PartyContestOption.is_incumbent` (requires migration; no schema change).
+* Set `default_auto_field` to `AutoField` on all apps, so that Django 6.0's `BigAutoField` default doesn't generate migrations.
+* Fix `ModelAdmin.lookup_allowed` signature for Django 5.0+.
+* `django.contrib.postgres` must now be in `INSTALLED_APPS` (required by Django 6.0 for `ArrayField`).
+
 ## 3.4.0 (2024-11-11)
 
 * Add support for Python 3.9, 3.10, 3.11, 3.12 and Django 4.0, 4.2.

@@ -10,10 +10,10 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgis/postgis:12-2.5
+        image: postgis/postgis:16-3.4
         env:
           POSTGRES_USER: test
           POSTGRES_DB: test
@@ -27,8 +27,17 @@ jobs:
           - 5432:5432
     strategy:
       matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12']
-        django-series: ['3.2', '4.0', '4.2']
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
+        django-series: ['4.2', '5.2', '6.0']
+        exclude:
+          - django-series: '4.2'
+            python-version: '3.13'
+          - django-series: '4.2'
+            python-version: '3.14'
+          - django-series: '6.0'
+            python-version: '3.10'
+          - django-series: '6.0'
+            python-version: '3.11'
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -40,7 +49,7 @@ jobs:
         sudo apt update
         sudo apt install -y gdal-bin
         pip install -U setuptools six
-        pip install .[dev] --pre Django==${{ matrix.django-series }}
+        pip install .[dev] "Django~=${{ matrix.django-series }}.0"
     - name: Lint with flake8
       run: |
         flake8
@@ -56,7 +65,7 @@ jobs:
   build:
     needs: test
     name: Build package and upload to PyPI
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Build and publish

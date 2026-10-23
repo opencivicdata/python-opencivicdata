@@ -17,7 +17,7 @@ class ModelAdmin(admin.ModelAdmin):
 
     # To ignore `DisallowedModelAdminLookup` error because of non
     # registered models
-    def lookup_allowed(self, request, key):
+    def lookup_allowed(self, lookup, value, request=None):
         return True
 
 
