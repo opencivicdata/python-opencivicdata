@@ -1,2 +1,0 @@
-recursive-include opencivicdata/core/templates *
-recursive-include opencivicdata/legislative/templates *

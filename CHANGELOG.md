@@ -9,6 +9,7 @@
 * Set `default_auto_field` to `AutoField` on all apps, so that Django 6.0's `BigAutoField` default doesn't generate migrations.
 * Fix `ModelAdmin.lookup_allowed` signature for Django 5.0+.
 * `django.contrib.postgres` must now be in `INSTALLED_APPS` (required by Django 6.0 for `ArrayField`).
+* Replace `setup.py` and `setup.cfg` with `pyproject.toml`.
 
 ## 3.4.0 (2024-11-11)
 

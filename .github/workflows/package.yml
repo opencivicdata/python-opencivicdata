@@ -48,7 +48,6 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y gdal-bin
-        pip install -U setuptools six
         pip install .[dev] "Django~=${{ matrix.django-series }}.0"
     - name: Lint with flake8
       run: |
@@ -74,8 +73,7 @@ jobs:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
-        pip install twine wheel
-        pip wheel -w dist --no-deps .
-        python setup.py sdist
+        pip install build twine
+        python -m build
         twine upload dist/*
       continue-on-error: true
