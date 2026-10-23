@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opencivicdata"
+version = "3.4.0"
+description = "python opencivicdata library"
+readme = "README.md"
+authors = [{ name = "James Turk", email = "james@openstates.org" }]
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = ["Django>=4.2", "psycopg2-binary"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.2",
+    "Framework :: Django :: 6.0",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=3.6", "pytest-cov", "pytest-django", "coveralls==3.2.0", "flake8"]
+
+[project.urls]
+Repository = "https://github.com/opencivicdata/python-opencivicdata"
+Changelog = "https://github.com/opencivicdata/python-opencivicdata/blob/master/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+include = ["opencivicdata*"]

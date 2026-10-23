@@ -3,6 +3,7 @@ import os
 # not tests, just Django settings
 SECRET_KEY = "test"
 INSTALLED_APPS = (
+    "django.contrib.postgres",
     "opencivicdata.core.apps.BaseConfig",
     "opencivicdata.legislative.apps.BaseConfig",
     "opencivicdata.elections.apps.BaseConfig",

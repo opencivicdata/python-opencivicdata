@@ -6,3 +6,4 @@ class BaseConfig(AppConfig):
     name = "opencivicdata.legislative"
     verbose_name = "Open Civic Data - Legislative"
     path = os.path.dirname(__file__)
+    default_auto_field = "django.db.models.AutoField"

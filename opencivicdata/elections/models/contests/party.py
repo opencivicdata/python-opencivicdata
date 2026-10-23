@@ -49,7 +49,8 @@ class PartyContestOption(models.Model):
         help_text="Reference to an Organization representing a political party "
         "voters may choose in the contest.",
     )
-    is_incumbent = models.NullBooleanField(
+    is_incumbent = models.BooleanField(
+        null=True,
         help_text="Indicates whether the party currently holds majority power."
     )
 
