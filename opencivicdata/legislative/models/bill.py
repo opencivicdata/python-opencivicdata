@@ -47,7 +47,12 @@ class Bill(OCDBase):
 
     class Meta:
         db_table = "opencivicdata_bill"
-        index_together = [["from_organization", "legislative_session", "identifier"]]
+        indexes = [
+            models.Index(
+                fields=["from_organization", "legislative_session", "identifier"],
+                name="ocd_bill_org_sess_ident_idx",
+            )
+        ]
 
 
 class BillAbstract(RelatedBase):

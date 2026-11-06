@@ -10,3 +10,4 @@ graph
 *swp
 .cache
 .python-version
+venv/
