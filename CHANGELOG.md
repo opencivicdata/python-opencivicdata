@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0.0 (2026-11-23)
+## 4.0.0 (2026-11-06)
 
 * Add support for Python 3.13, 3.14 and Django 5.2, 6.0
 * Drop support for Python 3.9 and Django 3.2, 4.0, 4.1
