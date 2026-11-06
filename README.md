@@ -8,7 +8,7 @@ python-opencivicdata
 Python utilities (including Django models) for implementing the
 Open Civic Data specification.
 
-**Requires Django >= 4.2 and Python >= 3.10 (Django 6.0 requires Python >= 3.12), pin to <3.0 for older versions**
+**Requires Django >= 4.2 and Python >= 3.10 (Django 6.0 requires Python >= 3.12), pin to <4.0 for older versions**
 
 To use the models in your Django project, add `django.contrib.postgres` and the
 apps you need to `INSTALLED_APPS` and use the PostGIS database backend:
