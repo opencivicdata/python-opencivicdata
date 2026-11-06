@@ -11,7 +11,7 @@ authors = [{ name = "James Turk", email = "james@openstates.org" }]
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
-dependencies = ["Django>=4.2", "psycopg2-binary"]
+dependencies = ["Django>=4.2,<7", "psycopg2-binary"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -21,6 +21,7 @@ classifiers = [
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.2",
     "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
